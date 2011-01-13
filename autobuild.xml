@@ -3,18 +3,20 @@
 <map>
     <key>package_description</key>
     <map>
+      <key>description</key>
+      <string>Boost C++ Libraries</string>
       <key>license</key>
-      <string>zlib</string>
+      <string>boost 1.0</string>
       <key>license_file</key>
-      <string>LICENSES/zlib.txt</string>
+      <string>LICENSES/boost.txt</string>
       <key>name</key>
-      <string>zlib</string>
+      <string>boost</string>
       <key>platforms</key>
       <map>
         <key>common</key>
         <map>
           <key>build_directory</key>
-          <string>zlib-1.2.5/stage</string>
+          <string>boost_1_45_0/stage</string>
           <key>configurations</key>
           <map>
             <key>Release</key>
@@ -34,8 +36,7 @@
           </map>
           <key>manifest</key>
           <array>
-            <string>include/zlib/*.h</string>
-            <string>LICENSES/zlib.txt</string>
+            <string>LICENSES/boost.txt</string>
           </array>
           <key>name</key>
           <string>common</string>
@@ -109,9 +110,9 @@
         </map>
       </map>
       <key>source_directory</key>
-      <string>zlib-1.2.5</string>
+      <string>boost_1_45_0</string>
       <key>version</key>
-      <string>1.2.5</string>
+      <string>1.45.0</string>
     </map>
     <key>type</key>
     <string>autobuild</string>

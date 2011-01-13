@@ -29,49 +29,44 @@ set -x
 fetch_archive "$BOOST_URL" "$BOOST_ARCHIVE" "$BOOST_MD5"
 extract "$BOOST_ARCHIVE"
 
+# Add boost coroutine to the linden lab boost build
+COROUTINE_TAR=boost-coroutine-2009-12-01.tar.gz
+tar xzf "$COROUTINE_TAR"
+cd boost-coroutine
+patch -p1 < "boost-coroutine-2009-12-01.patch"
+patch -p1 < "boost-coroutine-linden.patch"
+cp -rv boost/coroutine "$BOOST_SOURCE_DIR/boost/coroutine"
+
 top="$(pwd)"
 cd "$BOOST_SOURCE_DIR"
-	stage="$(pwd)/stage"
-    case "$AUTOBUILD_PLATFORM" in
-        "windows")
-	    #install bjam, the boost build tool, to the extracted boost folder.
-	    BJAM_URL_WINDOWS="http://sourceforge.net/projects/boost/files/boost-jam/3.1.18/boost-jam-3.1.18-1-ntx86.zip/download"
-	    BJAM_ARCHIVE_WINDOWS="boost-jam-3.1.18-1-ntx86.zip"
-	    BJAM_MD5_WINDOWS="15ec7ae2c8354e4d070a67660f022c5b" # for bjam 3.1.18-1-ntx86
-	    
-	    fetch_archive "$BJAM_URL_WINDOWS" "$BJAM_ARCHIVE_WINDOWS" "$BJAM_MD5_WINDOWS"
-	    extract "$BJAM_ARCHIVE_WINDOWS'
+stage="$(pwd)/stage"
 
-	    
-	    (cd contrib/masmx86 ; cmd.exe /C "bld_ml32.bat")
-            build_sln "contrib/vstudio/vc10/zlibvc.sln" "Debug|Win32" "zlibstat"
-            build_sln "contrib/vstudio/vc10/zlibvc.sln" "Release|Win32" "zlibstat"
-            mkdir -p "$stage/lib/debug"
-            mkdir -p "$stage/lib/release"
-            cp "contrib/vstudio/vc10/x86/ZlibStatDebug/zlibstat.lib" \
-                "$stage/lib/debug/zlibd.lib"
-            cp "contrib/vstudio/vc10/x86/ZlibStatRelease/zlibstat.lib" \
-                "$stage/lib/release/zlib.lib"
-            mkdir -p "stage/include/zlib"
-            cp {zlib.h,zconf.h} "$stage/include/zlib"
+case "$AUTOBUILD_PLATFORM" in
+    "windows")
+	cmd.exe /C bootstrap.bat
+	./bjam --toolset=msvc-10.0 --with-program_options --with-regex --with-python --with-signals stage 
         ;;
-        "darwin")
-            ./configure --prefix="$stage"
-            make
-            make install
-			mkdir -p "$stage/include/zlib"
-			mv "$stage/include/"*.h "$stage/include/zlib/"
+    "darwin")
+        ./configure --prefix="$stage"
+        make
+        make install
+	mkdir -p "$stage/include/zlib"
+	mv "$stage/include/"*.h "$stage/include/zlib/"
         ;;
-        "linux")
-            CFLAGS="-m32" CXXFLAGS="-m32" ./configure --prefix="$stage"
-            make
-            make install
-			mkdir -p "$stage/include/zlib"
-			mv "$stage/include/"*.h "$stage/include/zlib/"
+    "linux")
+        CFLAGS="-m32" CXXFLAGS="-m32" ./configure --prefix="$stage"
+        make
+        make install
+	mkdir -p "$stage/include/zlib"
+	mv "$stage/include/"*.h "$stage/include/zlib/"
         ;;
-    esac
-    mkdir -p stage/LICENSES
-    tail -n 31 README > stage/LICENSES/zlib.txt
+esac
+    
+mkdir -p "$stage/include"
+cp -R boost "$stage/include"
+mkdir -p "$stage/LICENSES"
+cp LICENSE_1_0.txt "$stage/LICENSES/"boost.txt
+
 cd "$top"
 
 pass
