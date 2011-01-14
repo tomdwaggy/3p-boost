@@ -26,16 +26,20 @@ set +x
 eval "$("$AUTOBUILD" source_environment)"
 set -x
 
-fetch_archive "$BOOST_URL" "$BOOST_ARCHIVE" "$BOOST_MD5"
-extract "$BOOST_ARCHIVE"
+#if [ -f "$BOOST_SOURCE_DIR" ] ; then
+    fetch_archive "$BOOST_URL" "$BOOST_ARCHIVE" "$BOOST_MD5"
+    extract "$BOOST_ARCHIVE"
+#fi
 
 # Add boost coroutine to the linden lab boost build
 COROUTINE_TAR=boost-coroutine-2009-12-01.tar.gz
 tar xzf "$COROUTINE_TAR"
-cd boost-coroutine
-patch -p1 < "boost-coroutine-2009-12-01.patch"
-patch -p1 < "boost-coroutine-linden.patch"
-cp -rv boost/coroutine "$BOOST_SOURCE_DIR/boost/coroutine"
+cd boost-coroutine 
+# disabled patching - the patches are applied in the archive.
+# patch -p1 < "../boost-coroutine-2009-12-01.patch"
+# patch -p1 < "../boost-coroutine-linden.patch"
+cp -rv boost/coroutine "../$BOOST_SOURCE_DIR/boost"
+cd ..
 
 top="$(pwd)"
 cd "$BOOST_SOURCE_DIR"
@@ -43,8 +47,25 @@ stage="$(pwd)/stage"
 
 case "$AUTOBUILD_PLATFORM" in
     "windows")
+	stage_lib="$stage/lib"
+	stage_release="$stage_lib/release"
+	stage_debug="$stage/lib/debug"
+	mkdir -p "$stage_release"
+	mkdir -p "$stage_debug"
+
 	cmd.exe /C bootstrap.bat
-	./bjam --toolset=msvc-10.0 --with-program_options --with-regex --with-python --with-signals stage 
+	./bjam --toolset=msvc-10.0 --with-program_options --with-regex --with-date_time --with-filesystem stage 
+	mv "$stage_lib/libboost_program_options-vc100-mt.lib" "$stage_release"
+	mv "$stage_lib/libboost_regex-vc100-mt.lib" "$stage_release"
+	mv "$stage_lib/libboost_date_time-vc100-mt.lib" "$stage_release"
+	mv "$stage_lib/libboost_filesystem-vc100-mt.lib" "$stage_release"
+	mv "$stage_lib/libboost_system-vc100-mt.lib" "$stage_release"
+
+	mv "$stage_lib/libboost_program_options-vc100-mt-gd.lib" "$stage_debug"
+	mv "$stage_lib/libboost_regex-vc100-mt-gd.lib" "$stage_debug"
+	mv "$stage_lib/libboost_date_time-vc100-mt-gd.lib" "$stage_debug"
+	mv "$stage_lib/libboost_filesystem-vc100-mt-gd.lib" "$stage_debug"
+	mv "$stage_lib/libboost_filesystem-vc100-mt-gd.lib" "$stage_debug"
         ;;
     "darwin")
         ./configure --prefix="$stage"

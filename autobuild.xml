@@ -37,6 +37,7 @@
           <key>manifest</key>
           <array>
             <string>LICENSES/boost.txt</string>
+            <string>include/boost/*</string>
           </array>
           <key>name</key>
           <string>common</string>
@@ -102,8 +103,8 @@
           </map>
           <key>manifest</key>
           <array>
-            <string>lib/debug/zlibd.lib</string>
-            <string>lib/release/zlib.lib</string>
+            <string>lib/release/*.lib</string>
+            <string>lib/debug/*.lib</string>
           </array>
           <key>name</key>
           <string>windows</string>
