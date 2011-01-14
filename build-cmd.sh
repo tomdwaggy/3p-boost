@@ -65,7 +65,7 @@ case "$AUTOBUILD_PLATFORM" in
 	mv "$stage_lib/libboost_regex-vc100-mt-gd.lib" "$stage_debug"
 	mv "$stage_lib/libboost_date_time-vc100-mt-gd.lib" "$stage_debug"
 	mv "$stage_lib/libboost_filesystem-vc100-mt-gd.lib" "$stage_debug"
-	mv "$stage_lib/libboost_filesystem-vc100-mt-gd.lib" "$stage_debug"
+	mv "$stage_lib/libboost_system-vc100-mt-gd.lib" "$stage_debug"
         ;;
     "darwin")
         ./configure --prefix="$stage"
