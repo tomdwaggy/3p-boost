@@ -44,6 +44,7 @@ cd ..
 top="$(pwd)"
 cd "$BOOST_SOURCE_DIR"
 stage="$(pwd)/stage"
+BOOST_BJAM_OPTIONS="--with-program_options --with-regex --with-date_time --with-filesystem"
 
 case "$AUTOBUILD_PLATFORM" in
     "windows")
@@ -54,7 +55,7 @@ case "$AUTOBUILD_PLATFORM" in
 	mkdir -p "$stage_debug"
 
 	cmd.exe /C bootstrap.bat
-	./bjam --toolset=msvc-10.0 --with-program_options --with-regex --with-date_time --with-filesystem stage 
+	./bjam --toolset=msvc-10.0 $BOOST_BJAM_OPTIONS stage
 	mv "$stage_lib/libboost_program_options-vc100-mt.lib" "$stage_release"
 	mv "$stage_lib/libboost_regex-vc100-mt.lib" "$stage_release"
 	mv "$stage_lib/libboost_date_time-vc100-mt.lib" "$stage_release"
@@ -68,11 +69,26 @@ case "$AUTOBUILD_PLATFORM" in
 	mv "$stage_lib/libboost_system-vc100-mt-gd.lib" "$stage_debug"
         ;;
     "darwin")
-        ./configure --prefix="$stage"
-        make
-        make install
-	mkdir -p "$stage/include/zlib"
-	mv "$stage/include/"*.h "$stage/include/zlib/"
+	stage_lib="$stage/lib"
+	./bootstrap.sh --prefix=$(pwd)
+
+	./bjam toolset=darwin variant=release $BOOST_BJAM_OPTIONS stage
+	stage_release="$stage_lib/release"
+	mkdir -p "$stage_release"
+	mv "$stage_lib/libboost_program_options.a" "$stage_release"
+	mv "$stage_lib/libboost_regex.a" "$stage_release"
+	mv "$stage_lib/libboost_date_time.a" "$stage_release"
+	mv "$stage_lib/libboost_filesystem.a" "$stage_release"
+	mv "$stage_lib/libboost_system.a" "$stage_release"
+
+	./bjam toolset=darwin variant=debug $BOOST_BJAM_OPTIONS stage
+	stage_debug="$stage/lib/debug"
+	mkdir -p "$stage_debug"
+	mv "$stage_lib/libboost_program_options.a" "$stage_debug"
+	mv "$stage_lib/libboost_regex.a" "$stage_debug"
+	mv "$stage_lib/libboost_date_time.a" "$stage_debug"
+	mv "$stage_lib/libboost_filesystem.a" "$stage_debug"
+	mv "$stage_lib/libboost_system.a" "$stage_debug"
         ;;
     "linux")
         CFLAGS="-m32" CXXFLAGS="-m32" ./configure --prefix="$stage"

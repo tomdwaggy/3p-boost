@@ -59,7 +59,8 @@
           </map>
           <key>manifest</key>
           <array>
-            <string>lib/libz.a</string>
+            <string>lib/release/*.a</string>
+            <string>lib/debug/*.a</string>
           </array>
           <key>name</key>
           <string>darwin</string>
