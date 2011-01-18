@@ -91,11 +91,26 @@ case "$AUTOBUILD_PLATFORM" in
 	mv "$stage_lib/libboost_system.a" "$stage_debug"
         ;;
     "linux")
-        CFLAGS="-m32" CXXFLAGS="-m32" ./configure --prefix="$stage"
-        make
-        make install
-	mkdir -p "$stage/include/zlib"
-	mv "$stage/include/"*.h "$stage/include/zlib/"
+	stage_lib="$stage/lib"
+	./bootstrap.sh --prefix=$(pwd)
+	./bjam toolset=gcc-4.1 variant=release $BOOST_BJAM_OPTIONS stage
+	stage_release="$stage_lib/release"
+
+	mkdir -p "$stage_release"
+	mv "$stage_lib/libboost_program_options.a" "$stage_release"
+	mv "$stage_lib/libboost_regex.a" "$stage_release"
+	mv "$stage_lib/libboost_date_time.a" "$stage_release"
+	mv "$stage_lib/libboost_filesystem.a" "$stage_release"
+	mv "$stage_lib/libboost_system.a" "$stage_release"
+
+	./bjam toolset=gcc-4.1 variant=debug $BOOST_BJAM_OPTIONS stage
+	stage_debug="$stage/lib/debug"
+	mkdir -p "$stage_debug"
+	mv "$stage_lib/libboost_program_options.a" "$stage_debug"
+	mv "$stage_lib/libboost_regex.a" "$stage_debug"
+	mv "$stage_lib/libboost_date_time.a" "$stage_debug"
+	mv "$stage_lib/libboost_filesystem.a" "$stage_debug"
+	mv "$stage_lib/libboost_system.a" "$stage_debug"
         ;;
 esac
     
