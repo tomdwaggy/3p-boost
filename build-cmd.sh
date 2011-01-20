@@ -32,12 +32,13 @@ set -x
 #fi
 
 # Add boost coroutine to the linden lab boost build
-COROUTINE_TAR=boost-coroutine-2009-12-01.tar.gz
+COROUTINE_TAR=boost-coroutine-2009-04-30.tar.gz
 tar xzf "$COROUTINE_TAR"
 cd boost-coroutine 
-# disabled patching - the patches are applied in the archive.
-# patch -p1 < "../boost-coroutine-2009-12-01.patch"
-# patch -p1 < "../boost-coroutine-linden.patch"
+patch -p1 < "../boost-coroutine-linden.patch"
+patch -p0 < "../boost-coroutine-linden-2.patch"
+patch -p1 < "../boost-coroutine-2009-12-01.patch"
+
 cp -rv boost/coroutine "../$BOOST_SOURCE_DIR/boost"
 cd ..
 
