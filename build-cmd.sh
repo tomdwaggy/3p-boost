@@ -57,17 +57,17 @@ case "$AUTOBUILD_PLATFORM" in
 
 	cmd.exe /C bootstrap.bat
 	./bjam --toolset=msvc-10.0 $BOOST_BJAM_OPTIONS stage
-	mv "$stage_lib/libboost_program_options-vc100-mt.lib" "$stage_release"
-	mv "$stage_lib/libboost_regex-vc100-mt.lib" "$stage_release"
-	mv "$stage_lib/libboost_date_time-vc100-mt.lib" "$stage_release"
-	mv "$stage_lib/libboost_filesystem-vc100-mt.lib" "$stage_release"
-	mv "$stage_lib/libboost_system-vc100-mt.lib" "$stage_release"
+	mv "$stage_lib/libboost_program_options-vc100-mt-1_45.lib" "$stage_release"
+	mv "$stage_lib/libboost_regex-vc100-mt-1_45.lib" "$stage_release"
+	mv "$stage_lib/libboost_date_time-vc100-mt-1_45.lib" "$stage_release"
+	mv "$stage_lib/libboost_filesystem-vc100-mt-1_45.lib" "$stage_release"
+	mv "$stage_lib/libboost_system-vc100-mt-1_45.lib" "$stage_release"
 
-	mv "$stage_lib/libboost_program_options-vc100-mt-gd.lib" "$stage_debug"
-	mv "$stage_lib/libboost_regex-vc100-mt-gd.lib" "$stage_debug"
-	mv "$stage_lib/libboost_date_time-vc100-mt-gd.lib" "$stage_debug"
-	mv "$stage_lib/libboost_filesystem-vc100-mt-gd.lib" "$stage_debug"
-	mv "$stage_lib/libboost_system-vc100-mt-gd.lib" "$stage_debug"
+	mv "$stage_lib/libboost_program_options-vc100-mt-gd-1_45.lib" "$stage_debug"
+	mv "$stage_lib/libboost_regex-vc100-mt-gd-1_45.lib" "$stage_debug"
+	mv "$stage_lib/libboost_date_time-vc100-mt-gd-1_45.lib" "$stage_debug"
+	mv "$stage_lib/libboost_filesystem-vc100-mt-gd-1_45.lib" "$stage_debug"
+	mv "$stage_lib/libboost_system-vc100-mt-gd-1_45.lib" "$stage_debug"
         ;;
     "darwin")
 	stage_lib="$stage/lib"
