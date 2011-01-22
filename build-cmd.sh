@@ -31,6 +31,9 @@ set -x
     extract "$BOOST_ARCHIVE"
 #fi
 
+# Add function template c++0x patch to boost. (for vs2010)
+(cd "$BOOST_SOURCE_DIR/boost/function"; patch < "../../../function_template_for_c++0x.patch")
+
 # Add boost coroutine to the linden lab boost build
 COROUTINE_TAR=boost-coroutine-2009-04-30.tar.gz
 tar xzf "$COROUTINE_TAR"
