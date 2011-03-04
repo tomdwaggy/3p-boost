@@ -1,6 +1,0 @@
-# Use Public Upload Locations
-public_build = true
-
-CYGWIN.AUTOBUILD_VSVER=100
-CYGWIN.USE_INCREDIBUILD=0
-
