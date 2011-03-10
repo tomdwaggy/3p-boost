@@ -75,7 +75,7 @@ case "$AUTOBUILD_PLATFORM" in
     "linux")
 	stage_lib="$stage/lib"
 	./bootstrap.sh --prefix=$(pwd)
-	./bjam toolset=gcc-4.1 variant=release $BOOST_BJAM_OPTIONS stage
+	./bjam toolset=gcc-4.1 address-model=32 architecture=x86 variant=release $BOOST_BJAM_OPTIONS stage
 	stage_release="$stage_lib/release"
 
 	mkdir -p "$stage_release"
@@ -85,7 +85,7 @@ case "$AUTOBUILD_PLATFORM" in
 	mv "$stage_lib/libboost_filesystem.a" "$stage_release"
 	mv "$stage_lib/libboost_system.a" "$stage_release"
 
-	./bjam toolset=gcc-4.1 variant=debug $BOOST_BJAM_OPTIONS stage
+	./bjam toolset=gcc-4.1 address-model=32 architecture=x86 variant=debug $BOOST_BJAM_OPTIONS stage
 	stage_debug="$stage/lib/debug"
 	mkdir -p "$stage_debug"
 	mv "$stage_lib/libboost_program_options.a" "$stage_debug"
