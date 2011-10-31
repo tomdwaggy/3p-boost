@@ -26,7 +26,7 @@ set -x
 top="$(pwd)"
 cd "$BOOST_SOURCE_DIR"
 stage="$(pwd)/stage"
-BOOST_BJAM_OPTIONS="--with-program_options --with-regex --with-date_time --with-filesystem"
+BOOST_BJAM_OPTIONS="include=$stage/packages/include --layout=tagged --with-date_time --with-filesystem --with-iostreams --with-program_options --with-regex --with-signals --with-system --with-thread -sZLIB_LIBPATH=$stage/packages/lib -sNO_BZIP2=1"
 
 case "$AUTOBUILD_PLATFORM" in
     "windows")
