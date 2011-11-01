@@ -26,8 +26,9 @@ set -x
 top="$(pwd)"
 cd "$BOOST_SOURCE_DIR"
 stage="$(pwd)/stage"
-BOOST_BJAM_OPTIONS="include=$stage/packages/include --layout=tagged --with-date_time --with-filesystem --with-iostreams --with-program_options --with-regex --with-signals --with-system --with-thread -sZLIB_LIBPATH=$stage/packages/lib -sNO_BZIP2=1"
-
+BOOST_BJAM_OPTIONS="include=$stage/packages/include --layout=tagged --with-date_time --with-filesystem --with-iostreams --with-program_options --with-regex --with-signals --with-system --with-thread -sZLIB_LIBPATH=$stage/packages/lib/release -sNO_BZIP2=1"
+#BJAM_RELEASE_OPTIONS="-sICU_LINK='-L $stage/packages/lib/release'"
+#BJAM_DEBUG_OPTIONS="-sICU_LINK='-L $stage/packages/lib/debug'"
 case "$AUTOBUILD_PLATFORM" in
     "windows")
 	stage_lib="$stage/lib"
@@ -36,7 +37,7 @@ case "$AUTOBUILD_PLATFORM" in
 	mkdir -p "$stage_release"
 	mkdir -p "$stage_debug"
 
-	cmd.exe /C bootstrap.bat
+	cmd.exe /C bootstrap.bat --with-icu
 	./bjam --toolset=msvc-10.0 $BOOST_BJAM_OPTIONS stage
 	mv "$stage_lib/libboost_program_options-vc100-mt-1_45.lib" "$stage_release"
 	mv "$stage_lib/libboost_regex-vc100-mt-1_45.lib" "$stage_release"
@@ -74,7 +75,7 @@ case "$AUTOBUILD_PLATFORM" in
         ;;
     "linux")
 	stage_lib="$stage/lib"
-	./bootstrap.sh --prefix=$(pwd)
+	./bootstrap.sh --prefix=$(pwd) --with-icu=$stage/packages/
 	./bjam toolset=gcc-4.1 address-model=32 architecture=x86 variant=release $BOOST_BJAM_OPTIONS stage
 	stage_release="$stage_lib/release"
 
