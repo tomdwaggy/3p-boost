@@ -14,12 +14,24 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>1a2916cf4ebeb1fccd6b08d3c99584fc</string>
+              <string>6baf58b3dba88b09db4d153199a15cc6</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/244304/arch/Linux/installer/icu4c-48.1-linux-20111101.tar.bz2</string>
+              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/244468/arch/Linux/installer/icu4c-48.1-linux-20111103.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux</string>
+          </map>
+          <key>windows</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>2bd074d892c0a84609d759440bf80b72</string>
+              <key>url</key>
+              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/244468/arch/CYGWIN/installer/icu4c-48.1-windows-20111103.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>windows</string>
           </map>
         </map>
       </map>
@@ -40,6 +52,18 @@
             </map>
             <key>name</key>
             <string>linux</string>
+          </map>
+          <key>windows</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>50489e22e03cf03c7259fba3902fc729</string>
+              <key>url</key>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib/rev/239893/arch/CYGWIN/installer/zlib-1.2.5-windows-20110901.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>windows</string>
           </map>
         </map>
       </map>
