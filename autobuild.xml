@@ -14,9 +14,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>6baf58b3dba88b09db4d153199a15cc6</string>
+              <string>f91510ebe8e8f2531d7d84bfe40f0cb6</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/244468/arch/Linux/installer/icu4c-48.1-linux-20111103.tar.bz2</string>
+              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c_lenny/rev/245913/arch/Linux/installer/icu4c-48.1-linux-20111130.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux</string>
