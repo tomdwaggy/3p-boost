@@ -83,7 +83,7 @@
         <key>common</key>
         <map>
           <key>build_directory</key>
-          <string>boost_1_45_0/stage</string>
+          <string>boost/stage</string>
           <key>configurations</key>
           <map>
             <key>Release</key>
