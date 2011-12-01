@@ -7,8 +7,7 @@ set -x
 # make errors fatal
 set -e
 
-BOOST_VERSION="1_45_0"
-BOOST_SOURCE_DIR="boost_$BOOST_VERSION"
+BOOST_SOURCE_DIR="boost"
 
 if [ -z "$AUTOBUILD" ] ; then 
     fail
