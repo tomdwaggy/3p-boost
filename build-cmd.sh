@@ -24,7 +24,7 @@ stage="$(pwd)/stage"
                                                      
 if [ "$OSTYPE" = "cygwin" ] ; then
     export AUTOBUILD="$(cygpath -u $AUTOBUILD)"
-    #Bjam doesn't know about cygwin paths, so convert them!
+    # Bjam doesn't know about cygwin paths, so convert them!
 fi
 
 # load autbuild provided shell functions and variables
@@ -43,15 +43,20 @@ case "$AUTOBUILD_PLATFORM" in
 
     cmd.exe /C bootstrap.bat
 	INCLUDE_PATH=$(cygpath -m $stage/packages/include)
-	ZLIB_PATH=$(cygpath -m $stage/packages/lib/release)
+	ZLIB_RELEASE_PATH=$(cygpath -m $stage/packages/lib/release)
+	ZLIB_DEBUG_PATH=$(cygpath -m $stage/packages/lib/debug)
 	ICU_PATH=$(cygpath -m $stage/packages)
 	
-	BOOST_BJAM_OPTIONS="--toolset=msvc-10.0 include=$INCLUDE_PATH \
-        -sZLIB_LIBPATH=$ZLIB_PATH -sICU_PATH=$ICU_PATH \
+	RELEASE_BJAM_OPTIONS="--toolset=msvc-10.0 include=$INCLUDE_PATH \
+        -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH -sICU_PATH=$ICU_PATH \
         $BOOST_BJAM_OPTIONS"
         
-	./bjam variant=release $BOOST_BJAM_OPTIONS stage -j2
-	./bjam variant=debug $BOOST_BJAM_OPTIONS stage -j2
+	./bjam variant=release $RELEASE_BJAM_OPTIONS stage -j2
+
+	DEBUG_BJAM_OPTIONS="--toolset=msvc-10.0 include=$INCLUDE_PATH \
+        -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sICU_PATH=$ICU_PATH \
+        $BOOST_BJAM_OPTIONS"
+	./bjam variant=debug $DEBUG_BJAM_OPTIONS stage -j2
 
 	# Move the debug libs first, then the leftover release libs
 	mv ${stage_lib}/*-gd.lib "$stage_debug"
@@ -60,33 +65,40 @@ case "$AUTOBUILD_PLATFORM" in
         ;;
     "darwin")
 	stage_lib="$stage/lib"
-	./bootstrap.sh --prefix=$(pwd)
+	./bootstrap.sh --prefix=$(pwd) --with-icu=$stage/packages
 
-	./bjam toolset=darwin variant=release $BOOST_BJAM_OPTIONS stage
-	mv "$stage_lib/libboost_program_options.a" "$stage_release"
-	mv "$stage_lib/libboost_regex.a" "$stage_release"
-	mv "$stage_lib/libboost_date_time.a" "$stage_release"
-	mv "$stage_lib/libboost_filesystem.a" "$stage_release"
-	mv "$stage_lib/libboost_system.a" "$stage_release"
+    RELEASE_BJAM_OPTIONS="include=$stage/packages/include \
+        -sZLIB_LIBPATH=$stage/packages/lib/release $BOOST_BJAM_OPTIONS"
 
-	./bjam toolset=darwin variant=debug $BOOST_BJAM_OPTIONS stage
-	mv "$stage_lib/libboost_program_options.a" "$stage_debug"
-	mv "$stage_lib/libboost_regex.a" "$stage_debug"
-	mv "$stage_lib/libboost_date_time.a" "$stage_debug"
-	mv "$stage_lib/libboost_filesystem.a" "$stage_debug"
-	mv "$stage_lib/libboost_system.a" "$stage_debug"
+	./bjam toolset=darwin variant=release $RELEASE_BJAM_OPTIONS stage
+
+	mv $stage_lib/*.a "$stage_release"
+	mv $stage_lib/*dylib* "$stage_release"
+
+
+    DEBUG_BJAM_OPTIONS="include=$stage/packages/include \
+        -sZLIB_LIBPATH=$stage/packages/lib/debug $BOOST_BJAM_OPTIONS"
+
+	./bjam toolset=darwin variant=debug $DEBUG_BJAM_OPTIONS stage
+
+	mv $stage_lib/*.a "$stage_debug"
+	mv $stage_lib/*dylib* "$stage_debug"
+
         ;;
     "linux")
-	BOOST_BJAM_OPTIONS="toolset=gcc-4.1 include=$stage/packages/include \
-        -sZLIB_LIBPATH=$stage/packages/lib/release $BOOST_BJAM_OPTIONS"
 	./bootstrap.sh --prefix=$(pwd) --with-icu=$stage/packages/
-	./bjam  variant=release $BOOST_BJAM_OPTIONS stage
+
+    RELEASE_BOOST_BJAM_OPTIONS="toolset=gcc-4.1 include=$stage/packages/include \
+        -sZLIB_LIBPATH=$stage/packages/lib/release $BOOST_BJAM_OPTIONS"
+	./bjam  variant=release $RELEASE_BOOST_BJAM_OPTIONS stage
 	stage_release="$stage_lib/release"
 
 	mv $stage_lib/*.a "$stage_release"
 	mv $stage_lib/*so* "$stage_release"
 
-	./bjam variant=debug $BOOST_BJAM_OPTIONS stage
+	DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc-4.1 include=$stage/packages/include \
+        -sZLIB_LIBPATH=$stage/packages/lib/debug $BOOST_BJAM_OPTIONS"
+	./bjam variant=debug $DEBUG_BOOST_BJAM_OPTIONS stage
 	mv $stage_lib/*.a "$stage_debug"
 	mv $stage_lib/*so* "$stage_debug"
         ;;
