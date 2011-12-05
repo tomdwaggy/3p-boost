@@ -27,7 +27,7 @@ if [ "$OSTYPE" = "cygwin" ] ; then
     # Bjam doesn't know about cygwin paths, so convert them!
 fi
 
-# load autbuild provided shell functions and variables
+# load autobuild provided shell functions and variables
 set +x
 eval "$("$AUTOBUILD" source_environment)"
 set -x
@@ -37,6 +37,17 @@ stage_release="$stage_lib/release"
 stage_debug="$stage_lib/debug"
 mkdir -p "$stage_release"
 mkdir -p "$stage_debug"
+
+# bjam doesn't support a -sICU_LIBPATH to point to the location
+# of the icu libraries like it does for zlib. Instead, it expects
+# the library files to be immediately in the ./lib directory
+# and the headres to be in the ./include directory and doesn't
+# provide a way to work around this. Because of this, we break
+# the standard packaging layout, with the debug library files
+# in ./lib/debug and the release in ./lib/release and instead
+# only package the release build of icu4c in the ./lib directory.
+# If a way to work around this is found, uncomment the
+# corresponding blocks in the icu4c build and fix it here.
 
 case "$AUTOBUILD_PLATFORM" in
     "windows")
