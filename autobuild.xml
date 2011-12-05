@@ -9,14 +9,26 @@
         <string>icu4c</string>
         <key>platforms</key>
         <map>
+          <key>darwin</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>bf49640cf72be96dba5296acb7761a92</string>
+              <key>url</key>
+              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/246086/arch/Darwin/installer/icu4c-48.1-darwin-20111202.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>darwin</string>
+          </map>
           <key>linux</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>f91510ebe8e8f2531d7d84bfe40f0cb6</string>
+              <string>80c56fa407836b3118fcb5c1f10a54fc</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c_lenny/rev/245913/arch/Linux/installer/icu4c-48.1-linux-20111130.tar.bz2</string>
+              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/246086/arch/Linux/installer/icu4c-48.1-linux-20111202.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux</string>
@@ -26,9 +38,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>2bd074d892c0a84609d759440bf80b72</string>
+              <string>b2220310fef50b4c12fcb92d432af712</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/244468/arch/CYGWIN/installer/icu4c-48.1-windows-20111103.tar.bz2</string>
+              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/246086/arch/CYGWIN/installer/icu4c-48.1-windows-20111202.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -41,14 +53,26 @@
         <string>zlib</string>
         <key>platforms</key>
         <map>
+          <key>darwin</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>ceca14de13cf48236ad8b343638eafe9</string>
+              <key>url</key>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/huseby_3p-zlib-new-server-layout/rev/246111/arch/Darwin/installer/zlib-1.2.5-darwin-20111202.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>darwin</string>
+          </map>
           <key>linux</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>9fc5902e84ad7dd85fbe5530ffc8aec0</string>
+              <string>51918e7651693a553d17cf57767ef512</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib/rev/239893/arch/Linux/installer/zlib-1.2.5-linux-20110901.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/huseby_3p-zlib-new-server-layout/rev/246111/arch/Linux/installer/zlib-1.2.5-linux-20111202.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux</string>
@@ -58,9 +82,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>50489e22e03cf03c7259fba3902fc729</string>
+              <string>3bfd020803cd09867b8d5d99f8964562</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib/rev/239893/arch/CYGWIN/installer/zlib-1.2.5-windows-20110901.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/huseby_3p-zlib-new-server-layout/rev/246111/arch/CYGWIN/installer/zlib-1.2.5-windows-20111202.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
