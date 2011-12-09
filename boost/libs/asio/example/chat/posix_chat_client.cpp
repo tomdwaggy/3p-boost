@@ -2,7 +2,7 @@
 // posix_chat_client.cpp
 // ~~~~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -31,17 +31,14 @@ public:
       output_(io_service, ::dup(STDOUT_FILENO)),
       input_buffer_(chat_message::max_body_length)
   {
-    // Try connecting to the first endpoint.
-    tcp::endpoint endpoint = *endpoint_iterator;
-    socket_.async_connect(endpoint,
+    boost::asio::async_connect(socket_, endpoint_iterator,
         boost::bind(&posix_chat_client::handle_connect, this,
-          boost::asio::placeholders::error, ++endpoint_iterator));
+          boost::asio::placeholders::error));
   }
 
 private:
 
-  void handle_connect(const boost::system::error_code& error,
-      tcp::resolver::iterator endpoint_iterator)
+  void handle_connect(const boost::system::error_code& error)
   {
     if (!error)
     {
@@ -56,15 +53,6 @@ private:
           boost::bind(&posix_chat_client::handle_read_input, this,
             boost::asio::placeholders::error,
             boost::asio::placeholders::bytes_transferred));
-    }
-    else if (endpoint_iterator != tcp::resolver::iterator())
-    {
-      // That endpoint didn't work, try the next one.
-      socket_.close();
-      tcp::endpoint endpoint = *endpoint_iterator;
-      socket_.async_connect(endpoint,
-          boost::bind(&posix_chat_client::handle_connect, this,
-            boost::asio::placeholders::error, ++endpoint_iterator));
     }
   }
 

@@ -1,6 +1,6 @@
 /*=============================================================================
-    Copyright (c) 2001-2010 Hartmut Kaiser
-    Copyright (c) 2001-2010 Joel de Guzman
+    Copyright (c) 2001-2011 Hartmut Kaiser
+    Copyright (c) 2001-2011 Joel de Guzman
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -53,6 +53,12 @@ main()
 
         double d1 = 2.0;
         BOOST_TEST(test_attr("", attr(ref(d1)), d) && d == 2.0);
+    }
+
+    {
+        std::string s;
+        BOOST_TEST(test_attr("s", "s" >> qi::attr(std::string("123")), s) && 
+            s == "123");
     }
 
     return boost::report_errors();

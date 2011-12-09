@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Convertible to mutable buffer requirements</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="ConvertibleToConstBuffer.html" title="Convertible to const buffer requirements">
@@ -42,7 +42,7 @@
         and <code class="computeroutput"><span class="identifier">w</span></code> denote identifiers.
       </p>
 <div class="table">
-<a name="id827361"></a><p class="title"><b>Table&#160;7.&#160;ConvertibleToMutableBuffer requirements</b></p>
+<a name="boost_asio.reference.ConvertibleToMutableBuffer.t0"></a><p class="title"><b>Table&#160;7.&#160;ConvertibleToMutableBuffer requirements</b></p>
 <div class="table-contents"><table class="table" summary="ConvertibleToMutableBuffer requirements">
 <colgroup>
 <col>
@@ -64,7 +64,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">mutable_buffer</span> <span class="identifier">u</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span>
 <span class="identifier">mutable_buffer</span> <span class="identifier">v</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span>
@@ -74,7 +73,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">v</span><span class="special">)</span>
   <span class="special">&amp;&amp;</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">v</span><span class="special">)</span>
@@ -86,7 +84,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">mutable_buffer</span> <span class="identifier">u</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span>
 <span class="identifier">mutable_buffer</span> <span class="identifier">v</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">;</span>
@@ -96,7 +93,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">v</span><span class="special">)</span>
   <span class="special">&amp;&amp;</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">v</span><span class="special">)</span>
@@ -108,7 +104,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">mutable_buffer</span> <span class="identifier">u</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span>
 <span class="identifier">mutable_buffer</span> <span class="identifier">v</span><span class="special">;</span> <span class="identifier">v</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">;</span>
@@ -118,7 +113,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">v</span><span class="special">)</span>
   <span class="special">&amp;&amp;</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">v</span><span class="special">)</span>
@@ -130,7 +124,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">mutable_buffer</span> <span class="identifier">u</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span>
 <span class="keyword">const</span> <span class="identifier">X</span><span class="special">&amp;</span> <span class="identifier">v</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">;</span>
@@ -141,7 +134,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">w</span><span class="special">)</span>
   <span class="special">&amp;&amp;</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">w</span><span class="special">)</span>
@@ -153,7 +145,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">mutable_buffer</span> <span class="identifier">u</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span>
 <span class="identifier">X</span> <span class="identifier">v</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span>
@@ -164,7 +155,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">w</span><span class="special">)</span>
   <span class="special">&amp;&amp;</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">w</span><span class="special">)</span>
@@ -176,7 +166,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">mutable_buffer</span> <span class="identifier">u</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span>
 <span class="identifier">X</span> <span class="identifier">v</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">;</span>
@@ -187,7 +176,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">w</span><span class="special">)</span>
   <span class="special">&amp;&amp;</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">w</span><span class="special">)</span>
@@ -199,7 +187,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">mutable_buffer</span> <span class="identifier">u</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span>
 <span class="identifier">X</span> <span class="identifier">v</span><span class="special">(</span><span class="identifier">b</span><span class="special">);</span> <span class="identifier">v</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">;</span>
@@ -210,7 +197,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">w</span><span class="special">)</span>
   <span class="special">&amp;&amp;</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">u</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">w</span><span class="special">)</span>
@@ -226,7 +212,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

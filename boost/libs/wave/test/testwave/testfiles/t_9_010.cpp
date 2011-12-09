@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2010 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2011 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -54,7 +54,7 @@ CAT(A, X()C)  //R AB C
 //H 00: t_9_010.cpp(28): X(), [t_9_010.cpp(24): X()=B]
 //H 02: B
 //H 03: B
-//H 02: PRIMITIVE_CAT(A, B C)
+//H 02: PRIMITIVE_CAT(A,  B C)
 //H 00: t_9_010.cpp(21): PRIMITIVE_CAT(A, B C), [t_9_010.cpp(22): PRIMITIVE_CAT(a, b)=a ## b]
 //H 02: AB C
 //H 03: AB C
@@ -63,7 +63,7 @@ CAT(A, X()C)  //R AB C
 //H 00: t_9_010.cpp(29): X(), [t_9_010.cpp(24): X()=B]
 //H 02: B
 //H 03: B
-//H 02: PRIMITIVE_CAT(A, BC)
+//H 02: PRIMITIVE_CAT(A,  BC)
 //H 00: t_9_010.cpp(21): PRIMITIVE_CAT(A, BC), [t_9_010.cpp(22): PRIMITIVE_CAT(a, b)=a ## b]
 //H 02: ABC
 //H 03: ABC

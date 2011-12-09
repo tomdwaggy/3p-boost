@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Parsers in Depth</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.4.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../indepth.html" title="In Depth">
 <link rel="prev" href="../indepth.html" title="In Depth">
 <link rel="next" href="../customize.html" title="Customization of Spirit's Attribute Handling">
@@ -40,7 +40,6 @@
           class for all parsers.
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Derived</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">parser</span>
@@ -49,25 +48,25 @@
     <span class="keyword">typedef</span> <span class="identifier">Derived</span> <span class="identifier">derived_type</span><span class="special">;</span>
     <span class="keyword">typedef</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span> <span class="identifier">domain</span><span class="special">;</span>
 
-    <span class="comment">// Requirement: p.parse(f, l, context, skip, attr) -&gt; bool
-</span>    <span class="comment">//
-</span>    <span class="comment">//  p:          a parser
-</span>    <span class="comment">//  f, l:       first/last iterator pair
-</span>    <span class="comment">//  context:    enclosing rule context (can be unused_type)
-</span>    <span class="comment">//  skip:       skipper (can be unused_type)
-</span>    <span class="comment">//  attr:       attribute (can be unused_type)
-</span>
-    <span class="comment">// Requirement: p.what(context) -&gt; info
-</span>    <span class="comment">//
-</span>    <span class="comment">//  p:          a parser
-</span>    <span class="comment">//  context:    enclosing rule context (can be unused_type)
-</span>
-    <span class="comment">// Requirement: P::template attribute&lt;Ctx, Iter&gt;::type
-</span>    <span class="comment">//
-</span>    <span class="comment">//  P:          a parser type
-</span>    <span class="comment">//  Ctx:        A context type (can be unused_type)
-</span>    <span class="comment">//  Iter:       An iterator type (can be unused_type)
-</span>
+    <span class="comment">// Requirement: p.parse(f, l, context, skip, attr) -&gt; bool</span>
+    <span class="comment">//</span>
+    <span class="comment">//  p:          a parser</span>
+    <span class="comment">//  f, l:       first/last iterator pair</span>
+    <span class="comment">//  context:    enclosing rule context (can be unused_type)</span>
+    <span class="comment">//  skip:       skipper (can be unused_type)</span>
+    <span class="comment">//  attr:       attribute (can be unused_type)</span>
+
+    <span class="comment">// Requirement: p.what(context) -&gt; info</span>
+    <span class="comment">//</span>
+    <span class="comment">//  p:          a parser</span>
+    <span class="comment">//  context:    enclosing rule context (can be unused_type)</span>
+
+    <span class="comment">// Requirement: P::template attribute&lt;Ctx, Iter&gt;::type</span>
+    <span class="comment">//</span>
+    <span class="comment">//  P:          a parser type</span>
+    <span class="comment">//  Ctx:        A context type (can be unused_type)</span>
+    <span class="comment">//  Iter:       An iterator type (can be unused_type)</span>
+
     <span class="identifier">Derived</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">derived</span><span class="special">()</span> <span class="keyword">const</span>
     <span class="special">{</span>
         <span class="keyword">return</span> <span class="special">*</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">Derived</span> <span class="keyword">const</span><span class="special">*&gt;(</span><span class="keyword">this</span><span class="special">);</span>
@@ -192,60 +191,21 @@
               </p></dd>
 </dl>
 </div>
-<a name="spirit.advanced.indepth.parsers_indepth.primitive_parsers"></a><h6>
-<a name="id1154680"></a>
-          <a class="link" href="parsers_indepth.html#spirit.advanced.indepth.parsers_indepth.primitive_parsers">Primitive
+<h6>
+<a name="spirit.advanced.indepth.parsers_indepth.h0"></a>
+          <span><a name="spirit.advanced.indepth.parsers_indepth.primitive_parsers"></a></span><a class="link" href="parsers_indepth.html#spirit.advanced.indepth.parsers_indepth.primitive_parsers">Primitive
           Parsers</a>
         </h6>
 <p>
           For our dissection study, we will use a <a href="http://boost-spirit.com" target="_top">Spirit</a>
-          primitive, the <code class="computeroutput"><span class="identifier">int_parser</span></code>
+          primitive, the <code class="computeroutput"><span class="identifier">any_int_parser</span></code>
           in the boost::spirit::qi namespace.
         </p>
 <p>
-          
-</p>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span>
-    <span class="keyword">typename</span> <span class="identifier">T</span>
-  <span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">Radix</span> <span class="special">=</span> <span class="number">10</span>
-  <span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">MinDigits</span> <span class="special">=</span> <span class="number">1</span>
-  <span class="special">,</span> <span class="keyword">int</span> <span class="identifier">MaxDigits</span> <span class="special">=</span> <span class="special">-</span><span class="number">1</span><span class="special">&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">int_parser_impl</span>
-  <span class="special">:</span> <span class="identifier">primitive_parser</span><span class="special">&lt;</span><span class="identifier">int_parser_impl</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">Radix</span><span class="special">,</span> <span class="identifier">MinDigits</span><span class="special">,</span> <span class="identifier">MaxDigits</span><span class="special">&gt;</span> <span class="special">&gt;</span>
-<span class="special">{</span>
-    <span class="comment">// check template parameter 'Radix' for validity
-</span>    <span class="identifier">BOOST_SPIRIT_ASSERT_MSG</span><span class="special">(</span>
-        <span class="identifier">Radix</span> <span class="special">==</span> <span class="number">2</span> <span class="special">||</span> <span class="identifier">Radix</span> <span class="special">==</span> <span class="number">8</span> <span class="special">||</span> <span class="identifier">Radix</span> <span class="special">==</span> <span class="number">10</span> <span class="special">||</span> <span class="identifier">Radix</span> <span class="special">==</span> <span class="number">16</span><span class="special">,</span>
-        <span class="identifier">not_supported_radix</span><span class="special">,</span> <span class="special">());</span>
-
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Context</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
-    <span class="keyword">struct</span> <span class="identifier">attribute</span>
-    <span class="special">{</span>
-        <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="identifier">type</span><span class="special">;</span>
-    <span class="special">};</span>
-
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Context</span>
-      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Skipper</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Attribute</span><span class="special">&gt;</span>
-    <span class="keyword">bool</span> <span class="identifier">parse</span><span class="special">(</span><span class="identifier">Iterator</span><span class="special">&amp;</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">last</span>
-      <span class="special">,</span> <span class="identifier">Context</span><span class="special">&amp;</span> <span class="comment">/*context*/</span><span class="special">,</span> <span class="identifier">Skipper</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">skipper</span>
-      <span class="special">,</span> <span class="identifier">Attribute</span><span class="special">&amp;</span> <span class="identifier">attr</span><span class="special">)</span> <span class="keyword">const</span>
-    <span class="special">{</span>
-        <span class="identifier">qi</span><span class="special">::</span><span class="identifier">skip_over</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">skipper</span><span class="special">);</span>
-        <span class="keyword">return</span> <span class="identifier">extract_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">Radix</span><span class="special">,</span> <span class="identifier">MinDigits</span><span class="special">,</span> <span class="identifier">MaxDigits</span><span class="special">&gt;</span>
-            <span class="special">::</span><span class="identifier">call</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">attr</span><span class="special">);</span>
-    <span class="special">}</span>
-
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Context</span><span class="special">&gt;</span>
-    <span class="identifier">info</span> <span class="identifier">what</span><span class="special">(</span><span class="identifier">Context</span><span class="special">&amp;</span> <span class="comment">/*context*/</span><span class="special">)</span> <span class="keyword">const</span>
-    <span class="special">{</span>
-        <span class="keyword">return</span> <span class="identifier">info</span><span class="special">(</span><span class="string">"integer"</span><span class="special">);</span>
-    <span class="special">}</span>
-<span class="special">};</span>
-</pre>
-<p>
+          [primitive_parsers_any_int_parser]
         </p>
 <p>
-          The <code class="computeroutput"><span class="identifier">int_parser</span></code> is derived
+          The <code class="computeroutput"><span class="identifier">any_int_parser</span></code> is derived
           from a <code class="computeroutput"><a class="link" href="../../qi/reference/parser_concepts/primitiveparser.html" title="PrimitiveParser"><code class="computeroutput"><span class="identifier">PrimitiveParser</span></code></a><span class="special">&lt;</span><span class="identifier">Derived</span><span class="special">&gt;</span></code>,
           which in turn derives from <code class="computeroutput"><span class="identifier">parser</span><span class="special">&lt;</span><span class="identifier">Derived</span><span class="special">&gt;</span></code>. Therefore, it supports the following
           requirements:
@@ -267,7 +227,6 @@
           our first thing to do is call:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">qi</span><span class="special">::</span><span class="identifier">skip</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">skipper</span><span class="special">);</span>
 </pre>
@@ -289,50 +248,42 @@
         </p>
 <p>
           The <span class="emphasis"><em>attribute</em></span> metafunction returns the T template
-          parameter. We associate the <code class="computeroutput"><span class="identifier">int_parser</span></code>
+          parameter. We associate the <code class="computeroutput"><span class="identifier">any_int_parser</span></code>
           to some placeholders for <code class="computeroutput"><span class="identifier">short_</span></code>,
           <code class="computeroutput"><span class="identifier">int_</span></code>, <code class="computeroutput"><span class="identifier">long_</span></code>
           and <code class="computeroutput"><span class="identifier">long_long</span></code> types. But,
           first, we enable these placeholders in namespace boost::spirit:
         </p>
 <p>
-          
 </p>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">use_terminal</span><span class="special">&lt;</span><span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span><span class="special">,</span> <span class="identifier">tag</span><span class="special">::</span><span class="identifier">short_</span><span class="special">&gt;</span> <span class="comment">// enables short_
-</span>  <span class="special">:</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="comment">// enables short_</span>
+<span class="keyword">struct</span> <span class="identifier">use_terminal</span><span class="special">&lt;</span><span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span><span class="special">,</span> <span class="identifier">tag</span><span class="special">::</span><span class="identifier">short_</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
 </pre>
 <p>
         </p>
 <p>
-          
 </p>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">use_terminal</span><span class="special">&lt;</span><span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span><span class="special">,</span> <span class="identifier">tag</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&gt;</span> <span class="comment">// enables int_
-</span>  <span class="special">:</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="comment">// enables int_</span>
+<span class="keyword">struct</span> <span class="identifier">use_terminal</span><span class="special">&lt;</span><span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span><span class="special">,</span> <span class="identifier">tag</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
 </pre>
 <p>
         </p>
 <p>
-          
 </p>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">use_terminal</span><span class="special">&lt;</span><span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span><span class="special">,</span> <span class="identifier">tag</span><span class="special">::</span><span class="identifier">long_</span><span class="special">&gt;</span> <span class="comment">// enables long_
-</span>  <span class="special">:</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="comment">// enables long_</span>
+<span class="keyword">struct</span> <span class="identifier">use_terminal</span><span class="special">&lt;</span><span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span><span class="special">,</span> <span class="identifier">tag</span><span class="special">::</span><span class="identifier">long_</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
 </pre>
 <p>
         </p>
 <p>
-          
 </p>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">use_terminal</span><span class="special">&lt;</span><span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span><span class="special">,</span> <span class="identifier">tag</span><span class="special">::</span><span class="identifier">long_long</span><span class="special">&gt;</span> <span class="comment">// enables long_long
-</span>  <span class="special">:</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="comment">// enables long_long</span>
+<span class="keyword">struct</span> <span class="identifier">use_terminal</span><span class="special">&lt;</span><span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span><span class="special">,</span> <span class="identifier">tag</span><span class="special">::</span><span class="identifier">long_long</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
 </pre>
 <p>
         </p>
 <p>
-          Notice that <code class="computeroutput"><span class="identifier">int_parser</span></code>
+          Notice that <code class="computeroutput"><span class="identifier">any_int_parser</span></code>
           is placed in the namespace boost::spirit::qi while these <span class="emphasis"><em>enablers</em></span>
           are in namespace boost::spirit. The reason is that these placeholders are
           shared by other <a href="http://boost-spirit.com" target="_top">Spirit</a> <span class="emphasis"><em>domains</em></span>.
@@ -347,12 +298,15 @@
           The make_xxx stuff (in boost::spirit::qi namespace):
         </p>
 <p>
-          
 </p>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span>
+    <span class="keyword">typename</span> <span class="identifier">T</span>
+  <span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">Radix</span> <span class="special">=</span> <span class="number">10</span>
+  <span class="special">,</span> <span class="keyword">unsigned</span> <span class="identifier">MinDigits</span> <span class="special">=</span> <span class="number">1</span>
+  <span class="special">,</span> <span class="keyword">int</span> <span class="identifier">MaxDigits</span> <span class="special">=</span> <span class="special">-</span><span class="number">1</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">make_int</span>
 <span class="special">{</span>
-    <span class="keyword">typedef</span> <span class="identifier">int_parser_impl</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">result_type</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">any_int_parser</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">Radix</span><span class="special">,</span> <span class="identifier">MinDigits</span><span class="special">,</span> <span class="identifier">MaxDigits</span><span class="special">&gt;</span> <span class="identifier">result_type</span><span class="special">;</span>
     <span class="identifier">result_type</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">unused_type</span><span class="special">,</span> <span class="identifier">unused_type</span><span class="special">)</span> <span class="keyword">const</span>
     <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">result_type</span><span class="special">();</span>
@@ -368,8 +322,7 @@
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
               The actual terminal value obtained by proto. In this case, either a
-              short<span class="underline">, int</span>, long_ or long_long.
-              We don't care about this.
+              short_, int_, long_ or long_long. We don't care about this.
             </li>
 <li class="listitem">
               Modifiers. We also don't care about this. This allows directives such
@@ -382,34 +335,33 @@
           Now:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">make_primitive</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">short_</span><span class="special">,</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">make_int</span><span class="special">&lt;</span><span class="keyword">short</span><span class="special">&gt;</span> <span class="special">{};</span>
+<span class="keyword">struct</span> <span class="identifier">make_primitive</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">short_</span><span class="special">,</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span>
+  <span class="special">:</span> <span class="identifier">make_int</span><span class="special">&lt;</span><span class="keyword">short</span><span class="special">&gt;</span> <span class="special">{};</span>
 </pre>
 <p>
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">make_primitive</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">int_</span><span class="special">,</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">make_int</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="special">{};</span>
+<span class="keyword">struct</span> <span class="identifier">make_primitive</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">int_</span><span class="special">,</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span>
+  <span class="special">:</span> <span class="identifier">make_int</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="special">{};</span>
 </pre>
 <p>
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">make_primitive</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">long_</span><span class="special">,</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">make_int</span><span class="special">&lt;</span><span class="keyword">long</span><span class="special">&gt;</span> <span class="special">{};</span>
+<span class="keyword">struct</span> <span class="identifier">make_primitive</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">long_</span><span class="special">,</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span>
+  <span class="special">:</span> <span class="identifier">make_int</span><span class="special">&lt;</span><span class="keyword">long</span><span class="special">&gt;</span> <span class="special">{};</span>
 </pre>
 <p>
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">make_primitive</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">long_long</span><span class="special">,</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span> 
+<span class="keyword">struct</span> <span class="identifier">make_primitive</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">long_long</span><span class="special">,</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span>
   <span class="special">:</span> <span class="identifier">make_int</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">long_long_type</span><span class="special">&gt;</span> <span class="special">{};</span>
 </pre>
 <p>
@@ -419,16 +371,15 @@
           all inherit from <code class="computeroutput"><span class="identifier">make_int</span></code>
           which does the actual work.
         </p>
-<a name="spirit.advanced.indepth.parsers_indepth.composite_parsers"></a><h6>
-<a name="id1156785"></a>
-          <a class="link" href="parsers_indepth.html#spirit.advanced.indepth.parsers_indepth.composite_parsers">Composite
+<h6>
+<a name="spirit.advanced.indepth.parsers_indepth.h1"></a>
+          <span><a name="spirit.advanced.indepth.parsers_indepth.composite_parsers"></a></span><a class="link" href="parsers_indepth.html#spirit.advanced.indepth.parsers_indepth.composite_parsers">Composite
           Parsers</a>
         </h6>
 <p>
           Let me present the kleene star (also in namespace spirit::qi):
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Subject</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">kleene</span> <span class="special">:</span> <span class="identifier">unary_parser</span><span class="special">&lt;</span><span class="identifier">kleene</span><span class="special">&lt;</span><span class="identifier">Subject</span><span class="special">&gt;</span> <span class="special">&gt;</span>
@@ -438,10 +389,10 @@
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Context</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
     <span class="keyword">struct</span> <span class="identifier">attribute</span>
     <span class="special">{</span>
-        <span class="comment">// Build a std::vector from the subject's attribute. Note
-</span>        <span class="comment">// that build_std_vector may return unused_type if the
-</span>        <span class="comment">// subject's attribute is an unused_type.
-</span>        <span class="keyword">typedef</span> <span class="keyword">typename</span>
+        <span class="comment">// Build a std::vector from the subject's attribute. Note</span>
+        <span class="comment">// that build_std_vector may return unused_type if the</span>
+        <span class="comment">// subject's attribute is an unused_type.</span>
+        <span class="keyword">typedef</span> <span class="keyword">typename</span>
             <span class="identifier">traits</span><span class="special">::</span><span class="identifier">build_std_vector</span><span class="special">&lt;</span>
                 <span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span>
                     <span class="identifier">attribute_of</span><span class="special">&lt;</span><span class="identifier">Subject</span><span class="special">,</span> <span class="identifier">Context</span><span class="special">,</span> <span class="identifier">Iterator</span><span class="special">&gt;::</span><span class="identifier">type</span>
@@ -452,25 +403,31 @@
     <span class="identifier">kleene</span><span class="special">(</span><span class="identifier">Subject</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">subject</span><span class="special">)</span>
       <span class="special">:</span> <span class="identifier">subject</span><span class="special">(</span><span class="identifier">subject</span><span class="special">)</span> <span class="special">{}</span>
 
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
+    <span class="keyword">bool</span> <span class="identifier">parse_container</span><span class="special">(</span><span class="identifier">F</span> <span class="identifier">f</span><span class="special">)</span> <span class="keyword">const</span>
+    <span class="special">{</span>
+        <span class="keyword">while</span> <span class="special">(!</span><span class="identifier">f</span> <span class="special">(</span><span class="identifier">subject</span><span class="special">))</span>
+            <span class="special">;</span>
+        <span class="keyword">return</span> <span class="keyword">true</span><span class="special">;</span>
+    <span class="special">}</span>
+
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Context</span>
       <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Skipper</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Attribute</span><span class="special">&gt;</span>
     <span class="keyword">bool</span> <span class="identifier">parse</span><span class="special">(</span><span class="identifier">Iterator</span><span class="special">&amp;</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">last</span>
       <span class="special">,</span> <span class="identifier">Context</span><span class="special">&amp;</span> <span class="identifier">context</span><span class="special">,</span> <span class="identifier">Skipper</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">skipper</span>
       <span class="special">,</span> <span class="identifier">Attribute</span><span class="special">&amp;</span> <span class="identifier">attr</span><span class="special">)</span> <span class="keyword">const</span>
     <span class="special">{</span>
-        <span class="comment">// create a local value if Attribute is not unused_type
-</span>        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">container_value</span><span class="special">&lt;</span><span class="identifier">Attribute</span><span class="special">&gt;::</span><span class="identifier">type</span> 
-            <span class="identifier">value_type</span><span class="special">;</span>
-        <span class="identifier">value_type</span> <span class="identifier">val</span> <span class="special">=</span> <span class="identifier">value_type</span><span class="special">();</span>
+        <span class="comment">// ensure the attribute is actually a container type</span>
+        <span class="identifier">traits</span><span class="special">::</span><span class="identifier">make_container</span><span class="special">(</span><span class="identifier">attr</span><span class="special">);</span>
 
-        <span class="comment">// Repeat while subject parses ok
-</span>        <span class="identifier">Iterator</span> <span class="identifier">save</span> <span class="special">=</span> <span class="identifier">first</span><span class="special">;</span>
-        <span class="keyword">while</span> <span class="special">(</span><span class="identifier">subject</span><span class="special">.</span><span class="identifier">parse</span><span class="special">(</span><span class="identifier">save</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">context</span><span class="special">,</span> <span class="identifier">skipper</span><span class="special">,</span> <span class="identifier">val</span><span class="special">)</span> <span class="special">&amp;&amp;</span>
-               <span class="identifier">traits</span><span class="special">::</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">attr</span><span class="special">,</span> <span class="identifier">val</span><span class="special">))</span>    <span class="comment">// push the parsed value into our attribute
-</span>        <span class="special">{</span>
-            <span class="identifier">first</span> <span class="special">=</span> <span class="identifier">save</span><span class="special">;</span>
-            <span class="identifier">traits</span><span class="special">::</span><span class="identifier">clear</span><span class="special">(</span><span class="identifier">val</span><span class="special">);</span>
-        <span class="special">}</span>
+        <span class="keyword">typedef</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">fail_function</span><span class="special">&lt;</span><span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">Context</span><span class="special">,</span> <span class="identifier">Skipper</span><span class="special">&gt;</span>
+            <span class="identifier">fail_function</span><span class="special">;</span>
+
+        <span class="identifier">Iterator</span> <span class="identifier">iter</span> <span class="special">=</span> <span class="identifier">first</span><span class="special">;</span>
+        <span class="identifier">fail_function</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">iter</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">context</span><span class="special">,</span> <span class="identifier">skipper</span><span class="special">);</span>
+        <span class="identifier">parse_container</span><span class="special">(</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">make_pass_container</span><span class="special">(</span><span class="identifier">f</span><span class="special">,</span> <span class="identifier">attr</span><span class="special">));</span>
+
+        <span class="identifier">first</span> <span class="special">=</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">first</span><span class="special">;</span>
         <span class="keyword">return</span> <span class="keyword">true</span><span class="special">;</span>
     <span class="special">}</span>
 
@@ -543,7 +500,6 @@
           subject:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">attribute_of</span><span class="special">&lt;</span><span class="identifier">Subject</span><span class="special">,</span> <span class="identifier">Context</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">val</span><span class="special">;</span>
 </pre>
@@ -570,12 +526,11 @@
           loop:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">while</span> <span class="special">(</span><span class="identifier">subject</span><span class="special">.</span><span class="identifier">parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">context</span><span class="special">,</span> <span class="identifier">skipper</span><span class="special">,</span> <span class="identifier">val</span><span class="special">))</span>
 <span class="special">{</span>
-    <span class="comment">// push the parsed value into our attribute
-</span>    <span class="identifier">traits</span><span class="special">::</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">attr</span><span class="special">,</span> <span class="identifier">val</span><span class="special">);</span>
+    <span class="comment">// push the parsed value into our attribute</span>
+    <span class="identifier">traits</span><span class="special">::</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">attr</span><span class="special">,</span> <span class="identifier">val</span><span class="special">);</span>
     <span class="identifier">traits</span><span class="special">::</span><span class="identifier">clear</span><span class="special">(</span><span class="identifier">val</span><span class="special">);</span>
 <span class="special">}</span>
 <span class="keyword">return</span> <span class="keyword">true</span><span class="special">;</span>
@@ -585,7 +540,6 @@
           Spirit provided function:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">traits</span><span class="special">::</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">attr</span><span class="special">,</span> <span class="identifier">val</span><span class="special">);</span>
 </pre>
@@ -616,11 +570,10 @@
           First, we enable the prefix star operator. In proto, it's called the "dereference":
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">use_operator</span><span class="special">&lt;</span><span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span><span class="special">,</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">dereference</span><span class="special">&gt;</span> <span class="comment">// enables *p
-</span>  <span class="special">:</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
+<span class="keyword">struct</span> <span class="identifier">use_operator</span><span class="special">&lt;</span><span class="identifier">qi</span><span class="special">::</span><span class="identifier">domain</span><span class="special">,</span> <span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">dereference</span><span class="special">&gt;</span> <span class="comment">// enables *p</span>
+  <span class="special">:</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
 </pre>
 <p>
         </p>
@@ -635,7 +588,6 @@
           Then, we need to write our generator (in namespace qi):
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Elements</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">make_composite</span><span class="special">&lt;</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">dereference</span><span class="special">,</span> <span class="identifier">Elements</span><span class="special">,</span> <span class="identifier">Modifiers</span><span class="special">&gt;</span>
@@ -657,7 +609,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2010 Joel de Guzman, Hartmut Kaiser<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2011 Joel de Guzman, Hartmut Kaiser<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

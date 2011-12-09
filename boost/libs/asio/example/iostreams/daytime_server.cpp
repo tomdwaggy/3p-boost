@@ -2,7 +2,7 @@
 // daytime_server.cpp
 // ~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -34,8 +34,12 @@ int main()
     for (;;)
     {
       tcp::iostream stream;
-      acceptor.accept(*stream.rdbuf());
-      stream << make_daytime_string();
+      boost::system::error_code ec;
+      acceptor.accept(*stream.rdbuf(), ec);
+      if (!ec)
+      {
+        stream << make_daytime_string();
+      }
     }
   }
   catch (std::exception& e)

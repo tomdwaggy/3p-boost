@@ -1,5 +1,5 @@
 //  Copyright John Maddock 2006.
-//  Copyright Paul A. Bristow 2007.
+//  Copyright Paul A. Bristow 2007, 2010.
 //  Use, modification and distribution are subject to the
 //  Boost Software License, Version 1.0. (See accompanying file
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -33,25 +33,6 @@ BOOST_MATH_DECLARE_DISTRIBUTIONS(double, test_policy)
 }
 #endif
 
-namespace boost{ namespace math{
-//
-// The non central beta doesn't define some properties,
-// define some stub methods here so that we can concept
-// check everything else:
-//
-template <class T, class Policy>
-inline T mean(const non_central_beta_distribution<T, Policy>&){ return 0; }
-template <class T, class Policy>
-inline T variance(const non_central_beta_distribution<T, Policy>&){ return 0; }
-template <class T, class Policy>
-inline T skewness(const non_central_beta_distribution<T, Policy>&){ return 0; }
-template <class T, class Policy>
-inline T kurtosis_excess(const non_central_beta_distribution<T, Policy>&){ return 0; }
-template <class T, class Policy>
-inline T kurtosis(const non_central_beta_distribution<T, Policy>&){ return 0; }
-
-}} // namespaces
-
 template <class RealType>
 void instantiate(RealType)
 {
@@ -68,25 +49,27 @@ void instantiate(RealType)
    function_requires<DistributionConcept<extreme_value_distribution<RealType> > >();
    function_requires<DistributionConcept<fisher_f_distribution<RealType> > >();
    function_requires<DistributionConcept<gamma_distribution<RealType> > >();
-   function_requires<DistributionConcept<inverse_gamma_distribution<RealType> > >();
+   function_requires<DistributionConcept<geometric_distribution<RealType> > >();
+   function_requires<DistributionConcept<hypergeometric_distribution<RealType> > >();
    function_requires<DistributionConcept<inverse_chi_squared_distribution<RealType> > >();
+   function_requires<DistributionConcept<inverse_gamma_distribution<RealType> > >();
+   function_requires<DistributionConcept<inverse_gaussian_distribution<RealType> > >();
    function_requires<DistributionConcept<laplace_distribution<RealType> > >();
    function_requires<DistributionConcept<logistic_distribution<RealType> > >();
    function_requires<DistributionConcept<lognormal_distribution<RealType> > >();
    function_requires<DistributionConcept<negative_binomial_distribution<RealType> > >();
-   function_requires<DistributionConcept<normal_distribution<RealType> > >();
-   function_requires<DistributionConcept<rayleigh_distribution<RealType> > >();
-   function_requires<DistributionConcept<pareto_distribution<RealType> > >();
-   function_requires<DistributionConcept<poisson_distribution<RealType> > >();
-   function_requires<DistributionConcept<students_t_distribution<RealType> > >();
-   function_requires<DistributionConcept<triangular_distribution<RealType> > >();
-   function_requires<DistributionConcept<uniform_distribution<RealType> > >();
-   function_requires<DistributionConcept<weibull_distribution<RealType> > >();
    function_requires<DistributionConcept<non_central_chi_squared_distribution<RealType> > >();
    function_requires<DistributionConcept<non_central_beta_distribution<RealType> > >();
    function_requires<DistributionConcept<non_central_f_distribution<RealType> > >();
    function_requires<DistributionConcept<non_central_t_distribution<RealType> > >();
-   function_requires<DistributionConcept<hypergeometric_distribution<RealType> > >();
+   function_requires<DistributionConcept<normal_distribution<RealType> > >();
+   function_requires<DistributionConcept<pareto_distribution<RealType> > >();
+   function_requires<DistributionConcept<poisson_distribution<RealType> > >();
+   function_requires<DistributionConcept<rayleigh_distribution<RealType> > >();
+   function_requires<DistributionConcept<students_t_distribution<RealType> > >();
+   function_requires<DistributionConcept<triangular_distribution<RealType> > >();
+   function_requires<DistributionConcept<uniform_distribution<RealType> > >();
+   function_requires<DistributionConcept<weibull_distribution<RealType> > >();
 #ifndef BOOST_MATH_INSTANTIATE_MINIMUM
    function_requires<DistributionConcept<bernoulli_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<beta_distribution<RealType, test_policy> > >();
@@ -97,25 +80,27 @@ void instantiate(RealType)
    function_requires<DistributionConcept<extreme_value_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<fisher_f_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<gamma_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<inverse_gamma_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<geometric_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<hypergeometric_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<inverse_chi_squared_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<inverse_gamma_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<inverse_gaussian_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<laplace_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<logistic_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<lognormal_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<non_central_chi_squared_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<negative_binomial_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<normal_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<rayleigh_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<pareto_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<poisson_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<students_t_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<triangular_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<uniform_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<weibull_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<non_central_chi_squared_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<non_central_beta_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<non_central_f_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<non_central_t_distribution<RealType, test_policy> > >();
-   function_requires<DistributionConcept<hypergeometric_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<normal_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<pareto_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<poisson_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<rayleigh_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<students_t_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<triangular_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<uniform_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<weibull_distribution<RealType, test_policy> > >();
 
    function_requires<DistributionConcept<dist_test::bernoulli > >();
    function_requires<DistributionConcept<dist_test::beta > >();
@@ -126,21 +111,27 @@ void instantiate(RealType)
    function_requires<DistributionConcept<dist_test::extreme_value > >();
    function_requires<DistributionConcept<dist_test::fisher_f > >();
    function_requires<DistributionConcept<dist_test::gamma > >();
+   function_requires<DistributionConcept<dist_test::geometric > >();
+   function_requires<DistributionConcept<dist_test::hypergeometric > >();
+   function_requires<DistributionConcept<dist_test::inverse_chi_squared > >();
+   function_requires<DistributionConcept<dist_test::inverse_gamma > >();
+   function_requires<DistributionConcept<dist_test::inverse_gaussian > >();
+   function_requires<DistributionConcept<dist_test::laplace > >();
    function_requires<DistributionConcept<dist_test::logistic > >();
    function_requires<DistributionConcept<dist_test::lognormal > >();
    function_requires<DistributionConcept<dist_test::negative_binomial > >();
-   function_requires<DistributionConcept<dist_test::normal > >();
-   function_requires<DistributionConcept<dist_test::rayleigh > >();
-   function_requires<DistributionConcept<dist_test::pareto > >();
-   function_requires<DistributionConcept<dist_test::poisson > >();
-   function_requires<DistributionConcept<dist_test::students_t > >();
-   function_requires<DistributionConcept<dist_test::triangular > >();
-   function_requires<DistributionConcept<dist_test::uniform > >();
-   function_requires<DistributionConcept<dist_test::weibull > >();
    function_requires<DistributionConcept<dist_test::non_central_chi_squared > >();
    function_requires<DistributionConcept<dist_test::non_central_beta > >();
    function_requires<DistributionConcept<dist_test::non_central_f > >();
    function_requires<DistributionConcept<dist_test::non_central_t > >();
+   function_requires<DistributionConcept<dist_test::normal > >();
+   function_requires<DistributionConcept<dist_test::pareto > >();
+   function_requires<DistributionConcept<dist_test::poisson > >();
+   function_requires<DistributionConcept<dist_test::rayleigh > >();
+   function_requires<DistributionConcept<dist_test::students_t > >();
+   function_requires<DistributionConcept<dist_test::triangular > >();
+   function_requires<DistributionConcept<dist_test::uniform > >();
+   function_requires<DistributionConcept<dist_test::weibull > >();
    function_requires<DistributionConcept<dist_test::hypergeometric > >();
 #endif
    int i;
@@ -188,6 +179,10 @@ void instantiate(RealType)
    (boost::math::isnormal)(v1);
    (boost::math::isnan)(v1);
    (boost::math::isinf)(v1);
+   (boost::math::signbit)(v1);
+   (boost::math::copysign)(v1, v2);
+   (boost::math::changesign)(v1);
+   (boost::math::sign)(v1);
    boost::math::log1p(v1);
    boost::math::expm1(v1);
    boost::math::cbrt(v1);
@@ -307,11 +302,6 @@ void instantiate(RealType)
    boost::math::ibetac_invb(v1, v2, v3, pol);
    boost::math::gamma_p_derivative(v2, v3, pol);
    boost::math::ibeta_derivative(v1, v2, v3, pol);
-   (boost::math::fpclassify)(v1);
-   (boost::math::isfinite)(v1);
-   (boost::math::isnormal)(v1);
-   (boost::math::isnan)(v1);
-   (boost::math::isinf)(v1);
    boost::math::log1p(v1, pol);
    boost::math::expm1(v1, pol);
    boost::math::cbrt(v1, pol);
@@ -437,6 +427,10 @@ void instantiate(RealType)
    (test::isnormal)(v1);
    (test::isnan)(v1);
    (test::isinf)(v1);
+   (test::signbit)(v1);
+   (test::copysign)(v1, v2);
+   (test::changesign)(v1);
+   (test::sign)(v1);
    test::log1p(v1);
    test::expm1(v1);
    test::cbrt(v1);

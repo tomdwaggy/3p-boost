@@ -41,6 +41,7 @@ namespace fs = boost::filesystem;
 #endif
 
 #include <boost/detail/lightweight_test.hpp>
+#include <boost/detail/lightweight_main.hpp>
 
 #if defined(_MSC_VER)
 # pragma warning(push) // Save warning settings.
@@ -144,13 +145,16 @@ namespace
   } // test
 } // unnamed namespace
 
-int main(int argc, char*[])
+int cpp_main(int argc, char*[])
 {
   if (argc > 1) cleanup = false;
 
+  std::cout << "BOOST_FILESYSTEM_C_STR defined as \""
+            << BOOST_STRINGIZE(BOOST_FILESYSTEM_C_STR) << "\"\n";
+
   // test narrow characters
   std::cout << "narrow character tests:\n";
-  test("fstream_test_foo");
+  test("v3_fstream_test");
 
 
   // So that tests are run with known encoding, use Boost UTF-8 codecvt

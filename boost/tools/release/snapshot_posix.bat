@@ -6,7 +6,7 @@ rem  Distributed under the Boost Software License, Version 1.0.
 rem  See http://www.boost.org/LICENSE_1_0.txt
 
 echo Build a branches/release snapshot for POSIX, using LF line termination...
-
+echo Revision %BOOST_REVISION_NUMBER%
 echo Removing old files...
 rmdir /s /q posix >nul
 rmdir /s /q svn_info >nul
@@ -14,16 +14,11 @@ del posix.tar.gz >nul
 del posix.tar.bz2 >nul
 
 echo Exporting files from subversion...
-rem  leave an audit trail, which is used by inspect to determine revision number
-svn co --depth=files http://svn.boost.org/svn/boost/branches/release svn_info
-svn export --non-interactive --native-eol LF http://svn.boost.org/svn/boost/branches/release posix
+svn export --non-interactive --native-eol LF -r %BOOST_REVISION_NUMBER% http://svn.boost.org/svn/boost/branches/release posix
 
-echo Creating release history README.txt...
-lynx -width=72 -dump -nolist -display_charset=utf-8 http://beta.boost.org/users/history/minimal.php >posix\README.txt
-
-echo Copying docs into posix\doc...
-pushd posix\doc
-xcopy /s /y ..\..\docs_temp\html html
+echo Copying docs into posix...
+pushd posix
+xcopy /s /y ..\docs_temp
 popd
 
 echo Setting SNAPSHOT_DATE
@@ -35,7 +30,7 @@ echo Renaming root directory...
 ren posix boost-posix-%SNAPSHOT_DATE%
 
 echo Building .gz file...
-tar cfz posix.tar.gz boost-posix-%SNAPSHOT_DATE%
+tar cfz posix.tar.gz --numeric-owner --group=0 --owner=0 boost-posix-%SNAPSHOT_DATE%
 echo Building .bz2 file...
 gzip -d -c posix.tar.gz | bzip2 >posix.tar.bz2
 

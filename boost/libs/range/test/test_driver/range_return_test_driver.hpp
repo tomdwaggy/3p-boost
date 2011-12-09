@@ -26,7 +26,7 @@ namespace boost
         struct check_results
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&          test,
                 Container&          reference,
                 Iterator            test_it,
@@ -43,7 +43,7 @@ namespace boost
         struct check_results<return_found>
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&          test,
                 Container&          reference,
                 Iterator            test_it,
@@ -64,7 +64,7 @@ namespace boost
         struct check_results<return_next>
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&          test,
                 Container&          reference,
                 Iterator            test_it,
@@ -93,7 +93,7 @@ namespace boost
         struct check_results<return_prior>
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&          test,
                 Container&          reference,
                 Iterator            test_it,
@@ -122,7 +122,7 @@ namespace boost
         struct check_results<return_begin_found>
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&                  test,
                 Container&                  reference,
                 iterator_range<Iterator>    test_rng,
@@ -149,7 +149,7 @@ namespace boost
         struct check_results<return_begin_next>
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&                  test,
                 Container&                  reference,
                 iterator_range<Iterator>    test_rng,
@@ -182,7 +182,7 @@ namespace boost
         struct check_results<return_begin_prior>
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&                  test,
                 Container&                  reference,
                 iterator_range<Iterator>    test_rng,
@@ -212,7 +212,7 @@ namespace boost
         struct check_results<return_found_end>
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&                  test,
                 Container&                  reference,
                 iterator_range<Iterator>    test_rng,
@@ -236,7 +236,7 @@ namespace boost
         struct check_results<return_next_end>
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&                  test,
                 Container&                  reference,
                 iterator_range<Iterator>    test_rng,
@@ -270,7 +270,7 @@ namespace boost
         struct check_results<return_prior_end>
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&                  test,
                 Container&                  reference,
                 iterator_range<Iterator>    test_rng,
@@ -304,7 +304,7 @@ namespace boost
         struct check_results<return_begin_end>
         {
             template< class Container, class Iterator >
-            static void check(
+            static void test(
                 Container&                  test,
                 Container&                  reference,
                 iterator_range<Iterator>    test_rng,
@@ -371,12 +371,12 @@ namespace boost
 
                 Container reference(cont);
                 Container test(cont);
-                
+
                 iterator_t range_result = policy.test_iter(test);
                 iterator_t reference_it = policy.reference(reference);
 
-                check_results<return_found>::check(test, reference,
-                                                   range_result, reference_it);
+                check_results<return_found>::test(test, reference,
+                                                  range_result, reference_it);
             }
 
             template< range_return_value result_type, class Container, class TestPolicy >
@@ -391,11 +391,12 @@ namespace boost
                     Container reference(cont);
                     Container test_cont(cont);
 
-                    range_return_t range_result = test_range_t()(policy, test_cont);
+                    test_range_t test_range_fn;
+                    range_return_t range_result = test_range_fn(policy, test_cont);
                     iterator_t reference_it = policy.reference(reference);
 
-                    check_results<result_type>::check(test_cont, reference,
-                                                         range_result, reference_it);
+                    check_results<result_type>::test(test_cont, reference,
+                                                     range_result, reference_it);
                 }
             };
         };

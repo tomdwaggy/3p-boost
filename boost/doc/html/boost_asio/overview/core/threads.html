@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Threads and Boost.Asio</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../core.html" title="Core Concepts and Functionality">
 <link rel="prev" href="async.html" title="The Proactor Design Pattern: Concurrency Without Threads">
@@ -26,9 +26,10 @@
 <div class="titlepage"><div><div><h4 class="title">
 <a name="boost_asio.overview.core.threads"></a><a class="link" href="threads.html" title="Threads and Boost.Asio">Threads and Boost.Asio</a>
 </h4></div></div></div>
-<a name="boost_asio.overview.core.threads.thread_safety"></a><h6>
-<a name="id761937"></a>
-          <a class="link" href="threads.html#boost_asio.overview.core.threads.thread_safety">Thread Safety</a>
+<h6>
+<a name="boost_asio.overview.core.threads.h0"></a>
+          <span><a name="boost_asio.overview.core.threads.thread_safety"></a></span><a class="link" href="threads.html#boost_asio.overview.core.threads.thread_safety">Thread
+          Safety</a>
         </h6>
 <p>
           In general, it is safe to make concurrent use of distinct objects, but
@@ -36,9 +37,10 @@
           <code class="computeroutput"><span class="identifier">io_service</span></code> provide a stronger
           guarantee that it is safe to use a single object concurrently.
         </p>
-<a name="boost_asio.overview.core.threads.thread_pools"></a><h6>
-<a name="id761970"></a>
-          <a class="link" href="threads.html#boost_asio.overview.core.threads.thread_pools">Thread Pools</a>
+<h6>
+<a name="boost_asio.overview.core.threads.h1"></a>
+          <span><a name="boost_asio.overview.core.threads.thread_pools"></a></span><a class="link" href="threads.html#boost_asio.overview.core.threads.thread_pools">Thread
+          Pools</a>
         </h6>
 <p>
           Multiple threads may call <code class="computeroutput"><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">run</span><span class="special">()</span></code> to set up a pool of threads from which
@@ -51,9 +53,9 @@
           pool are considered equivalent, and the <code class="computeroutput"><span class="identifier">io_service</span></code>
           may distribute work across them in an arbitrary fashion.
         </p>
-<a name="boost_asio.overview.core.threads.internal_threads"></a><h6>
-<a name="id762058"></a>
-          <a class="link" href="threads.html#boost_asio.overview.core.threads.internal_threads">Internal
+<h6>
+<a name="boost_asio.overview.core.threads.h2"></a>
+          <span><a name="boost_asio.overview.core.threads.internal_threads"></a></span><a class="link" href="threads.html#boost_asio.overview.core.threads.internal_threads">Internal
           Threads</a>
         </h6>
 <p>
@@ -103,9 +105,10 @@
               are not available.
             </li>
 </ul></div>
-<a name="boost_asio.overview.core.threads.see_also"></a><h6>
-<a name="id762214"></a>
-          <a class="link" href="threads.html#boost_asio.overview.core.threads.see_also">See Also</a>
+<h6>
+<a name="boost_asio.overview.core.threads.h3"></a>
+          <span><a name="boost_asio.overview.core.threads.see_also"></a></span><a class="link" href="threads.html#boost_asio.overview.core.threads.see_also">See
+          Also</a>
         </h6>
 <p>
           <a class="link" href="../../reference/io_service.html" title="io_service">io_service</a>.
@@ -113,7 +116,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

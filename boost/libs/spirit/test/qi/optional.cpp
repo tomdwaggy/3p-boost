@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2001-2010 Joel de Guzman
+    Copyright (c) 2001-2011 Joel de Guzman
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -78,6 +78,12 @@ main()
         boost::optional<int> n = 0;
         BOOST_TEST((test_attr("1234", (-int_)[test_attribute_type()], n)));
         BOOST_TEST((n.get() == 1234));
+    }
+
+    {
+        std::string s;
+        BOOST_TEST((test_attr("abc", char_ >> -(char_ >> char_), s)));
+        BOOST_TEST(s == "abc");
     }
 
     {

@@ -2,7 +2,7 @@
 // read_until.cpp
 // ~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -63,27 +63,11 @@ public:
   template <typename Mutable_Buffers>
   size_t read_some(const Mutable_Buffers& buffers)
   {
-    using namespace std; // For memcpy.
-
-    size_t total_length = 0;
-
-    typename Mutable_Buffers::const_iterator iter = buffers.begin();
-    typename Mutable_Buffers::const_iterator end = buffers.end();
-    for (; iter != end && total_length < next_read_length_; ++iter)
-    {
-      size_t length = boost::asio::buffer_size(*iter);
-      if (length > length_ - position_)
-        length = length_ - position_;
-
-      if (length > next_read_length_ - total_length)
-        length = next_read_length_ - total_length;
-
-      memcpy(boost::asio::buffer_cast<void*>(*iter), data_ + position_, length);
-      position_ += length;
-      total_length += length;
-    }
-
-    return total_length;
+    size_t n = boost::asio::buffer_copy(buffers,
+        boost::asio::buffer(data_, length_) + position_,
+        next_read_length_);
+    position_ += n;
+    return n;
   }
 
   template <typename Mutable_Buffers>

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Handlers</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="GettableSocketOption.html" title="Gettable socket option requirements">
@@ -40,7 +40,7 @@
         denotes a function object taking no arguments.
       </p>
 <div class="table">
-<a name="id834744"></a><p class="title"><b>Table&#160;13.&#160;Handler requirements</b></p>
+<a name="boost_asio.reference.Handler.t0"></a><p class="title"><b>Table&#160;13.&#160;Handler requirements</b></p>
 <div class="table-contents"><table class="table" summary="Handler requirements">
 <colgroup>
 <col>
@@ -68,9 +68,8 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
-<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">asio_handler_allocate</span><span class="special">;</span>
 <span class="identifier">asio_handler_allocate</span><span class="special">(</span><span class="identifier">s</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">h</span><span class="special">);</span>
 </pre>
 <p>
@@ -97,9 +96,8 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
-<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">asio_handler_deallocate</span><span class="special">;</span>
 <span class="identifier">asio_handler_deallocate</span><span class="special">(</span><span class="identifier">p</span><span class="special">,</span> <span class="identifier">s</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">h</span><span class="special">);</span>
 </pre>
 <p>
@@ -120,9 +118,8 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
-<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">asio_handler_invoke</span><span class="special">;</span>
 <span class="identifier">asio_handler_invoke</span><span class="special">(</span><span class="identifier">f</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">h</span><span class="special">);</span>
 </pre>
 <p>
@@ -147,7 +144,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

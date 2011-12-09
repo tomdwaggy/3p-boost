@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>UNIX Domain Sockets</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../posix.html" title="POSIX-Specific Functionality">
 <link rel="prev" href="../posix.html" title="POSIX-Specific Functionality">
@@ -47,8 +47,8 @@
           A UNIX domain socket server may be created by binding an acceptor to an
           endpoint, in much the same way as one does for a TCP server:
         </p>
-<pre class="programlisting"><span class="special">::</span><span class="identifier">unlink</span><span class="special">(</span><span class="string">"/tmp/foobar"</span><span class="special">);</span> <span class="comment">// Remove previous binding.
-</span><span class="identifier">local</span><span class="special">::</span><span class="identifier">stream_protocol</span><span class="special">::</span><span class="identifier">endpoint</span> <span class="identifier">ep</span><span class="special">(</span><span class="string">"/tmp/foobar"</span><span class="special">);</span>
+<pre class="programlisting"><span class="special">::</span><span class="identifier">unlink</span><span class="special">(</span><span class="string">"/tmp/foobar"</span><span class="special">);</span> <span class="comment">// Remove previous binding.</span>
+<span class="identifier">local</span><span class="special">::</span><span class="identifier">stream_protocol</span><span class="special">::</span><span class="identifier">endpoint</span> <span class="identifier">ep</span><span class="special">(</span><span class="string">"/tmp/foobar"</span><span class="special">);</span>
 <span class="identifier">local</span><span class="special">::</span><span class="identifier">stream_protocol</span><span class="special">::</span><span class="identifier">acceptor</span> <span class="identifier">acceptor</span><span class="special">(</span><span class="identifier">my_io_service</span><span class="special">,</span> <span class="identifier">ep</span><span class="special">);</span>
 <span class="identifier">local</span><span class="special">::</span><span class="identifier">stream_protocol</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">my_io_service</span><span class="special">);</span>
 <span class="identifier">acceptor</span><span class="special">.</span><span class="identifier">accept</span><span class="special">(</span><span class="identifier">socket</span><span class="special">);</span>
@@ -66,9 +66,10 @@
           the socket's underlying descriptor using the <a class="link" href="../../reference/basic_socket/native.html" title="basic_socket::native">native()</a>
           member function.
         </p>
-<a name="boost_asio.overview.posix.local.see_also"></a><h6>
-<a name="id773197"></a>
-          <a class="link" href="local.html#boost_asio.overview.posix.local.see_also">See Also</a>
+<h6>
+<a name="boost_asio.overview.posix.local.h0"></a>
+          <span><a name="boost_asio.overview.posix.local.see_also"></a></span><a class="link" href="local.html#boost_asio.overview.posix.local.see_also">See
+          Also</a>
         </h6>
 <p>
           <a class="link" href="../../reference/local__connect_pair.html" title="local::connect_pair">local::connect_pair</a>,
@@ -83,9 +84,9 @@
           <a class="link" href="../../examples.html#boost_asio.examples.unix_domain_sockets">UNIX domain sockets
           examples</a>.
         </p>
-<a name="boost_asio.overview.posix.local.notes"></a><h6>
-<a name="id773318"></a>
-          <a class="link" href="local.html#boost_asio.overview.posix.local.notes">Notes</a>
+<h6>
+<a name="boost_asio.overview.posix.local.h1"></a>
+          <span><a name="boost_asio.overview.posix.local.notes"></a></span><a class="link" href="local.html#boost_asio.overview.posix.local.notes">Notes</a>
         </h6>
 <p>
           UNIX domain sockets are only available at compile time if supported by
@@ -95,7 +96,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

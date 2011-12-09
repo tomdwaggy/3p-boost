@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>ip::tcp::acceptor</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../ip__tcp.html" title="ip::tcp">
 <link rel="prev" href="../ip__tcp.html" title="ip::tcp">
@@ -27,14 +27,14 @@
 <a name="boost_asio.reference.ip__tcp.acceptor"></a><a class="link" href="acceptor.html" title="ip::tcp::acceptor">ip::tcp::acceptor</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="id1218218"></a> 
+          <a class="indexterm" name="id1402385"></a> 
 The TCP acceptor type.
         </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">basic_socket_acceptor</span><span class="special">&lt;</span> <span class="identifier">tcp</span> <span class="special">&gt;</span> <span class="identifier">acceptor</span><span class="special">;</span>
 </pre>
-<a name="boost_asio.reference.ip__tcp.acceptor.types"></a><h6>
-<a name="id1218278"></a>
-          <a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.types">Types</a>
+<h6>
+<a name="boost_asio.reference.ip__tcp.acceptor.h0"></a>
+          <span><a name="boost_asio.reference.ip__tcp.acceptor.types"></a></span><a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.types">Types</a>
         </h6>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -180,7 +180,7 @@ The TCP acceptor type.
 <tr>
 <td>
                   <p>
-                    <a class="link" href="../basic_socket_acceptor/native_type.html" title="basic_socket_acceptor::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                    <a class="link" href="../basic_socket_acceptor/native_handle_type.html" title="basic_socket_acceptor::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                   </p>
                 </td>
 <td>
@@ -192,12 +192,26 @@ The TCP acceptor type.
 <tr>
 <td>
                   <p>
+                    <a class="link" href="../basic_socket_acceptor/native_type.html" title="basic_socket_acceptor::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    (Deprecated: Use native_handle_type.) The native representation
+                    of an acceptor.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     <a class="link" href="../basic_socket_acceptor/non_blocking_io.html" title="basic_socket_acceptor::non_blocking_io"><span class="bold"><strong>non_blocking_io</strong></span></a>
                   </p>
                 </td>
 <td>
                   <p>
-                    IO control command to set the blocking mode of the socket.
+                    (Deprecated: Use non_blocking().) IO control command to set the
+                    blocking mode of the socket.
                   </p>
                 </td>
 </tr>
@@ -300,9 +314,9 @@ The TCP acceptor type.
 </tr>
 </tbody>
 </table></div>
-<a name="boost_asio.reference.ip__tcp.acceptor.member_functions"></a><h6>
-<a name="id1218920"></a>
-          <a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.member_functions">Member
+<h6>
+<a name="boost_asio.reference.ip__tcp.acceptor.h1"></a>
+          <span><a name="boost_asio.reference.ip__tcp.acceptor.member_functions"></a></span><a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.member_functions">Member
           Functions</a>
         </h6>
 <div class="informaltable"><table class="table">
@@ -381,6 +395,9 @@ The TCP acceptor type.
                   <p>
                     Construct a basic_socket_acceptor on an existing native acceptor.
                   </p>
+                  <p>
+                    Move-construct a basic_socket_acceptor from another.
+                  </p>
                 </td>
 </tr>
 <tr>
@@ -446,13 +463,12 @@ The TCP acceptor type.
 <tr>
 <td>
                   <p>
-                    <a class="link" href="../basic_socket_acceptor/io_service.html" title="basic_socket_acceptor::io_service"><span class="bold"><strong>io_service</strong></span></a>
+                    <a class="link" href="../basic_socket_acceptor/io_control.html" title="basic_socket_acceptor::io_control"><span class="bold"><strong>io_control</strong></span></a>
                   </p>
                 </td>
 <td>
                   <p>
-                    (Deprecated: use get_io_service().) Get the io_service associated
-                    with the object.
+                    Perform an IO control command on the acceptor.
                   </p>
                 </td>
 </tr>
@@ -501,7 +517,49 @@ The TCP acceptor type.
                 </td>
 <td>
                   <p>
+                    (Deprecated: Use native_handle().) Get the native acceptor representation.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket_acceptor/native_handle.html" title="basic_socket_acceptor::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
                     Get the native acceptor representation.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket_acceptor/native_non_blocking.html" title="basic_socket_acceptor::native_non_blocking"><span class="bold"><strong>native_non_blocking</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Gets the non-blocking mode of the native acceptor implementation.
+                  </p>
+                  <p>
+                    Sets the non-blocking mode of the native acceptor implementation.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket_acceptor/non_blocking.html" title="basic_socket_acceptor::non_blocking"><span class="bold"><strong>non_blocking</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Gets the non-blocking mode of the acceptor.
+                  </p>
+                  <p>
+                    Sets the non-blocking mode of the acceptor.
                   </p>
                 </td>
 </tr>
@@ -520,6 +578,18 @@ The TCP acceptor type.
 <tr>
 <td>
                   <p>
+                    <a class="link" href="../basic_socket_acceptor/operator_eq_.html" title="basic_socket_acceptor::operator="><span class="bold"><strong>operator=</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Move-assign a basic_socket_acceptor from another.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     <a class="link" href="../basic_socket_acceptor/set_option.html" title="basic_socket_acceptor::set_option"><span class="bold"><strong>set_option</strong></span></a>
                   </p>
                 </td>
@@ -531,10 +601,58 @@ The TCP acceptor type.
 </tr>
 </tbody>
 </table></div>
-<a name="boost_asio.reference.ip__tcp.acceptor.data_members"></a><h6>
-<a name="id1219461"></a>
-          <a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.data_members">Data
-          Members</a>
+<h6>
+<a name="boost_asio.reference.ip__tcp.acceptor.h2"></a>
+          <span><a name="boost_asio.reference.ip__tcp.acceptor.protected_member_functions"></a></span><a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.protected_member_functions">Protected
+          Member Functions</a>
+        </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket_acceptor/get_implementation.html" title="basic_socket_acceptor::get_implementation"><span class="bold"><strong>get_implementation</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Get the underlying implementation of the I/O object.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="../basic_socket_acceptor/get_service.html" title="basic_socket_acceptor::get_service"><span class="bold"><strong>get_service</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Get the service associated with the I/O object.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="boost_asio.reference.ip__tcp.acceptor.h3"></a>
+          <span><a name="boost_asio.reference.ip__tcp.acceptor.data_members"></a></span><a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.data_members">Data Members</a>
         </h6>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -581,6 +699,18 @@ The TCP acceptor type.
 <tr>
 <td>
                   <p>
+                    <a class="link" href="../basic_socket_acceptor/message_end_of_record.html" title="basic_socket_acceptor::message_end_of_record"><span class="bold"><strong>message_end_of_record</strong></span></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Specifies that the data marks the end of a record.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     <a class="link" href="../basic_socket_acceptor/message_out_of_band.html" title="basic_socket_acceptor::message_out_of_band"><span class="bold"><strong>message_out_of_band</strong></span></a>
                   </p>
                 </td>
@@ -604,9 +734,9 @@ The TCP acceptor type.
 </tr>
 </tbody>
 </table></div>
-<a name="boost_asio.reference.ip__tcp.acceptor.protected_data_members"></a><h6>
-<a name="id1219635"></a>
-          <a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.protected_data_members">Protected
+<h6>
+<a name="boost_asio.reference.ip__tcp.acceptor.h4"></a>
+          <span><a name="boost_asio.reference.ip__tcp.acceptor.protected_data_members"></a></span><a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.protected_data_members">Protected
           Data Members</a>
         </h6>
 <div class="informaltable"><table class="table">
@@ -635,7 +765,8 @@ The TCP acceptor type.
                 </td>
 <td>
                   <p>
-                    The underlying implementation of the I/O object.
+                    (Deprecated: Use get_implementation().) The underlying implementation
+                    of the I/O object.
                   </p>
                 </td>
 </tr>
@@ -647,7 +778,8 @@ The TCP acceptor type.
                 </td>
 <td>
                   <p>
-                    The service associated with the I/O object.
+                    (Deprecated: Use get_service().) The service associated with
+                    the I/O object.
                   </p>
                 </td>
 </tr>
@@ -657,10 +789,9 @@ The TCP acceptor type.
           The <a class="link" href="../basic_socket_acceptor.html" title="basic_socket_acceptor"><code class="computeroutput"><span class="identifier">basic_socket_acceptor</span></code></a> class template
           is used for accepting new socket connections.
         </p>
-<a name="boost_asio.reference.ip__tcp.acceptor.thread_safety"></a><h6>
-<a name="id1219771"></a>
-          <a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.thread_safety">Thread
-          Safety</a>
+<h6>
+<a name="boost_asio.reference.ip__tcp.acceptor.h5"></a>
+          <span><a name="boost_asio.reference.ip__tcp.acceptor.thread_safety"></a></span><a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.thread_safety">Thread Safety</a>
         </h6>
 <p>
           <span class="bold"><strong>Distinct</strong></span> <span class="bold"><strong>objects:</strong></span>
@@ -670,9 +801,9 @@ The TCP acceptor type.
           <span class="bold"><strong>Shared</strong></span> <span class="bold"><strong>objects:</strong></span>
           Unsafe.
         </p>
-<a name="boost_asio.reference.ip__tcp.acceptor.example"></a><h6>
-<a name="id1219824"></a>
-          <a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.example">Example</a>
+<h6>
+<a name="boost_asio.reference.ip__tcp.acceptor.h6"></a>
+          <span><a name="boost_asio.reference.ip__tcp.acceptor.example"></a></span><a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.example">Example</a>
         </h6>
 <p>
           Opening a socket acceptor with the SO_REUSEADDR option enabled:
@@ -684,9 +815,9 @@ The TCP acceptor type.
 <span class="identifier">acceptor</span><span class="special">.</span><span class="identifier">bind</span><span class="special">(</span><span class="identifier">endpoint</span><span class="special">);</span>
 <span class="identifier">acceptor</span><span class="special">.</span><span class="identifier">listen</span><span class="special">();</span>
 </pre>
-<a name="boost_asio.reference.ip__tcp.acceptor.requirements"></a><h6>
-<a name="id1220179"></a>
-          <a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.requirements">Requirements</a>
+<h6>
+<a name="boost_asio.reference.ip__tcp.acceptor.h7"></a>
+          <span><a name="boost_asio.reference.ip__tcp.acceptor.requirements"></a></span><a class="link" href="acceptor.html#boost_asio.reference.ip__tcp.acceptor.requirements">Requirements</a>
         </h6>
 <p>
           <span class="bold"><strong>Header: </strong></span><code class="literal">boost/asio/ip/tcp.hpp</code>
@@ -697,7 +828,8 @@ The TCP acceptor type.
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

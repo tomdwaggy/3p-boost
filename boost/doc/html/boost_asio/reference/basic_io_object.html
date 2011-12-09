@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>basic_io_object</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="basic_deadline_timer/wait/overload2.html" title="basic_deadline_timer::wait (2 of 2 overloads)">
@@ -31,12 +31,11 @@
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
     <span class="keyword">typename</span> <a class="link" href="IoObjectService.html" title="I/O object service requirements">IoObjectService</a><span class="special">&gt;</span>
-<span class="keyword">class</span> <span class="identifier">basic_io_object</span> <span class="special">:</span>
-  <span class="identifier">noncopyable</span>
+<span class="keyword">class</span> <span class="identifier">basic_io_object</span>
 </pre>
-<a name="boost_asio.reference.basic_io_object.types"></a><h5>
-<a name="id937238"></a>
-        <a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.types">Types</a>
+<h5>
+<a name="boost_asio.reference.basic_io_object.h0"></a>
+        <span><a name="boost_asio.reference.basic_io_object.types"></a></span><a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -82,10 +81,9 @@
 </tr>
 </tbody>
 </table></div>
-<a name="boost_asio.reference.basic_io_object.member_functions"></a><h5>
-<a name="id937355"></a>
-        <a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.member_functions">Member
-        Functions</a>
+<h5>
+<a name="boost_asio.reference.basic_io_object.h1"></a>
+        <span><a name="boost_asio.reference.basic_io_object.member_functions"></a></span><a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.member_functions">Member Functions</a>
       </h5>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -104,8 +102,7 @@
                 </p>
               </th>
 </tr></thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>
                 <p>
                   <a class="link" href="basic_io_object/get_io_service.html" title="basic_io_object::get_io_service"><span class="bold"><strong>get_io_service</strong></span></a>
@@ -116,25 +113,11 @@
                   Get the io_service associated with the object.
                 </p>
               </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="basic_io_object/io_service.html" title="basic_io_object::io_service"><span class="bold"><strong>io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: use get_io_service().) Get the io_service associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
-<a name="boost_asio.reference.basic_io_object.protected_member_functions"></a><h5>
-<a name="id937473"></a>
-        <a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.protected_member_functions">Protected
+<h5>
+<a name="boost_asio.reference.basic_io_object.h2"></a>
+        <span><a name="boost_asio.reference.basic_io_object.protected_member_functions"></a></span><a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.protected_member_functions">Protected
         Member Functions</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -165,6 +148,45 @@
                 <p>
                   Construct a basic_io_object.
                 </p>
+                <p>
+                  Move-construct a basic_io_object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_io_object/get_implementation.html" title="basic_io_object::get_implementation"><span class="bold"><strong>get_implementation</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the underlying implementation of the I/O object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_io_object/get_service.html" title="basic_io_object::get_service"><span class="bold"><strong>get_service</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the service associated with the I/O object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_io_object/operator_eq_.html" title="basic_io_object::operator="><span class="bold"><strong>operator=</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-assign a basic_io_object.
+                </p>
               </td>
 </tr>
 <tr>
@@ -181,9 +203,9 @@
 </tr>
 </tbody>
 </table></div>
-<a name="boost_asio.reference.basic_io_object.protected_data_members"></a><h5>
-<a name="id937592"></a>
-        <a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.protected_data_members">Protected
+<h5>
+<a name="boost_asio.reference.basic_io_object.h3"></a>
+        <span><a name="boost_asio.reference.basic_io_object.protected_data_members"></a></span><a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.protected_data_members">Protected
         Data Members</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -212,7 +234,8 @@
               </td>
 <td>
                 <p>
-                  The underlying implementation of the I/O object.
+                  (Deprecated: Use get_implementation().) The underlying implementation
+                  of the I/O object.
                 </p>
               </td>
 </tr>
@@ -224,15 +247,24 @@
               </td>
 <td>
                 <p>
-                  The service associated with the I/O object.
+                  (Deprecated: Use get_service().) The service associated with the
+                  I/O object.
                 </p>
               </td>
 </tr>
 </tbody>
 </table></div>
-<a name="boost_asio.reference.basic_io_object.requirements"></a><h5>
-<a name="id937708"></a>
-        <a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.requirements">Requirements</a>
+<h5>
+<a name="boost_asio.reference.basic_io_object.h4"></a>
+        <span><a name="boost_asio.reference.basic_io_object.remarks"></a></span><a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.remarks">Remarks</a>
+      </h5>
+<p>
+        All I/O objects are non-copyable. However, when using C++0x, certain I/O
+        objects do support move construction and move assignment.
+      </p>
+<h5>
+<a name="boost_asio.reference.basic_io_object.h5"></a>
+        <span><a name="boost_asio.reference.basic_io_object.requirements"></a></span><a class="link" href="basic_io_object.html#boost_asio.reference.basic_io_object.requirements">Requirements</a>
       </h5>
 <p>
         <span class="bold"><strong>Header: </strong></span><code class="literal">boost/asio/basic_io_object.hpp</code>
@@ -243,7 +275,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

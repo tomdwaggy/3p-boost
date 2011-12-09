@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>windows::stream_handle</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="windows__random_access_handle_service/write_some_at.html" title="windows::random_access_handle_service::write_some_at">
@@ -27,15 +27,15 @@
 <a name="boost_asio.reference.windows__stream_handle"></a><a class="link" href="windows__stream_handle.html" title="windows::stream_handle">windows::stream_handle</a>
 </h3></div></div></div>
 <p>
-        <a class="indexterm" name="id1391878"></a> 
+        <a class="indexterm" name="id1608524"></a> 
 Typedef for the typical usage of a stream-oriented
         handle.
       </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">basic_stream_handle</span> <span class="identifier">stream_handle</span><span class="special">;</span>
 </pre>
-<a name="boost_asio.reference.windows__stream_handle.types"></a><h5>
-<a name="id1391921"></a>
-        <a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.types">Types</a>
+<h5>
+<a name="boost_asio.reference.windows__stream_handle.h0"></a>
+        <span><a name="boost_asio.reference.windows__stream_handle.types"></a></span><a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -82,12 +82,25 @@ Typedef for the typical usage of a stream-oriented
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__basic_stream_handle/native_type.html" title="windows::basic_stream_handle::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                  <a class="link" href="windows__basic_stream_handle/native_handle_type.html" title="windows::basic_stream_handle::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
                   The native representation of a handle.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_stream_handle/native_type.html" title="windows::basic_stream_handle::native_type"><span class="bold"><strong>native_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  (Deprecated: Use native_handle_type.) The native representation
+                  of a handle.
                 </p>
               </td>
 </tr>
@@ -105,9 +118,9 @@ Typedef for the typical usage of a stream-oriented
 </tr>
 </tbody>
 </table></div>
-<a name="boost_asio.reference.windows__stream_handle.member_functions"></a><h5>
-<a name="id1392095"></a>
-        <a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.member_functions">Member
+<h5>
+<a name="boost_asio.reference.windows__stream_handle.h1"></a>
+        <span><a name="boost_asio.reference.windows__stream_handle.member_functions"></a></span><a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.member_functions">Member
         Functions</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -177,6 +190,9 @@ Typedef for the typical usage of a stream-oriented
                 <p>
                   Construct a basic_stream_handle on an existing native handle.
                 </p>
+                <p>
+                  Move-construct a basic_stream_handle from another.
+                </p>
               </td>
 </tr>
 <tr>
@@ -218,19 +234,6 @@ Typedef for the typical usage of a stream-oriented
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__basic_stream_handle/io_service.html" title="windows::basic_stream_handle::io_service"><span class="bold"><strong>io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: use get_io_service().) Get the io_service associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="windows__basic_stream_handle/is_open.html" title="windows::basic_stream_handle::is_open"><span class="bold"><strong>is_open</strong></span></a>
                 </p>
               </td>
@@ -263,7 +266,31 @@ Typedef for the typical usage of a stream-oriented
               </td>
 <td>
                 <p>
+                  (Deprecated: Use native_handle().) Get the native handle representation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_stream_handle/native_handle.html" title="windows::basic_stream_handle::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
                   Get the native handle representation.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_stream_handle/operator_eq_.html" title="windows::basic_stream_handle::operator="><span class="bold"><strong>operator=</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-assign a basic_stream_handle from another.
                 </p>
               </td>
 </tr>
@@ -293,9 +320,58 @@ Typedef for the typical usage of a stream-oriented
 </tr>
 </tbody>
 </table></div>
-<a name="boost_asio.reference.windows__stream_handle.protected_data_members"></a><h5>
-<a name="id1392542"></a>
-        <a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.protected_data_members">Protected
+<h5>
+<a name="boost_asio.reference.windows__stream_handle.h2"></a>
+        <span><a name="boost_asio.reference.windows__stream_handle.protected_member_functions"></a></span><a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.protected_member_functions">Protected
+        Member Functions</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_stream_handle/get_implementation.html" title="windows::basic_stream_handle::get_implementation"><span class="bold"><strong>get_implementation</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the underlying implementation of the I/O object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_stream_handle/get_service.html" title="windows::basic_stream_handle::get_service"><span class="bold"><strong>get_service</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the service associated with the I/O object.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="boost_asio.reference.windows__stream_handle.h3"></a>
+        <span><a name="boost_asio.reference.windows__stream_handle.protected_data_members"></a></span><a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.protected_data_members">Protected
         Data Members</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -324,7 +400,8 @@ Typedef for the typical usage of a stream-oriented
               </td>
 <td>
                 <p>
-                  The underlying implementation of the I/O object.
+                  (Deprecated: Use get_implementation().) The underlying implementation
+                  of the I/O object.
                 </p>
               </td>
 </tr>
@@ -336,7 +413,8 @@ Typedef for the typical usage of a stream-oriented
               </td>
 <td>
                 <p>
-                  The service associated with the I/O object.
+                  (Deprecated: Use get_service().) The service associated with the
+                  I/O object.
                 </p>
               </td>
 </tr>
@@ -346,9 +424,9 @@ Typedef for the typical usage of a stream-oriented
         The <a class="link" href="windows__basic_stream_handle.html" title="windows::basic_stream_handle"><code class="computeroutput"><span class="identifier">windows</span><span class="special">::</span><span class="identifier">basic_stream_handle</span></code></a> class template
         provides asynchronous and blocking stream-oriented handle functionality.
       </p>
-<a name="boost_asio.reference.windows__stream_handle.thread_safety"></a><h5>
-<a name="id1392687"></a>
-        <a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.thread_safety">Thread
+<h5>
+<a name="boost_asio.reference.windows__stream_handle.h4"></a>
+        <span><a name="boost_asio.reference.windows__stream_handle.thread_safety"></a></span><a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.thread_safety">Thread
         Safety</a>
       </h5>
 <p>
@@ -359,9 +437,9 @@ Typedef for the typical usage of a stream-oriented
         <span class="bold"><strong>Shared</strong></span> <span class="bold"><strong>objects:</strong></span>
         Unsafe.
       </p>
-<a name="boost_asio.reference.windows__stream_handle.requirements"></a><h5>
-<a name="id1392739"></a>
-        <a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.requirements">Requirements</a>
+<h5>
+<a name="boost_asio.reference.windows__stream_handle.h5"></a>
+        <span><a name="boost_asio.reference.windows__stream_handle.requirements"></a></span><a class="link" href="windows__stream_handle.html#boost_asio.reference.windows__stream_handle.requirements">Requirements</a>
       </h5>
 <p>
         <span class="bold"><strong>Header: </strong></span><code class="literal">boost/asio/windows/stream_handle.hpp</code>
@@ -372,7 +450,8 @@ Typedef for the typical usage of a stream-oriented
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

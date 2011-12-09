@@ -2,7 +2,7 @@
 // server.cpp
 // ~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -79,7 +79,7 @@ private:
   void start_accept()
   {
     tcp_connection::pointer new_connection =
-      tcp_connection::create(acceptor_.io_service());
+      tcp_connection::create(acceptor_.get_io_service());
 
     acceptor_.async_accept(new_connection->socket(),
         boost::bind(&tcp_server::handle_accept, this, new_connection,
@@ -92,8 +92,9 @@ private:
     if (!error)
     {
       new_connection->start();
-      start_accept();
     }
+
+    start_accept();
   }
 
   tcp::acceptor acceptor_;

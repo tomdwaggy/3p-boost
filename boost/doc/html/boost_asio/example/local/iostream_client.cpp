@@ -2,7 +2,7 @@
 // stream_client.cpp
 // ~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     stream_protocol::iostream s(ep);
     if (!s)
     {
-      std::cerr << "Unable to connect\n";
+      std::cerr << "Unable to connect: " << s.error().message() << std::endl;
       return 1;
     }
 

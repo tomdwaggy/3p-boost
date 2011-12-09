@@ -1,4 +1,4 @@
-//  Copyright (c) 2001-2010 Hartmut Kaiser
+//  Copyright (c) 2001-2011 Hartmut Kaiser
 // 
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying 
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -26,7 +26,7 @@ struct switch_state_tokens : boost::spirit::lex::lexer<Lexer>
         this->self = identifier [ phoenix::ref(state_) = _state ];
 
         integer = "[0-9]+";
-        this->self("INT") = integer [ _state = phoenix::val("INITIAL") ];
+        this->self("INT") = integer [ _state = "INITIAL" ];
     }
 
     std::string state_;

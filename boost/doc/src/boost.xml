@@ -2,7 +2,7 @@
 <!DOCTYPE boostbook PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
   "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd">
 <boostbook id="boost" xmlns:xi="http://www.w3.org/2001/XInclude"
-           last-revision="$Date: 2010-10-30 13:34:45 -0400 (Sat, 30 Oct 2010) $">
+           last-revision="$Date: 2011-09-08 02:19:23 -0400 (Thu, 08 Sep 2011) $">
   <title>The Boost C++ Libraries BoostBook Documentation Subset</title>
 
   <preface id="about">
@@ -94,6 +94,8 @@
      </libraryinfo>
    </library>
 
+   <xi:include href="chrono.xml"/>
+
    <library name="Circular Buffer" dirname="circular_buffer" html-only="1"
             url="../../libs/circular_buffer/index.html">
      <libraryinfo>
@@ -184,6 +186,8 @@
        <librarycategory name="category:broken"/>
      </libraryinfo>
    </library>
+
+   <xi:include href="container.xml"/>
 
    <library name="Conversion" dirname="conversion" html-only="1"
             url="../../libs/conversion/index.html">
@@ -364,6 +368,8 @@
 
    <xi:include href="../../libs/lambda/doc/lambda.xml"/>
 
+   <xi:include href="lexical_cast.xml"/>
+
    <library name="Math" dirname="math" html-only="1">
      <libraryinfo>
        <author>
@@ -424,6 +430,8 @@
        <librarycategory name="category:math"/>
      </libraryinfo>
    </library>
+
+   <xi:include href="move.xml"/>
 
    <library name="MPL" dirname="mpl" html-only="1">
      <libraryinfo>
@@ -541,6 +549,8 @@
    </library>
 
    <xi:include href="random.xml"/>
+
+   <xi:include href="ratio.xml"/>
 
    <library name="Rational" dirname="rational" html-only="1">
      <libraryinfo>
@@ -749,7 +759,7 @@
     </partintro>
     <xi:include href="../../tools/boostbook/doc/boostbook.xml"/>
     <xi:include href="quickbook.xml"/>
-    <xi:include href="bjam.xml"/>
+    <xi:include href="jam_docs.xml"/>
     <xi:include href="../../tools/build/v2/doc/src/userman.xml"/>
   </part>
 </boostbook>

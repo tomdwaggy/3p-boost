@@ -20,6 +20,7 @@
 #include <iterator>
 #include <algorithm>
 #include <string>
+#include <iomanip>
 
 #if defined BOOST_NO_STRINGSTREAM
 #include <strstream>
@@ -77,6 +78,11 @@ int test_main(int argc, char * argv[] ) {
   os3 << set_close(']');
   os3 << make_tuple();
   BOOST_CHECK (os3.str() == std::string("()[]") );
+  
+  // check width
+  useThisOStringStream os4;
+  os4 << std::setw(10) << make_tuple(1, 2, 3);
+  BOOST_CHECK (os4.str() == std::string("   (1 2 3)") );
 
   std::ofstream tmp("temp.tmp");
 
@@ -119,6 +125,13 @@ int test_main(int argc, char * argv[] ) {
   is3 >> set_open('[');
   is3 >> set_close(']');
   BOOST_CHECK(bool(is3 >> ti2));
+
+  // Make sure that whitespace between elements
+  // is skipped.
+  useThisIStringStream is4("(100 200 300)"); 
+   
+  BOOST_CHECK(bool(is4 >> std::noskipws >> ti1));
+  BOOST_CHECK(ti1 == make_tuple(100, 200, 300));
 
   // Note that strings are problematic:
   // writing a tuple on a stream and reading it back doesn't work in

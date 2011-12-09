@@ -6,6 +6,8 @@
 
 //  See http://www.boost.org/tools/regression for documentation.
 
+#define BOOST_FILESYSTEM_VERSION 3
+
 #include <boost/config/warning_disable.hpp>
 
 #include "detail/tiny_xml.hpp"
@@ -199,6 +201,10 @@ namespace
   {
     std::string result;
     string::size_type start_pos( path.find( "libs/" ) );
+    if ( start_pos == string::npos ) {
+      start_pos = path.find( "tools/" );
+    }
+
     if ( start_pos != string::npos )
     {
       // The path format is ...libs/functional/hash/test/something.test/....      
@@ -214,7 +220,7 @@ namespace
       // file.
 
       std::string interesting;
-      start_pos += 5;
+      start_pos = path.find( '/', start_pos ) + 1;
       string::size_type end_pos( path.find( ".test/", start_pos ) );
       end_pos = path.rfind('/', end_pos);
       if (path.substr(end_pos - 5, 5) == "/test")
@@ -609,7 +615,7 @@ int main( int argc, char ** argv )
         std::cout << "Abort: option --boost-root requires a directory argument\n";
         std::exit(1);
       }
-      boost_root = fs::path( argv[1], fs::native );
+      boost_root = fs::path( argv[1] );
       if ( !boost_root.is_complete() )
         boost_root = ( fs::initial_path() / boost_root ).normalize();
       
@@ -623,7 +629,7 @@ int main( int argc, char ** argv )
         std::cout << "Abort: option --locate-root requires a directory argument\n";
         std::exit(1);
       }
-      locate_root = fs::path( argv[1], fs::native );
+      locate_root = fs::path( argv[1] );
       --argc; ++argv;
     } 
     else if ( std::strcmp( argv[1], "--input-file" ) == 0 )
@@ -644,7 +650,7 @@ int main( int argc, char ** argv )
     }
     else
     {
-      locate_root = fs::path( argv[1], fs::native );
+      locate_root = fs::path( argv[1] );
       --argc; ++argv;
     }
   }
@@ -758,13 +764,13 @@ int main( int argc, char ** argv )
            line_start.find( ".linkonce" ) == string::npos )
     )
     {
-      if ( !test2info.size() )
-      {
-        std::cout << "*****Error - No \"boost-test\" lines encountered.\n"
-                     "     (Usually occurs when bjam was envoked without the --dump-tests option\n"
-                     "      or bjam was envoked in the wrong directory)\n";
-        return 1;
-      }
+      //~ if ( !test2info.size() )
+      //~ {
+        //~ std::cout << "*****Error - No \"boost-test\" lines encountered.\n"
+                     //~ "     (Usually occurs when bjam was envoked without the --dump-tests option\n"
+                     //~ "      or bjam was envoked in the wrong directory)\n";
+        //~ return 1;
+      //~ }
 
       string action( ( line_start.find( "Link-action" ) != string::npos
             || line_start.find( "vc-Link" ) != string::npos 
@@ -792,7 +798,8 @@ int main( int argc, char ** argv )
 
     // these actions are only used to stop the previous action
     else if ( line_start.find( "-Archive" ) != string::npos
-      || line_start.find( "MkDir" ) == 0 )
+      || line_start.find( "MkDir" ) == 0
+      || line_start.find( "common.mkdir" ) == 0 )
     {
       mgr.stop_message( content );
       content.clear();

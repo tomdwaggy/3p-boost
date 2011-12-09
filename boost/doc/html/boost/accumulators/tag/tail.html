@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Struct template tail</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../../accumulators/reference.html#header.boost.accumulators.statistics.tail_hpp" title="Header &lt;boost/accumulators/statistics/tail.hpp&gt;">
 <link rel="prev" href="../impl/tail_impl/is_tail_variate/apply.html" title="Struct template apply">
@@ -35,7 +35,9 @@
 <span class="keyword">struct</span> <a class="link" href="tail.html" title="Struct template tail">tail</a> <span class="special">:</span> <span class="keyword">public</span> boost::accumulators::depends_on&lt;&gt;,
               <span class="keyword">private</span> boost::accumulators::tail_cache_size_named_arg&lt; LeftRight &gt;
 <span class="special">{</span>
-  <span class="keyword">static</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">parameter</span><span class="special">::</span><span class="identifier">keyword</span><span class="special">&lt;</span> <a class="link" href="../tail_cache_size_named_arg.html" title="Struct template tail_cache_size_named_arg">tail_cache_size_named_arg</a><span class="special">&lt;</span> <span class="identifier">LeftRight</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="keyword">const</span> cache_size<span class="special">;</span>  <span class="comment">// tag::tail&lt;LeftRight&gt;::cache_size named parameter </span>
+
+  <span class="comment">// public data members</span>
+  <span class="keyword">static</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">parameter</span><span class="special">::</span><span class="identifier">keyword</span><span class="special">&lt;</span> <a class="link" href="../tail_cache_size_named_arg.html" title="Struct template tail_cache_size_named_arg">tail_cache_size_named_arg</a><span class="special">&lt;</span> <span class="identifier">LeftRight</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="identifier">cache_size</span><span class="special">;</span>  <span class="comment">// tag::tail&lt;LeftRight&gt;::cache_size named parameter </span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

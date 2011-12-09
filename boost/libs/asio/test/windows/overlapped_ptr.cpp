@@ -2,7 +2,7 @@
 // overlapped_ptr.cpp
 // ~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -54,14 +54,14 @@ void test()
 
     win::overlapped_ptr ptr1;
 
-    win::overlapped_ptr ptr2(ios, overlapped_handler_1);
+    win::overlapped_ptr ptr2(ios, &overlapped_handler_1);
     win::overlapped_ptr ptr3(ios, overlapped_handler_2());
 
     // overlapped_ptr functions.
 
     ptr1.reset();
 
-    ptr2.reset(ios, overlapped_handler_1);
+    ptr2.reset(ios, &overlapped_handler_1);
     ptr3.reset(ios, overlapped_handler_2());
 
     OVERLAPPED* ov1 = ptr1.get();

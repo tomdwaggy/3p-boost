@@ -2,7 +2,7 @@
 // buffered_read_stream.cpp
 // ~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -146,7 +146,7 @@ void test_async_operations()
   client_socket.lowest_layer().connect(server_endpoint);
 
   stream_type server_socket(io_service);
-  acceptor.async_accept(server_socket.lowest_layer(), handle_accept);
+  acceptor.async_accept(server_socket.lowest_layer(), &handle_accept);
   io_service.run();
   io_service.reset();
 

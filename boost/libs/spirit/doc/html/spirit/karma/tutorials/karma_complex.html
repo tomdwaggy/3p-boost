@@ -3,10 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Complex - A first more complex generator</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.4.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../tutorials.html" title="Tutorials">
-<link rel="prev" href="semantic_actions.html" title="Semantic Actions">
+<link rel="prev" href="semantic_actions.html" title="Generator Semantic Actions">
 <link rel="next" href="karma_easier_complex.html" title="Complex - Made easier">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -35,7 +35,7 @@
           if the imaginary part happens to be equal to zero. This example will highlight
           the power of <span class="emphasis"><em>Spirit.Karma</em></span> allowing to combine compile
           time definition of formatting rules with runtime based decisions which
-          of the rules to apply. Also this time, we're using <a href="../../../../../phoenix/doc/html/index.html" target="_top">Boost.Phoenix</a>
+          of the rules to apply. Also this time, we're using <a href="../../../../../../../libs/phoenix/doc/html/index.html" target="_top">Boost.Phoenix</a>
           to do the semantic actions.
         </p>
 <p>
@@ -64,8 +64,8 @@
           It has the property to 'succeed' generating only if its argument is true
           (while it never generates any output on its own).
         </p>
-<pre class="programlisting"><span class="keyword">double</span> <span class="identifier">imag</span> <span class="special">=</span> <span class="special">...;</span>     <span class="comment">// imaginary part
-</span>
+<pre class="programlisting"><span class="keyword">double</span> <span class="identifier">imag</span> <span class="special">=</span> <span class="special">...;</span>     <span class="comment">// imaginary part</span>
+
     <span class="identifier">eps</span><span class="special">(</span><span class="identifier">imag</span> <span class="special">!=</span> <span class="number">0</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="char">'('</span> <span class="special">&lt;&lt;</span> <span class="identifier">double_</span> <span class="special">&lt;&lt;</span> <span class="string">", "</span> <span class="special">&lt;&lt;</span> <span class="identifier">double_</span> <span class="special">&lt;&lt;</span> <span class="char">')'</span>
 <span class="special">|</span>   <span class="identifier">double_</span>
 </pre>
@@ -85,7 +85,6 @@
           part is non-zero) or as a single number (if the complex is a real number):
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">OutputIterator</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">generate_complex</span><span class="special">(</span><span class="identifier">OutputIterator</span> <span class="identifier">sink</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">c</span><span class="special">)</span>
@@ -96,14 +95,14 @@
     <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">karma</span><span class="special">::</span><span class="identifier">generate</span><span class="special">;</span>
 
     <span class="keyword">return</span> <span class="identifier">generate</span><span class="special">(</span><span class="identifier">sink</span><span class="special">,</span>
-        <span class="comment">//  Begin grammar
-</span>        <span class="special">(</span>
-            <span class="identifier">eps</span><span class="special">(</span><span class="identifier">c</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()</span> <span class="special">!=</span> <span class="number">0</span><span class="special">)</span> <span class="special">&lt;&lt;</span> 
+        <span class="comment">//  Begin grammar</span>
+        <span class="special">(</span>
+            <span class="identifier">eps</span><span class="special">(</span><span class="identifier">c</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()</span> <span class="special">!=</span> <span class="number">0</span><span class="special">)</span> <span class="special">&lt;&lt;</span>
             <span class="char">'('</span> <span class="special">&lt;&lt;</span> <span class="identifier">double_</span><span class="special">[</span><span class="identifier">_1</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">.</span><span class="identifier">real</span><span class="special">()]</span> <span class="special">&lt;&lt;</span> <span class="string">", "</span> <span class="special">&lt;&lt;</span> <span class="identifier">double_</span><span class="special">[</span><span class="identifier">_1</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">.</span><span class="identifier">imag</span><span class="special">()]</span> <span class="special">&lt;&lt;</span> <span class="char">')'</span>
         <span class="special">|</span>   <span class="identifier">double_</span><span class="special">[</span><span class="identifier">_1</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">.</span><span class="identifier">real</span><span class="special">()]</span>
         <span class="special">)</span>
-        <span class="comment">//  End grammar
-</span>    <span class="special">);</span>
+        <span class="comment">//  End grammar</span>
+    <span class="special">);</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -125,7 +124,7 @@
           <code class="computeroutput"><span class="identifier">_1</span></code> is a Phoenix placeholder
           referring to the attribute of the semantic action's attached generator.
           If you need more information about semantic actions, you may want to read
-          about them in this section: <a class="link" href="semantic_actions.html" title="Semantic Actions">Semantic
+          about them in this section: <a class="link" href="semantic_actions.html" title="Generator Semantic Actions">Semantic
           Actions</a>.
         </p>
 <p>
@@ -141,7 +140,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2010 Joel de Guzman, Hartmut Kaiser<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2011 Joel de Guzman, Hartmut Kaiser<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

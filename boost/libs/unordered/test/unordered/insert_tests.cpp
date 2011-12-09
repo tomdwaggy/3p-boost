@@ -26,6 +26,8 @@ template <class X>
 void unique_insert_tests1(X*,
     test::random_generator generator = test::default_generator)
 {
+    test::check_instances check_;
+
     typedef BOOST_DEDUCED_TYPENAME X::iterator iterator;
     typedef test::ordered<X> ordered;
 
@@ -52,7 +54,7 @@ void unique_insert_tests1(X*,
 
         tracker.compare_key(x, *it);
 
-        if(x.size() < b * old_bucket_count)
+        if(static_cast<double>(x.size()) < b * static_cast<double>(old_bucket_count))
             BOOST_TEST(x.bucket_count() == old_bucket_count);
     }
 
@@ -64,6 +66,9 @@ void equivalent_insert_tests1(X*,
     test::random_generator generator = test::default_generator)
 {
     std::cerr<<"insert(value) tests for containers with equivalent keys.\n";
+
+    test::check_instances check_;
+
 
     X x;
     test::ordered<X> tracker = test::create_ordered(x);
@@ -83,7 +88,7 @@ void equivalent_insert_tests1(X*,
 
         tracker.compare_key(x, *it);
 
-        if(x.size() < b * old_bucket_count)
+        if(static_cast<double>(x.size()) < b * static_cast<double>(old_bucket_count))
             BOOST_TEST(x.bucket_count() == old_bucket_count);
     }
 
@@ -102,6 +107,8 @@ void insert_tests2(X*,
     std::cerr<<"insert(begin(), value) tests.\n";
 
     {
+        test::check_instances check_;
+
         X x;
         tracker_type tracker = test::create_ordered(x);
 
@@ -118,7 +125,7 @@ void insert_tests2(X*,
             BOOST_TEST(*r1 == *r2);
             tracker.compare_key(x, *it);
 
-            if(x.size() < b * old_bucket_count)
+            if(static_cast<double>(x.size()) < b * static_cast<double>(old_bucket_count))
                 BOOST_TEST(x.bucket_count() == old_bucket_count);
         }
 
@@ -128,6 +135,8 @@ void insert_tests2(X*,
     std::cerr<<"insert(end(), value) tests.\n";
 
     {
+        test::check_instances check_;
+
         X x;
         X const& x_const = x;
         tracker_type tracker = test::create_ordered(x);
@@ -145,7 +154,7 @@ void insert_tests2(X*,
             BOOST_TEST(*r1 == *r2);
             tracker.compare_key(x, *it);
 
-            if(x.size() < b * old_bucket_count)
+            if(static_cast<double>(x.size()) < b * static_cast<double>(old_bucket_count))
                 BOOST_TEST(x.bucket_count() == old_bucket_count);
         }
 
@@ -155,6 +164,8 @@ void insert_tests2(X*,
     std::cerr<<"insert(pos, value) tests.\n";
 
     {
+        test::check_instances check_;
+
         X x;
         const_iterator pos = x.begin();
         tracker_type tracker = test::create_ordered(x);
@@ -172,7 +183,7 @@ void insert_tests2(X*,
             BOOST_TEST(*pos == *r2);
             tracker.compare_key(x, *it);
 
-            if(x.size() < b * old_bucket_count)
+            if(static_cast<double>(x.size()) < b * static_cast<double>(old_bucket_count))
                 BOOST_TEST(x.bucket_count() == old_bucket_count);
         }
 
@@ -182,6 +193,8 @@ void insert_tests2(X*,
     std::cerr<<"insert single item range tests.\n";
 
     {
+        test::check_instances check_;
+
         X x;
         tracker_type tracker = test::create_ordered(x);
 
@@ -197,7 +210,7 @@ void insert_tests2(X*,
             tracker.insert(*it);
             tracker.compare_key(x, *it);
 
-            if(x.size() < b * old_bucket_count)
+            if(static_cast<double>(x.size()) < b * static_cast<double>(old_bucket_count))
                 BOOST_TEST(x.bucket_count() == old_bucket_count);
         }
 
@@ -207,6 +220,8 @@ void insert_tests2(X*,
     std::cerr<<"insert range tests.\n";
 
     {
+        test::check_instances check_;
+
         X x;
 
         test::random_values<X> v(1000, generator);
@@ -219,6 +234,8 @@ void insert_tests2(X*,
     std::cerr<<"insert input iterator range tests.\n";
 
     {
+        test::check_instances check_;
+
         X x;
 
         test::random_values<X> v(1000, generator);
@@ -233,6 +250,8 @@ void insert_tests2(X*,
     std::cerr<<"insert copy iterator range tests.\n";
 
     {
+        test::check_instances check_;
+
         X x;
 
         test::random_values<X> v(1000, generator);
@@ -275,7 +294,7 @@ void unique_emplace_tests1(X*,
 
         tracker.compare_key(x, *it);
 
-        if(x.size() < b * old_bucket_count)
+        if(static_cast<double>(x.size()) < b * static_cast<double>(old_bucket_count))
             BOOST_TEST(x.bucket_count() == old_bucket_count);
     }
 
@@ -306,7 +325,7 @@ void equivalent_emplace_tests1(X*,
 
         tracker.compare_key(x, *it);
 
-        if(x.size() < b * old_bucket_count)
+        if(static_cast<double>(x.size()) < b * static_cast<double>(old_bucket_count))
             BOOST_TEST(x.bucket_count() == old_bucket_count);
     }
 
@@ -335,7 +354,7 @@ void map_tests(X*, test::random_generator generator = test::default_generator)
 
         tracker.compare_key(x, *it);
 
-        if(x.size() < b * old_bucket_count)
+        if(static_cast<double>(x.size()) < b * static_cast<double>(old_bucket_count))
             BOOST_TEST(x.bucket_count() == old_bucket_count);
     }
 
@@ -350,6 +369,8 @@ void map_insert_range_test1(X*,
     test::random_generator generator = test::default_generator)
 {
     std::cerr<<"map_insert_range_test1\n";
+
+    test::check_instances check_;
 
     typedef test::list<
         std::pair<
@@ -371,11 +392,13 @@ void map_insert_range_test2(X*,
 {
     std::cerr<<"map_insert_range_test2\n";
 
+    test::check_instances check_;
+
     typedef test::list<
-        std::pair<BOOST_DEDUCED_TYPENAME X::key_type const, int>
+        std::pair<BOOST_DEDUCED_TYPENAME X::key_type const, test::implicitly_convertible>
     > list;
     test::random_values<
-        boost::unordered_map<BOOST_DEDUCED_TYPENAME X::key_type, int>
+        boost::unordered_map<BOOST_DEDUCED_TYPENAME X::key_type, test::implicitly_convertible>
     > v(1000, generator);
     list l(v.begin(), v.end());
 
@@ -490,6 +513,120 @@ UNORDERED_AUTO_TEST(insert_initializer_list_multimap)
 }
 
 #endif
+
+struct overloaded_constructor
+{
+    overloaded_constructor(int x1 = 1, int x2 = 2, int x3 = 3, int x4 = 4)
+      : x1(x1), x2(x2), x3(x3), x4(x4) {}
+
+    int x1, x2, x3, x4;
+    
+    bool operator==(overloaded_constructor const& rhs) const
+    {
+        return x1 == rhs.x1 && x2 == rhs.x2 && x3 == rhs.x3 && x4 == rhs.x4;
+    }
+    
+    friend std::size_t hash_value(overloaded_constructor const& x)
+    {
+        std::size_t hash = 0;
+        boost::hash_combine(hash, x.x1);
+        boost::hash_combine(hash, x.x2);
+        boost::hash_combine(hash, x.x3);
+        boost::hash_combine(hash, x.x4);
+        return hash;
+    }
+};
+
+UNORDERED_AUTO_TEST(map_emplace_test)
+{
+    boost::unordered_map<int, overloaded_constructor> x;
+
+#if !BOOST_WORKAROUND(__SUNPRO_CC, BOOST_TESTED_AT(0x5100))
+    x.emplace();
+    BOOST_TEST(x.find(0) != x.end() &&
+        x.find(0)->second == overloaded_constructor());
+#endif
+
+    x.emplace(2, 3);
+    BOOST_TEST(x.find(2) != x.end() &&
+        x.find(2)->second == overloaded_constructor(3));
+
+#if defined (BOOST_UNORDERED_DEPRECATED_PAIR_CONSTRUCT)
+    x.emplace(1);
+    BOOST_TEST(x.find(1) != x.end() &&
+        x.find(1)->second == overloaded_constructor());
+
+    x.emplace(4, 5, 6);
+    BOOST_TEST(x.find(4) != x.end() &&
+        x.find(4)->second == overloaded_constructor(5, 6));
+
+    x.emplace(7, 8, 9, 10);
+    BOOST_TEST(x.find(7) != x.end() &&
+        x.find(7)->second == overloaded_constructor(8, 9, 10));
+#endif
+}
+
+UNORDERED_AUTO_TEST(set_emplace_test)
+{
+    boost::unordered_set<overloaded_constructor> x;
+    overloaded_constructor check;
+
+#if !BOOST_WORKAROUND(__SUNPRO_CC, BOOST_TESTED_AT(0x5100))
+    x.emplace();
+    BOOST_TEST(x.find(check) != x.end() && *x.find(check) == check);
+#endif
+
+    x.clear();
+    x.emplace(1);
+    check = overloaded_constructor(1);
+    BOOST_TEST(x.find(check) != x.end() && *x.find(check) == check);
+
+    x.clear();
+    x.emplace(2, 3);
+    check = overloaded_constructor(2, 3);
+    BOOST_TEST(x.find(check) != x.end() && *x.find(check) == check);
+
+    x.clear();
+    x.emplace(4, 5, 6);
+    check = overloaded_constructor(4, 5, 6);
+    BOOST_TEST(x.find(check) != x.end() && *x.find(check) == check);
+
+    x.clear();
+    x.emplace(7, 8, 9, 10);
+    check = overloaded_constructor(7, 8, 9, 10);
+    BOOST_TEST(x.find(check) != x.end() && *x.find(check) == check);
+}
+
+UNORDERED_AUTO_TEST(map_emplace_test2)
+{
+    boost::unordered_map<overloaded_constructor, overloaded_constructor> x;
+
+    x.emplace(boost::unordered::piecewise_construct, boost::make_tuple(), boost::make_tuple());
+    BOOST_TEST(x.find(overloaded_constructor()) != x.end() &&
+        x.find(overloaded_constructor())->second == overloaded_constructor());
+
+    x.emplace(boost::unordered::piecewise_construct, boost::make_tuple(1), boost::make_tuple());
+    BOOST_TEST(x.find(overloaded_constructor(1)) != x.end() &&
+        x.find(overloaded_constructor(1))->second == overloaded_constructor());
+
+    x.emplace(boost::unordered::piecewise_construct, boost::make_tuple(2,3), boost::make_tuple(4,5,6));
+    BOOST_TEST(x.find(overloaded_constructor(2,3)) != x.end() &&
+        x.find(overloaded_constructor(2,3))->second == overloaded_constructor(4,5,6));
+}
+
+UNORDERED_AUTO_TEST(set_emplace_test2)
+{
+    boost::unordered_set<std::pair<overloaded_constructor, overloaded_constructor> > x;
+    std::pair<overloaded_constructor, overloaded_constructor> check;
+
+    x.emplace(boost::unordered::piecewise_construct, boost::make_tuple(), boost::make_tuple());
+    BOOST_TEST(x.find(check) != x.end() && *x.find(check) == check);
+
+    x.clear();
+    x.emplace(boost::unordered::piecewise_construct, boost::make_tuple(1), boost::make_tuple(2,3));
+    check = std::make_pair(overloaded_constructor(1), overloaded_constructor(2, 3));;
+    BOOST_TEST(x.find(check) != x.end() && *x.find(check) == check);
+}
 
 }
 

@@ -81,7 +81,7 @@ void bcp_implementation::enable_unix_lines()
 void bcp_implementation::set_boost_path(const char* p)
 {
    // Hack to strip trailing slashes from the path 
-   m_boost_path = (fs::path(p, fs::native) / "boost").parent_path(); 
+   m_boost_path = (fs::path(p) / "boost").parent_path(); 
    fs::path check = m_boost_path / "boost" / "version.hpp";
    if(!fs::exists(check))
    {
@@ -94,7 +94,7 @@ void bcp_implementation::set_boost_path(const char* p)
 
 void bcp_implementation::set_destination(const char* p)
 {
-   m_dest_path = fs::path(p, fs::native);
+   m_dest_path = fs::path(p);
 }
 
 void bcp_implementation::add_module(const char* p)
@@ -121,7 +121,7 @@ void bcp_implementation::set_namespace_list(bool b)
 fs::path get_short_path(const fs::path& p)
 {
    // truncate path no more than "x/y":
-   std::string s = p.string();
+   std::string s = p.generic_string();
    std::string::size_type n = s.find('/');
    if(n != std::string::npos)
    {
@@ -140,7 +140,7 @@ int bcp_implementation::run()
    if(!m_list_mode && !m_license_mode && !fs::exists(m_dest_path))
    {
       std::string msg("Destination path does not exist: ");
-      msg.append(m_dest_path.native_file_string());
+      msg.append(m_dest_path.string());
       std::runtime_error e(msg);
       boost::throw_exception(e);
    }
@@ -190,15 +190,8 @@ int bcp_implementation::run()
       //
       fs::path module;
       fs::path exmodule;
-      try{
-         module = fs::path(*i);
-         exmodule = fs::path(*i + ".hpp");
-      }
-      catch(...)
-      {
-         module = fs::path(*i, fs::native);
-         exmodule = fs::path(*i + ".hpp", fs::native);
-      }
+      module = fs::path(*i);
+      exmodule = fs::path(*i + ".hpp");
       
       if(m_scan_mode)
       {
@@ -251,7 +244,7 @@ int bcp_implementation::run()
       std::cout << "\n\nThe top level namespaces found for header and source files were:\n";
       while(i != j)
       {
-         if(regex_match(i->second.string(), important_file))
+         if(regex_match(i->second.generic_string(), important_file))
             std::cout << i->first << " (from " << i->second << ")" << std::endl;
          ++i;
       }
@@ -260,7 +253,7 @@ int bcp_implementation::run()
       std::cout << "\n\nThe top level namespaces found for all other source files were:\n";
       while(i != j)
       {
-         if(!regex_match(i->second.string(), important_file))
+         if(!regex_match(i->second.generic_string(), important_file))
             std::cout << i->first << " (from " << i->second << ")" << std::endl;
          ++i;
       }
