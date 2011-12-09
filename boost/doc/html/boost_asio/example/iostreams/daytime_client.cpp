@@ -2,7 +2,7 @@
 // daytime_client.cpp
 // ~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -25,6 +25,12 @@ int main(int argc, char* argv[])
     }
 
     tcp::iostream s(argv[1], "daytime");
+    if (!s)
+    {
+      std::cout << "Unable to connect: " << s.error().message() << std::endl;
+      return 1;
+    }
+
     std::string line;
     std::getline(s, line);
     std::cout << line << std::endl;

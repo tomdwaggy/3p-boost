@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+# Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 #
 # Distributed under the Boost Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,12 +24,11 @@ exe http_server
   : <lib>@boost/libs/thread/build/boost_thread
     <lib>@boost/libs/system/build/boost_system
     file_handler.cpp
+    main.cpp
     mime_types.cpp
-    posix_main.cpp
     reply.cpp
     request_parser.cpp
     server.cpp
-    win_main.cpp
   : <include>$(BOOST_ROOT)
     <include>../../../../..
     <define>BOOST_ALL_NO_LIB=1

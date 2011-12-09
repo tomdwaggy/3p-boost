@@ -3,15 +3,19 @@
 # subject to the Boost Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+import modules ;
 using quickbook ;
+using auto-index ;
 
 path-constant boost-images : ../../../doc/src/images ;
+path-constant here : . ;
 
 xml type_traits : type_traits.qbk ;
 boostbook standalone
     :
         type_traits
     :
+        # Index generation:
         # Path for links to Boost:
         <xsl:param>boost.root=../../../..
         
@@ -55,11 +59,14 @@ boostbook standalone
         <format>pdf:<xsl:param>admon.graphics.extension=".svg"
         <format>pdf:<xsl:param>admon.graphics.path=$(boost-images)/
         <format>pdf:<xsl:param>boost.url.prefix=http://www.boost.org/doc/libs/release/libs/type_traits/doc/html
+        <format>pdf:<auto-index-internal>off
+        <format>html:<auto-index-internal>on
+        <auto-index-script>$(here)/index.idx
+        <auto-index-prefix>$(here)/../../.. 
+        <auto-index>on
     ;
 
-#install html : ../../../doc/html/boostbook.css ;
-#install ../ : ../../../boost.png ;
-
+install pdf-install : standalone : <install-type>PDF <location>. <name>type_traits.pdf ;
 
 
 

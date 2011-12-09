@@ -452,7 +452,7 @@ void test_bessel(T, const char* name)
         SC_(1), SC_(10667654)/(1024*1024), SC_(1.24591331097191900488116495350277530373473085499043086981229e-7),
     };
 
-    static const boost::array<boost::array<T, 3>, 15> jn_data = {
+    static const boost::array<boost::array<T, 3>, 16> jn_data = {
         // This first one is a modified test case from https://svn.boost.org/trac/boost/ticket/2733
         SC_(-1), SC_(1.25), SC_(-0.510623260319880467069474837274910375352924050139633057168856),
         SC_(2), SC_(0), SC_(0),
@@ -469,6 +469,7 @@ void test_bessel(T, const char* name)
         SC_(10), SC_(1e+06), SC_(-0.000331079311760448874126495855903574446020957243277028930713243),
         SC_(1e+02), SC_(8e+01), SC_(4.606553064823477354141298259169874909670e-06),
         SC_(1e+03), SC_(1e+05), SC_(1.283178112502480365195139312635384057363e-03),
+        SC_(10), SC_(1e-100), SC_(2.69114445546737213403880070546737213403880070546737213403880e-1010),
     };
     do_test_cyl_bessel_j(j0_data, name, "Bessel J0: Mathworld Data");
     do_test_cyl_bessel_j(j0_tricky, name, "Bessel J0: Mathworld Data (Tricky cases)");
@@ -482,7 +483,7 @@ void test_bessel(T, const char* name)
     do_test_cyl_bessel_j_int(j1_tricky, name, "Bessel J1: Mathworld Data (tricky cases) (Integer Version)");
     do_test_cyl_bessel_j_int(jn_data, name, "Bessel JN: Mathworld Data (Integer Version)");
 
-    static const boost::array<boost::array<T, 3>, 17> jv_data = {
+    static const boost::array<boost::array<T, 3>, 18> jv_data = {
         //SC_(-2.4), SC_(0), std::numeric_limits<T>::infinity(),
         SC_(2457)/1024, SC_(1)/1024, SC_(3.80739920118603335646474073457326714709615200130620574875292e-9),
         SC_(5.5), SC_(3217)/1024, SC_(0.0281933076257506091621579544064767140470089107926550720453038),
@@ -501,9 +502,19 @@ void test_bessel(T, const char* name)
         SC_(10486074) / (1024*1024), SC_(1e+02), SC_(-0.0547064914615137807616774867984047583596945624129838091326863),
         SC_(10486074) / (1024*1024), SC_(2e+04), SC_(-0.00556783614400875611650958980796060611309029233226596737701688),
         SC_(-10486074) / (1024*1024), SC_(1e+02), SC_(-0.0547613660316806551338637153942604550779513947674222863858713),
+        // Bug report https://svn.boost.org/trac/boost/ticket/4812:
+        SC_(1.5), SC_(8034)/1024, SC_(0.0339477646369710610146236955872928005087352629422508823945264),
     };
     do_test_cyl_bessel_j(jv_data, name, "Bessel J: Mathworld Data");
-
+    static const boost::array<boost::array<T, 3>, 4> jv_large_data = {
+        // Bug report https://svn.boost.org/trac/boost/ticket/5560:
+        SC_(-0.5), static_cast<T>(std::ldexp(0.5, -683)), SC_(7.14823099969225685526188875418476476336424046896822867989728e102),
+        SC_(256), SC_(512), SC_(0.00671672065717513246956991122723250578101154313313749938944675),
+        SC_(-256), SC_(8), SC_(1.46866142030022704638298523775638527553596432641223316232692e-353),
+        SC_(-2.5), SC_(4), SC_(-0.0145679476685218007666785535204236327832335803441449596297004),
+    };
+    if(jv_large_data[0][1] != 0)
+      do_test_cyl_bessel_j(jv_data, name, "Bessel J: Mathworld Data (large values)");
     #undef SC_
 
 #include "bessel_j_int_data.ipp"

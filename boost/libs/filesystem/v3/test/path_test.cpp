@@ -13,6 +13,17 @@
 //  on basename(), extension(), and change_extension() tests from the original
 //  convenience_test.cpp by Vladimir Prus.
 
+//--------------------------------------------------------------------------------------//
+//                                                                                      //
+//                                     Caution                                          //
+//                                                                                      //
+//  The class path relational operators (==, !=, <, etc.) on Windows treat slash and    //
+//  backslash as equal. Thus any tests on Windows where the difference between slash    //
+//  and backslash is significant should compare based on native observers rather than   //
+//  directly on path objects.                                                           //
+//                                                                                      //
+//--------------------------------------------------------------------------------------//
+
 #define BOOST_FILESYSTEM_VERSION 3
 
 #include <boost/config.hpp>
@@ -44,6 +55,7 @@ namespace fs = boost::filesystem;
 using boost::filesystem::path;
 
 #include <boost/detail/lightweight_test.hpp>
+#include <boost/detail/lightweight_main.hpp>
 
 #define PATH_CHECK(a, b) check(a, b, __FILE__, __LINE__)
 #define CHECK_EQUAL(a,b) check_equal(a, b, __FILE__, __LINE__)
@@ -414,11 +426,11 @@ namespace
     if (platform == "Windows")
     {
       BOOST_TEST(path("foo\\bar") == "foo/bar");
-      BOOST_TEST((b / a).string() == "b\\a");
-      BOOST_TEST((bs / a).string() == "b\\a");
-      BOOST_TEST((bcs / a).string() == "b\\a");
-      BOOST_TEST((b / as).string() == "b\\a");
-      BOOST_TEST((b / acs).string() == "b\\a");
+      BOOST_TEST((b / a).native() == path("b\\a").native());
+      BOOST_TEST((bs / a).native() == path("b\\a").native());
+      BOOST_TEST((bcs / a).native() == path("b\\a").native());
+      BOOST_TEST((b / as).native() == path("b\\a").native());
+      BOOST_TEST((b / acs).native() == path("b\\a").native());
       PATH_CHECK(path("a") / "b", "a\\b");
       PATH_CHECK(path("..") / "", "..");
       PATH_CHECK(path("foo") / path("bar"), "foo\\bar"); // path arg
@@ -1058,6 +1070,26 @@ namespace
 
     if (platform == "Windows")
     {
+ 
+      //p = q = L"\\\\?\\";
+      //BOOST_TEST(p.relative_path().string() == "");
+      //BOOST_TEST(p.parent_path().string() == "");
+      //BOOST_TEST_EQ(q.remove_filename().string(), p.parent_path().string());
+      //BOOST_TEST(p.filename() == "");
+      //BOOST_TEST(p.stem() == "");
+      //BOOST_TEST(p.extension() == "");
+      //BOOST_TEST(p.root_name() == "");
+      //BOOST_TEST(p.root_directory() == "");
+      //BOOST_TEST(p.root_path().string() == "");
+      //BOOST_TEST(!p.has_root_path());
+      //BOOST_TEST(!p.has_root_name());
+      //BOOST_TEST(!p.has_root_directory());
+      //BOOST_TEST(!p.has_relative_path());
+      //BOOST_TEST(!p.has_filename());
+      //BOOST_TEST(!p.has_stem());
+      //BOOST_TEST(!p.has_extension());
+      //BOOST_TEST(!p.has_parent_path());
+      //BOOST_TEST(!p.is_absolute());
 
       p = q = path("c:");
       BOOST_TEST(p.relative_path().string() == "");
@@ -1074,6 +1106,22 @@ namespace
       BOOST_TEST(p.has_filename());
       BOOST_TEST(!p.has_parent_path());
       BOOST_TEST(!p.is_absolute());
+ 
+      //p = q = path(L"\\\\?\\c:");
+      //BOOST_TEST(p.relative_path().string() == "");
+      //BOOST_TEST(p.parent_path().string() == "");
+      //BOOST_TEST_EQ(q.remove_filename().string(), p.parent_path().string());
+      //BOOST_TEST(p.filename() == "c:");
+      //BOOST_TEST(p.root_name() == "c:");
+      //BOOST_TEST(p.root_directory() == "");
+      //BOOST_TEST(p.root_path().string() == "c:");
+      //BOOST_TEST(p.has_root_path());
+      //BOOST_TEST(p.has_root_name());
+      //BOOST_TEST(!p.has_root_directory());
+      //BOOST_TEST(!p.has_relative_path());
+      //BOOST_TEST(p.has_filename());
+      //BOOST_TEST(!p.has_parent_path());
+      //BOOST_TEST(!p.is_absolute());
 
       p = q = path("c:foo");
       BOOST_TEST(p.relative_path().string() == "foo");
@@ -1090,6 +1138,22 @@ namespace
       BOOST_TEST(p.has_filename());
       BOOST_TEST(p.has_parent_path());
       BOOST_TEST(!p.is_absolute());
+
+      //p = q = path(L"\\\\?\\c:foo");
+      //BOOST_TEST(p.relative_path().string() == "foo");
+      //BOOST_TEST(p.parent_path().string() == "c:");
+      //BOOST_TEST_EQ(q.remove_filename().string(), p.parent_path().string());
+      //BOOST_TEST(p.filename() == "foo");
+      //BOOST_TEST(p.root_name() == "c:");
+      //BOOST_TEST(p.root_directory() == "");
+      //BOOST_TEST(p.root_path().string() == "c:");
+      //BOOST_TEST(p.has_root_path());
+      //BOOST_TEST(p.has_root_name());
+      //BOOST_TEST(!p.has_root_directory());
+      //BOOST_TEST(p.has_relative_path());
+      //BOOST_TEST(p.has_filename());
+      //BOOST_TEST(p.has_parent_path());
+      //BOOST_TEST(!p.is_absolute());
    
       p = q = path("c:/");
       BOOST_TEST(p.relative_path().string() == "");
@@ -1566,6 +1630,24 @@ namespace
     BOOST_TEST(path("a/b").replace_extension(".c") == "a/b.c");
     BOOST_TEST_EQ(path("a.txt/b").replace_extension(".c"), "a.txt/b.c"); // ticket 4702
   }
+  
+  //  make_preferred_tests  ------------------------------------------------------------//
+
+  void make_preferred_tests()
+  {
+    std::cout << "make_preferred_tests..." << std::endl;
+
+    if (platform == "Windows")
+    {
+      BOOST_TEST(path("//abc\\def/ghi").make_preferred().native()
+        == path("\\\\abc\\def\\ghi").native());
+    }
+    else
+    {
+      BOOST_TEST(path("//abc\\def/ghi").make_preferred().native()
+        == path("//abc\\def/ghi").native());
+    }
+  }
 
 } // unnamed namespace
 
@@ -1575,7 +1657,7 @@ namespace
 //                                                                                      //
 //--------------------------------------------------------------------------------------//
 
-int main(int, char*[])
+int cpp_main(int, char*[])
 {
   // The choice of platform is make at runtime rather than compile-time
   // so that compile errors for all platforms will be detected even though
@@ -1604,6 +1686,7 @@ int main(int, char*[])
   exception_tests();
   name_function_tests();
   replace_extension_tests();
+  make_preferred_tests();
 
   // verify deprecated names still available
 

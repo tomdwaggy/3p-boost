@@ -3,7 +3,7 @@
 
     http://www.boost.org/
 
-    Copyright (c) 2001-2010 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2011 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -138,15 +138,15 @@ int print_copyright()
         "Wave: A Standard conformant C++ preprocessor based on the Boost.Wave library",
         "http://www.boost.org/",
         "",
-        "Copyright (c) 2001-2010 Hartmut Kaiser, Distributed under the Boost",
+        "Copyright (c) 2001-2011 Hartmut Kaiser, Distributed under the Boost",
         "Software License, Version 1.0. (See accompanying file",
         "LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)",
         0
     };
-    
+
     for (int i = 0; 0 != copyright[i]; ++i)
         cout << copyright[i] << endl;
-        
+
     return 0;                       // exit app
 }
 
@@ -216,7 +216,7 @@ namespace cmd_line_utils {
             else {
             // store this path as an user path
                 p->paths.push_back(t);
-            }            
+            }
         }
     };
 
@@ -236,7 +236,7 @@ namespace cmd_line_utils {
             }
             return false;
         }
-        
+
     vector<std::string> options;
     std::string line;
 
@@ -245,7 +245,7 @@ namespace cmd_line_utils {
             std::string::size_type pos = line.find_first_not_of(" \t");
             if (pos == std::string::npos) 
                 continue;
-            
+
         // skip comment lines
             if ('#' != line[pos]) {
             // strip leading and trailing whitespace
@@ -281,7 +281,7 @@ namespace cmd_line_utils {
         }
         return file;
     }
-    
+
 ///////////////////////////////////////////////////////////////////////////////
 }
 
@@ -311,7 +311,7 @@ namespace {
         :   print_time(false), outstrm(outstrm_)
         {
         }
-        
+
         ~auto_stop_watch()
         {
             if (print_time) {
@@ -320,7 +320,7 @@ namespace {
                       << std::endl;
             }
         }
-    
+
         void set_print_time(bool print_time_)
         {
             print_time = print_time_;
@@ -350,7 +350,7 @@ namespace {
                       "end-of-file while writing to the stream\n";
         }
         return result;
-    }                            
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     //  Retrieve the position of a macro definition
@@ -364,7 +364,7 @@ namespace {
         bool is_predefined = false;
         std::vector<typename Context::token_type> parameters;
         typename Context::token_sequence_type definition;
-        
+
         return ctx.get_macro_definition(name, has_parameters, is_predefined, 
             pos, parameters, definition);
     }
@@ -422,7 +422,7 @@ namespace {
 
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////////////
     //  Read one logical line of text
     inline bool 
@@ -539,7 +539,7 @@ namespace {
         fs::path macronames_file (boost::wave::util::create_path(filename));
 
         if (macronames_file != "-") {
-            macronames_file = fs::complete(macronames_file);
+            macronames_file = boost::wave::util::complete_path(macronames_file);
             fs::create_directories(boost::wave::util::branch_path(macronames_file));
             macronames_out.open(macronames_file.string().c_str());
             if (!macronames_out.is_open()) {
@@ -560,13 +560,13 @@ namespace {
         for (name_iterator it = ctx.macro_names_begin(); it != end; ++it) 
         {
             typedef std::vector<context_type::token_type> parameters_type;
-            
+
         bool has_pars = false;
         bool predef = false;
         context_type::position_type pos;
         parameters_type pars;
         context_type::token_sequence_type def;
-            
+
             if (ctx.get_macro_definition(*it, has_pars, predef, pos, pars, def))
             {
                 macronames_out << (predef ? "-P" : "-D") << *it;
@@ -608,7 +608,7 @@ namespace {
         fs::path macrocounts_file (boost::wave::util::create_path(filename));
 
         if (macrocounts_file != "-") {
-            macrocounts_file = fs::complete(macrocounts_file);
+            macrocounts_file = boost::wave::util::complete_path(macrocounts_file);
             fs::create_directories(boost::wave::util::branch_path(macrocounts_file));
             macrocounts_out.open(macrocounts_file.string().c_str());
             if (!macrocounts_out.is_open()) {
@@ -666,7 +666,7 @@ int error_count = 0;
                                    std::istreambuf_iterator<char>());
 #endif 
         }
-        
+
     // The preprocessing of the input stream is done on the fly behind the 
     // scenes during iteration over the context_type::iterator_type stream.
     std::ofstream output;
@@ -752,22 +752,31 @@ int error_count = 0;
     // enable preserving comments mode
     bool preserve_comments = false;
     bool preserve_whitespace = false;
+    bool preserve_bol_whitespace = false;
 
         if (vm.count("preserve")) {
         int preserve = vm["preserve"].as<int>();
 
             switch(preserve) {
-            case 0:   break;
-            case 2:
+            case 0:   break;                // preserve no whitespace
+            case 3:                         // preserve all whitespace
                 preserve_whitespace = true;
-                /* fall through */
-            case 1:
                 preserve_comments = true;
+                preserve_bol_whitespace = true;
+                break;
+
+            case 2:                         // preserve comments and BOL whitespace only
+                preserve_comments = true;
+                preserve_bol_whitespace = true;
+                break;
+
+            case 1:                         // preserve BOL whitespace only
+                preserve_bol_whitespace = true;
                 break;
 
             default:
                 cerr << "wave: bogus preserve whitespace option value: " 
-                     << preserve << ", should be 0, 1, or 2" << endl;
+                     << preserve << ", should be 0, 1, 2, or 3" << endl;
                 return -1;
             }
         }
@@ -785,8 +794,9 @@ int error_count = 0;
     bool allow_output = true;   // will be manipulated from inside the hooks object
     std::string default_outfile;  // will be used from inside the hooks object
     trace_macro_expansion<token_type> hooks(preserve_whitespace, 
-        output, traceout, includelistout, listguardsout, enable_trace, 
-        enable_system_command, allow_output, default_outfile);
+        preserve_bol_whitespace, output, traceout, includelistout, 
+        listguardsout, enable_trace, enable_system_command, allow_output, 
+        default_outfile);
 
     // enable macro invocation count, if appropriate
         if (vm.count("macrocounts")) 
@@ -797,6 +807,13 @@ int error_count = 0;
 #if BOOST_WAVE_SUPPORT_VARIADICS_PLACEMARKERS != 0
     // enable C99 mode, if appropriate (implies variadics)
         if (vm.count("c99")) {
+#if BOOST_WAVE_SUPPORT_CPP0X != 0
+            if (vm.count("c++0x")) {
+                cerr << "wave: multiple language options specified: --c99 "
+                        "and --c++0x" << endl;
+                return -1;
+            }
+#endif
             ctx.set_language(
                 boost::wave::language_support(
                     boost::wave::support_c99 
@@ -816,6 +833,29 @@ int error_count = 0;
             ctx.set_language(boost::wave::enable_variadics(ctx.get_language()));
         }
 #endif // BOOST_WAVE_SUPPORT_VARIADICS_PLACEMARKERS != 0
+#if BOOST_WAVE_SUPPORT_CPP0X != 0
+        if (vm.count("c++0x")) {
+            if (vm.count("c99")) {
+                cerr << "wave: multiple language options specified: --c99 "
+                        "and --c++0x" << endl;
+                return -1;
+            }
+            ctx.set_language(
+                boost::wave::language_support(
+                    boost::wave::support_cpp0x
+                 |  boost::wave::support_option_convert_trigraphs 
+                 |  boost::wave::support_option_long_long 
+                 |  boost::wave::support_option_emit_line_directives 
+#if BOOST_WAVE_SUPPORT_PRAGMA_ONCE != 0
+                 |  boost::wave::support_option_include_guard_detection
+#endif
+#if BOOST_WAVE_EMIT_PRAGMA_DIRECTIVES != 0
+                 |  boost::wave::support_option_emit_pragma_directives
+#endif
+                 |  boost::wave::support_option_insert_whitespace
+                ));
+        }
+#endif // BOOST_WAVE_SUPPORT_CPP0X != 0
 
     // enable long long support, if appropriate
         if (vm.count("long_long")) {
@@ -831,13 +871,13 @@ int error_count = 0;
                     ctx.get_language(), false));
         }
 #endif
-        
+
     // enable preserving comments mode
         if (preserve_comments) {
             ctx.set_language(
                 boost::wave::enable_preserve_comments(ctx.get_language()));
         }
-        
+
     // control the generation of #line directives
         if (vm.count("line")) {
             int lineopt = vm["line"].as<int>();
@@ -870,7 +910,7 @@ int error_count = 0;
     // add include directories to the system include search paths
         if (vm.count("sysinclude")) {
           vector<std::string> syspaths = vm["sysinclude"].as<vector<std::string> >();
-        
+
             vector<std::string>::const_iterator end = syspaths.end();
             for (vector<std::string>::const_iterator cit = syspaths.begin(); 
                  cit != end; ++cit)
@@ -878,7 +918,7 @@ int error_count = 0;
                 ctx.add_sysinclude_path(cmd_line_utils::trim_quotes(*cit).c_str());
             }
         }
-        
+
     // add include directories to the include search paths
         if (vm.count("include")) {
             cmd_line_utils::include_paths const &ip = 
@@ -894,7 +934,7 @@ int error_count = 0;
         // if -I- was given on the command line, this has to be propagated
             if (ip.seen_separator) 
                 ctx.set_sysinclude_delimiter();
-                 
+
         // add system include directories to the include path
             vector<std::string>::const_iterator sysend = ip.syspaths.end();
             for (vector<std::string>::const_iterator syscit = ip.syspaths.begin(); 
@@ -903,7 +943,7 @@ int error_count = 0;
                 ctx.add_sysinclude_path(cmd_line_utils::trim_quotes(*syscit).c_str());
             }
         }
-    
+
     // add additional defined macros 
         if (vm.count("define")) {
           vector<std::string> const &macros = vm["define"].as<vector<std::string> >();
@@ -939,6 +979,20 @@ int error_count = 0;
             }
         }
 
+#if BOOST_WAVE_USE_DEPRECIATED_PREPROCESSING_HOOKS == 0
+    // suppress expansion of specified macros
+        if (vm.count("noexpand")) {
+            vector<std::string> const &noexpandmacros = 
+                vm["noexpand"].as<vector<std::string> >();
+            vector<std::string>::const_iterator end = noexpandmacros.end();
+            for (vector<std::string>::const_iterator cit = noexpandmacros.begin(); 
+                 cit != end; ++cit)
+            {
+                ctx.get_hooks().add_noexpandmacro(*cit);
+            }
+        }
+#endif
+
     // maximal include nesting depth
         if (vm.count("nesting")) {
             int max_depth = vm["nesting"].as<int>();
@@ -949,7 +1003,7 @@ int error_count = 0;
             }
             ctx.set_max_include_nesting_depth(max_depth);
         }
-        
+
     // open the output file
         if (vm.count("output")) {
         // try to open the file, where to put the preprocessed output
@@ -961,7 +1015,7 @@ int error_count = 0;
                 default_outfile = "-";
             }
             else {
-                out_file = fs::complete(out_file);
+                out_file = boost::wave::util::complete_path(out_file);
                 fs::create_directories(boost::wave::util::branch_path(out_file));
                 output.open(out_file.string().c_str());
                 if (!output.is_open()) {
@@ -995,17 +1049,17 @@ int error_count = 0;
     //  we assume the session to be interactive if input is stdin and output is 
     //  stdout and the output is not inhibited
     bool is_interactive = input_is_stdin && !output.is_open() && allow_output;
-    
+
         if (is_interactive) {
         // if interactive we don't warn for missing endif's etc.
             ctx.set_language(
-                boost::wave::enable_single_line(ctx.get_language()));
+                boost::wave::enable_single_line(ctx.get_language()), false);
         }
-        
+
     // analyze the input file
     context_type::iterator_type first = ctx.begin();
     context_type::iterator_type last = ctx.end();
-    
+
     // preprocess the required include files 
         if (vm.count("forceinclude")) {
         // add the filenames to force as include files in _reverse_ order
@@ -1039,7 +1093,7 @@ int error_count = 0;
         do {
         // loop over all generated tokens outputting the generated text 
         bool finished = false;
-        
+
             if (input_is_stdin) {
                 if (is_interactive) 
                     cout << ">>> ";     // prompt if is interactive
@@ -1050,16 +1104,16 @@ int error_count = 0;
                     break;        // end of input reached
                 first = ctx.begin(instring.begin(), instring.end());
             }
-            
+
         bool need_to_advanve = false;
-        
+
             do {
                 try {
                     if (need_to_advanve) {
                         ++first;
                         need_to_advanve = false;
                     }
-                        
+
                     while (first != last) {
                     // store the last known good token position
                         current_position = (*first).get_position();
@@ -1077,7 +1131,7 @@ int error_count = 0;
                             else
                                 cout << (*first).get_value();
                         }
-                        
+
                     // advance to the next token
                         ++first;
                     }
@@ -1161,12 +1215,12 @@ main (int argc, char *argv[])
              << "               using a different configuration (see wave_config.hpp)."
              << endl;
     }
-    
+
     // analyze the command line options and arguments
     try {
     // declare the options allowed on the command line only
     po::options_description desc_cmdline ("Options allowed on the command line only");
-        
+
         desc_cmdline.add_options()
             ("help,h", "print out program usage (this message)")
             ("version,v", "print the version number")
@@ -1196,10 +1250,14 @@ main (int argc, char *argv[])
                 "specify a macro to predefine (as macro[=[value]])")
             ("undefine,U", po::value<vector<std::string> >()->composing(), 
                 "specify a macro to undefine")
+#if BOOST_WAVE_USE_DEPRECIATED_PREPROCESSING_HOOKS == 0
+            ("noexpand,N", po::value<vector<std::string> >()->composing(), 
+                "specify a macro name, which should not be expanded")
+#endif
             ("nesting,n", po::value<int>(), 
                 "specify a new maximal include nesting depth")
         ;
-        
+
     po::options_description desc_ext ("Extended options (allowed everywhere)");
 
         desc_ext.add_options()
@@ -1212,6 +1270,9 @@ main (int argc, char *argv[])
             ("variadics", "enable certain C99 extensions in C++ mode")
             ("c99", "enable C99 mode (implies --variadics)")
 #endif 
+#if BOOST_WAVE_SUPPORT_CPP0X != 0
+            ("c++0x", "enable C++0x mode (implies --variadics and --long_long)")
+#endif 
             ("listincludes,l", po::value<std::string>(), 
                 "list names of included files to a file [arg] or to stdout [-]")
             ("macronames,m", po::value<std::string>(), 
@@ -1221,8 +1282,9 @@ main (int argc, char *argv[])
             ("preserve,p", po::value<int>()->default_value(0), 
                 "preserve whitespace\n"
                             "0: no whitespace is preserved (default),\n"
-                            "1: comments are preserved,\n" 
-                            "2: all whitespace is preserved")
+                            "1: begin of line whitespace is preserved,\n" 
+                            "2: comments and begin of line whitespace is preserved,\n" 
+                            "3: all whitespace is preserved")
             ("line,L", po::value<int>()->default_value(1), 
                 "control the generation of #line directives\n"
                             "0: no #line directives are generated,\n"
@@ -1247,21 +1309,21 @@ main (int argc, char *argv[])
                 "or 'wave.state' [-] (interactive mode only)")
 #endif
         ;
-    
+
     // combine the options for the different usage schemes
     po::options_description desc_overall_cmdline;
     po::options_description desc_overall_cfgfile;
 
         desc_overall_cmdline.add(desc_cmdline).add(desc_generic).add(desc_ext);
         desc_overall_cfgfile.add(desc_generic).add(desc_ext);
-        
+
     // parse command line and store results
         using namespace boost::program_options::command_line_style;
 
     po::parsed_options opts(po::parse_command_line(argc, argv, 
             desc_overall_cmdline, unix_style, cmd_line_utils::at_option_parser));
     po::variables_map vm;
-    
+
         po::store(opts, vm);
         po::notify(vm);
 
@@ -1284,7 +1346,7 @@ main (int argc, char *argv[])
     // file for all files in a certain project.
         if (arguments.size() > 0 && arguments[0].value[0] != "-") {
         // construct full path of input file
-            fs::path input_dir (fs::complete(
+          fs::path input_dir (boost::wave::util::complete_path(
                 boost::wave::util::create_path(arguments[0].value[0])));
 
         // chop of file name
@@ -1327,7 +1389,7 @@ main (int argc, char *argv[])
             cout << desc_help << endl;
             return 1;
         }
-        
+
         if (vm.count("version")) {
             cout << get_version() << endl;
             return 0;

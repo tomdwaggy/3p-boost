@@ -2,7 +2,7 @@
 // transmit_file.cpp
 // ~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -31,8 +31,8 @@ void transmit_file(tcp::socket& socket,
   overlapped_ptr overlapped(socket.get_io_service(), handler);
 
   // Initiate the TransmitFile operation.
-  BOOL ok = ::TransmitFile(socket.native(),
-      file.native(), 0, 0, overlapped.get(), 0, 0);
+  BOOL ok = ::TransmitFile(socket.native_handle(),
+      file.native_handle(), 0, 0, overlapped.get(), 0, 0);
   DWORD last_error = ::GetLastError();
 
   // Check if the operation completed immediately.
@@ -119,7 +119,7 @@ private:
   void start_accept()
   {
     connection::pointer new_connection =
-      connection::create(acceptor_.io_service(), filename_);
+      connection::create(acceptor_.get_io_service(), filename_);
 
     acceptor_.async_accept(new_connection->socket(),
         boost::bind(&server::handle_accept, this, new_connection,
@@ -132,8 +132,9 @@ private:
     if (!error)
     {
       new_connection->start();
-      start_accept();
     }
+
+    start_accept();
   }
 
   tcp::acceptor acceptor_;

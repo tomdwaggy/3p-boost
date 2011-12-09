@@ -1,4 +1,4 @@
-//  Copyright (c) 2001-2010 Hartmut Kaiser
+//  Copyright (c) 2001-2011 Hartmut Kaiser
 // 
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying 
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -73,6 +73,13 @@ int main()
         BOOST_TEST(test("a,b,c,d,e,f,g,h", char_ % ',', s));
         BOOST_TEST(test_delimited("a , b , c , d , e , f , g , h ", 
             char_ % ',', s, space));
+    }
+
+    {
+        std::string s ("abcdefg");
+        BOOST_TEST(test("abc,de,fg", char_ << ((char_ << char_) % ','), s));
+        BOOST_TEST(test_delimited("a b c , d e , f g ", 
+            char_ << ((char_ << char_) % ','), s, space));
     }
 
     { // actions

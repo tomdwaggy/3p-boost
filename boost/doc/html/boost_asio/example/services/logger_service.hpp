@@ -2,7 +2,7 @@
 // logger_service.hpp
 // ~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,7 +12,7 @@
 #define SERVICES_LOGGER_SERVICE_HPP
 
 #include <boost/asio.hpp>
-#include <boost/thread.hpp>
+#include <boost/thread/thread.hpp>
 #include <boost/bind.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/noncopyable.hpp>
@@ -34,7 +34,7 @@ public:
   /// The backend implementation of a logger.
   struct logger_impl
   {
-    explicit logger_impl(const std::string& id) : identifier(id) {}
+    explicit logger_impl(const std::string& ident) : identifier(ident) {}
     std::string identifier;
   };
 

@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Lexer Semantic Actions</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.4.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../abstracts.html" title="Abstracts">
 <link rel="prev" href="lexer_tokenizing.html" title="Tokenizing Input Data">
 <link rel="next" href="lexer_static_model.html" title="The Static Lexer Model">
@@ -119,9 +119,9 @@
             as your lexer class (instead of the type <code class="computeroutput"><span class="identifier">lexertl</span><span class="special">::</span><span class="identifier">lexer</span><span class="special">&lt;&gt;</span></code> as described in earlier examples).
           </p></td></tr>
 </table></div>
-<a name="spirit.lex.abstracts.lexer_semantic_actions.the_context_of_a_lexer_semantic_action"></a><h6>
-<a name="id1135322"></a>
-          <a class="link" href="lexer_semantic_actions.html#spirit.lex.abstracts.lexer_semantic_actions.the_context_of_a_lexer_semantic_action">The
+<h6>
+<a name="spirit.lex.abstracts.lexer_semantic_actions.h0"></a>
+          <span><a name="spirit.lex.abstracts.lexer_semantic_actions.the_context_of_a_lexer_semantic_action"></a></span><a class="link" href="lexer_semantic_actions.html#spirit.lex.abstracts.lexer_semantic_actions.the_context_of_a_lexer_semantic_action">The
           context of a lexer semantic action</a>
         </h6>
 <p>
@@ -135,7 +135,7 @@
           of the available functionality.
         </p>
 <div class="table">
-<a name="id1135343"></a><p class="title"><b>Table&#160;8.&#160;Functions exposed by any context passed to a lexer semantic action</b></p>
+<a name="spirit.lex.abstracts.lexer_semantic_actions.functions_exposed_by_any_context_passed_to_a_lexer_semantic_action"></a><p class="title"><b>Table&#160;8.&#160;Functions exposed by any context passed to a lexer semantic action</b></p>
 <div class="table-contents"><table class="table" summary="Functions exposed by any context passed to a lexer semantic action">
 <colgroup>
 <col>
@@ -253,20 +253,20 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="spirit.lex.abstracts.lexer_semantic_actions.lexer_semantic_actions_using_phoenix"></a><h6>
-<a name="id1135869"></a>
-          <a class="link" href="lexer_semantic_actions.html#spirit.lex.abstracts.lexer_semantic_actions.lexer_semantic_actions_using_phoenix">Lexer
+<br class="table-break"><h6>
+<a name="spirit.lex.abstracts.lexer_semantic_actions.h1"></a>
+          <span><a name="spirit.lex.abstracts.lexer_semantic_actions.lexer_semantic_actions_using_phoenix"></a></span><a class="link" href="lexer_semantic_actions.html#spirit.lex.abstracts.lexer_semantic_actions.lexer_semantic_actions_using_phoenix">Lexer
           Semantic Actions Using Phoenix</a>
         </h6>
 <p>
           Even if it is possible to write your own function object implementations
           (i.e. using Boost.Lambda or Boost.Bind), the preferred way of defining
-          lexer semantic actions is to use <a href="../../../../../phoenix/doc/html/index.html" target="_top">Boost.Phoenix</a>.
+          lexer semantic actions is to use <a href="../../../../../../../libs/phoenix/doc/html/index.html" target="_top">Boost.Phoenix</a>.
           In this case you can access the parameters described above by using the
           predefined <a href="http://boost-spirit.com" target="_top">Spirit</a> placeholders:
         </p>
 <div class="table">
-<a name="id1135892"></a><p class="title"><b>Table&#160;9.&#160;Predefined Phoenix placeholders for lexer semantic actions</b></p>
+<a name="spirit.lex.abstracts.lexer_semantic_actions.predefined_phoenix_placeholders_for_lexer_semantic_actions"></a><p class="title"><b>Table&#160;9.&#160;Predefined Phoenix placeholders for lexer semantic actions</b></p>
 <div class="table-contents"><table class="table" summary="Predefined Phoenix placeholders for lexer semantic actions">
 <colgroup>
 <col>
@@ -391,13 +391,13 @@
 </div>
 <br class="table-break"><p>
           The context object passed as the last parameter to any lexer semantic action
-          is not directly accessible while using <a href="../../../../../phoenix/doc/html/index.html" target="_top">Boost.Phoenix</a>
+          is not directly accessible while using <a href="../../../../../../../libs/phoenix/doc/html/index.html" target="_top">Boost.Phoenix</a>
           expressions. We rather provide predefined Phoenix functions allowing to
           invoke the different support functions as mentioned above. The following
           table lists the available support functions and describes their functionality:
         </p>
 <div class="table">
-<a name="id1137419"></a><p class="title"><b>Table&#160;10.&#160;Support functions usable from Phoenix expressions inside lexer semantic
+<a name="spirit.lex.abstracts.lexer_semantic_actions.support_functions_usable_from_phoenix_expressions_inside_lexer_semantic_actions"></a><p class="title"><b>Table&#160;10.&#160;Support functions usable from Phoenix expressions inside lexer semantic
           actions</b></p>
 <div class="table-contents"><table class="table" summary="Support functions usable from Phoenix expressions inside lexer semantic
           actions">
@@ -499,7 +499,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2010 Joel de Guzman, Hartmut Kaiser<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2011 Joel de Guzman, Hartmut Kaiser<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

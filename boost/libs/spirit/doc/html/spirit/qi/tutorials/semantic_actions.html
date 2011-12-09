@@ -1,10 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Semantic Actions</title>
+<title>Parser Semantic Actions</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.0">
-<link rel="home" href="../../../index.html" title="Spirit 2.4.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="Spirit 2.5.1">
 <link rel="up" href="../tutorials.html" title="Tutorials">
 <link rel="prev" href="warming_up.html" title="Warming up">
 <link rel="next" href="complex___our_first_complex_parser.html" title="Complex - Our first complex parser">
@@ -24,7 +24,8 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="spirit.qi.tutorials.semantic_actions"></a><a class="link" href="semantic_actions.html" title="Semantic Actions">Semantic Actions</a>
+<a name="spirit.qi.tutorials.semantic_actions"></a><a class="link" href="semantic_actions.html" title="Parser Semantic Actions">Parser Semantic
+        Actions</a>
 </h4></div></div></div>
 <p>
           The example in the previous section was very simplistic. It only recognized
@@ -64,9 +65,9 @@
           to bind a single argument function, like above. The other arguments are
           simply ignored.
         </p>
-<a name="spirit.qi.tutorials.semantic_actions.examples_of_semantic_actions"></a><h6>
-<a name="id799304"></a>
-          <a class="link" href="semantic_actions.html#spirit.qi.tutorials.semantic_actions.examples_of_semantic_actions">Examples
+<h6>
+<a name="spirit.qi.tutorials.semantic_actions.h0"></a>
+          <span><a name="spirit.qi.tutorials.semantic_actions.examples_of_semantic_actions"></a></span><a class="link" href="semantic_actions.html#spirit.qi.tutorials.semantic_actions.examples_of_semantic_actions">Examples
           of Semantic Actions</a>
         </h6>
 <p>
@@ -95,20 +96,19 @@
           Given:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">client</span>
 <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">qi</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">qi</span><span class="special">;</span>
 
-    <span class="comment">// A plain function
-</span>    <span class="keyword">void</span> <span class="identifier">print</span><span class="special">(</span><span class="keyword">int</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">i</span><span class="special">)</span>
+    <span class="comment">// A plain function</span>
+    <span class="keyword">void</span> <span class="identifier">print</span><span class="special">(</span><span class="keyword">int</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">i</span><span class="special">)</span>
     <span class="special">{</span>
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span>
 
-    <span class="comment">// A member function
-</span>    <span class="keyword">struct</span> <span class="identifier">writer</span>
+    <span class="comment">// A member function</span>
+    <span class="keyword">struct</span> <span class="identifier">writer</span>
     <span class="special">{</span>
         <span class="keyword">void</span> <span class="identifier">print</span><span class="special">(</span><span class="keyword">int</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">i</span><span class="special">)</span> <span class="keyword">const</span>
         <span class="special">{</span>
@@ -116,8 +116,8 @@
         <span class="special">}</span>
     <span class="special">};</span>
 
-    <span class="comment">// A function object
-</span>    <span class="keyword">struct</span> <span class="identifier">print_action</span>
+    <span class="comment">// A function object</span>
+    <span class="keyword">struct</span> <span class="identifier">print_action</span>
     <span class="special">{</span>
         <span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">int</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">i</span><span class="special">,</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">unused_type</span><span class="special">,</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">unused_type</span><span class="special">)</span> <span class="keyword">const</span>
         <span class="special">{</span>
@@ -148,7 +148,6 @@
           The first example shows how to attach a plain function:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="char">'{'</span> <span class="special">&gt;&gt;</span> <span class="identifier">int_</span><span class="special">[&amp;</span><span class="identifier">print</span><span class="special">]</span> <span class="special">&gt;&gt;</span> <span class="char">'}'</span><span class="special">);</span>
 </pre>
@@ -163,7 +162,6 @@
           The next example shows how to attach a simple function object:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="char">'{'</span> <span class="special">&gt;&gt;</span> <span class="identifier">int_</span><span class="special">[</span><span class="identifier">print_action</span><span class="special">()]</span> <span class="special">&gt;&gt;</span> <span class="char">'}'</span><span class="special">);</span>
 </pre>
@@ -174,7 +172,6 @@
           to 'bind' member functions:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">writer</span> <span class="identifier">w</span><span class="special">;</span>
 <span class="identifier">parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="char">'{'</span> <span class="special">&gt;&gt;</span> <span class="identifier">int_</span><span class="special">[</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">writer</span><span class="special">::</span><span class="identifier">print</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">w</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">)]</span> <span class="special">&gt;&gt;</span> <span class="char">'}'</span><span class="special">);</span>
@@ -186,7 +183,6 @@
           to 'bind' plain functions:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="char">'{'</span> <span class="special">&gt;&gt;</span> <span class="identifier">int_</span><span class="special">[</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">print</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">)]</span> <span class="special">&gt;&gt;</span> <span class="char">'}'</span><span class="special">);</span>
 </pre>
@@ -196,7 +192,6 @@
           Yep, we can also use <a href="../../../../../../../libs/lambda/index.html" target="_top">Boost.Lambda</a>:
         </p>
 <p>
-          
 </p>
 <pre class="programlisting"><span class="identifier">parse</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="char">'{'</span> <span class="special">&gt;&gt;</span> <span class="identifier">int_</span><span class="special">[</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">_1</span> <span class="special">&lt;&lt;</span> <span class="char">'\n'</span><span class="special">]</span> <span class="special">&gt;&gt;</span> <span class="char">'}'</span><span class="special">);</span>
 </pre>
@@ -212,9 +207,9 @@
 <p>
           The examples above can be found here: <a href="../../../../../example/qi/actions.cpp" target="_top">../../example/qi/actions.cpp</a>
         </p>
-<a name="spirit.qi.tutorials.semantic_actions.phoenix"></a><h6>
-<a name="id800989"></a>
-          <a class="link" href="semantic_actions.html#spirit.qi.tutorials.semantic_actions.phoenix">Phoenix</a>
+<h6>
+<a name="spirit.qi.tutorials.semantic_actions.h1"></a>
+          <span><a name="spirit.qi.tutorials.semantic_actions.phoenix"></a></span><a class="link" href="semantic_actions.html#spirit.qi.tutorials.semantic_actions.phoenix">Phoenix</a>
         </h6>
 <p>
           <a href="../../../../../phoenix/doc/html/index.html" target="_top">Phoenix</a>, a companion
@@ -265,7 +260,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2010 Joel de Guzman, Hartmut Kaiser<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2011 Joel de Guzman, Hartmut Kaiser<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

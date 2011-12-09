@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2010 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2011 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -33,19 +33,19 @@ PRIMITIVE_CONCAT(1, CONCAT(2, 3))
 //H 00: t_1_007.cpp(20): PRIMITIVE_CONCAT(2, 3), [t_1_007.cpp(16): PRIMITIVE_CONCAT(a, b)=a ## b]
 //H 02: 23
 //H 03: 23
-//H 02: PRIMITIVE_CONCAT(1, 23)
+//H 02: PRIMITIVE_CONCAT(1,  23)
 //H 00: t_1_007.cpp(15): PRIMITIVE_CONCAT(1, 23), [t_1_007.cpp(16): PRIMITIVE_CONCAT(a, b)=a ## b]
 //H 02: 123
 //H 03: 123
 //H 03: 123
 //H 00: t_1_007.cpp(23): CONCAT(1, CONCAT(2, 3)), [t_1_007.cpp(15): CONCAT(a, b)=PRIMITIVE_CONCAT(a, b)]
 //H 00: t_1_007.cpp(23): CONCAT(2, 3), [t_1_007.cpp(15): CONCAT(a, b)=PRIMITIVE_CONCAT(a, b)]
-//H 02: PRIMITIVE_CONCAT(2, 3)
+//H 02: PRIMITIVE_CONCAT(2,  3)
 //H 00: t_1_007.cpp(15): PRIMITIVE_CONCAT(2, 3), [t_1_007.cpp(16): PRIMITIVE_CONCAT(a, b)=a ## b]
 //H 02: 23
 //H 03: 23
 //H 03: 23
-//H 02: PRIMITIVE_CONCAT(1, 23)
+//H 02: PRIMITIVE_CONCAT(1,  23)
 //H 00: t_1_007.cpp(15): PRIMITIVE_CONCAT(1, 23), [t_1_007.cpp(16): PRIMITIVE_CONCAT(a, b)=a ## b]
 //H 02: 123
 //H 03: 123

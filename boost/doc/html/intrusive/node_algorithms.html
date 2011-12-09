@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Node algorithms with custom NodeTraits</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;12.&#160;Boost.Intrusive">
 <link rel="prev" href="concepts.html" title="Concepts explained">
 <link rel="next" href="value_traits.html" title="Containers with custom ValueTraits">
 </head>
@@ -116,7 +116,6 @@
         algorithms with our nodes:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">circular_slist_algorithms</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
@@ -124,17 +123,17 @@
 <span class="keyword">struct</span> <span class="identifier">my_node</span>
 <span class="special">{</span>
    <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">next_</span><span class="special">;</span>
-   <span class="comment">//other members...
-</span><span class="special">};</span>
+   <span class="comment">//other members...</span>
+<span class="special">};</span>
 
-<span class="comment">//Define our own slist_node_traits
-</span><span class="keyword">struct</span> <span class="identifier">my_slist_node_traits</span>
+<span class="comment">//Define our own slist_node_traits</span>
+<span class="keyword">struct</span> <span class="identifier">my_slist_node_traits</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span>                                 <span class="identifier">node</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span> <span class="special">*</span>                               <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span>                         <span class="identifier">const_node_ptr</span><span class="special">;</span>
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_next</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>      <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span><span class="special">;</span>  <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_next</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">next</span><span class="special">)</span> <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span> <span class="special">=</span> <span class="identifier">next</span><span class="special">;</span>  <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_next</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>      <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_next</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">next</span><span class="special">)</span> <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span> <span class="special">=</span> <span class="identifier">next</span><span class="special">;</span>  <span class="special">}</span>
 <span class="special">};</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
@@ -142,25 +141,25 @@
    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">circular_slist_algorithms</span><span class="special">&lt;</span><span class="identifier">my_slist_node_traits</span><span class="special">&gt;</span> <span class="identifier">algo</span><span class="special">;</span>
    <span class="identifier">my_node</span> <span class="identifier">one</span><span class="special">,</span> <span class="identifier">two</span><span class="special">,</span> <span class="identifier">three</span><span class="special">;</span>
 
-   <span class="comment">//Create an empty singly linked list container:
-</span>   <span class="comment">//"one" will be the first node of the container
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">);</span>
+   <span class="comment">//Create an empty singly linked list container:</span>
+   <span class="comment">//"one" will be the first node of the container</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">1</span><span class="special">);</span>
 
-   <span class="comment">//Now add a new node
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">link_after</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">);</span>
+   <span class="comment">//Now add a new node</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">link_after</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">2</span><span class="special">);</span>
 
-   <span class="comment">//Now add a new node after "one"
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">link_after</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
+   <span class="comment">//Now add a new node after "one"</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">link_after</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">3</span><span class="special">);</span>
 
-   <span class="comment">//Now unlink the node after one
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink_after</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">);</span>
+   <span class="comment">//Now unlink the node after one</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink_after</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">2</span><span class="special">);</span>
 
-   <span class="comment">//Now unlink two
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">);</span>
+   <span class="comment">//Now unlink two</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">1</span><span class="special">);</span>
 
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
@@ -240,7 +239,6 @@
         algorithms with our nodes:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">circular_list_algorithms</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
@@ -248,19 +246,19 @@
 <span class="keyword">struct</span> <span class="identifier">my_node</span>
 <span class="special">{</span>
    <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">next_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">prev_</span><span class="special">;</span>
-   <span class="comment">//other members...
-</span><span class="special">};</span>
+   <span class="comment">//other members...</span>
+<span class="special">};</span>
 
-<span class="comment">//Define our own list_node_traits
-</span><span class="keyword">struct</span> <span class="identifier">my_list_node_traits</span>
+<span class="comment">//Define our own list_node_traits</span>
+<span class="keyword">struct</span> <span class="identifier">my_list_node_traits</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span>                                    <span class="identifier">node</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span> <span class="special">*</span>                                  <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span>                            <span class="identifier">const_node_ptr</span><span class="special">;</span>
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_next</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span><span class="special">;</span>  <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_next</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">next</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span> <span class="special">=</span> <span class="identifier">next</span><span class="special">;</span>  <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">get_previous</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span><span class="special">;</span>  <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_previous</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">prev</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span> <span class="special">=</span> <span class="identifier">prev</span><span class="special">;</span>  <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_next</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_next</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">next</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">next_</span> <span class="special">=</span> <span class="identifier">next</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node</span> <span class="special">*</span><span class="identifier">get_previous</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span><span class="special">;</span>  <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_previous</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">prev</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">prev_</span> <span class="special">=</span> <span class="identifier">prev</span><span class="special">;</span>  <span class="special">}</span>
 <span class="special">};</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
@@ -268,29 +266,29 @@
    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">circular_list_algorithms</span><span class="special">&lt;</span><span class="identifier">my_list_node_traits</span><span class="special">&gt;</span> <span class="identifier">algo</span><span class="special">;</span>
    <span class="identifier">my_node</span> <span class="identifier">one</span><span class="special">,</span> <span class="identifier">two</span><span class="special">,</span> <span class="identifier">three</span><span class="special">;</span>
 
-   <span class="comment">//Create an empty doubly linked list container:
-</span>   <span class="comment">//"one" will be the first node of the container
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">);</span>
+   <span class="comment">//Create an empty doubly linked list container:</span>
+   <span class="comment">//"one" will be the first node of the container</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">1</span><span class="special">);</span>
 
-   <span class="comment">//Now add a new node before "one"
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">link_before</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">);</span>
+   <span class="comment">//Now add a new node before "one"</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">link_before</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">2</span><span class="special">);</span>
 
-   <span class="comment">//Now add a new node after "two"
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">link_after</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
+   <span class="comment">//Now add a new node after "two"</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">link_after</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">3</span><span class="special">);</span>
 
-   <span class="comment">//Now unlink the node after one
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">three</span><span class="special">);</span>
+   <span class="comment">//Now unlink the node after one</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">three</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">2</span><span class="special">);</span>
 
-   <span class="comment">//Now unlink two
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">);</span>
+   <span class="comment">//Now unlink two</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">1</span><span class="special">);</span>
 
-   <span class="comment">//Now unlink one
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">);</span>
+   <span class="comment">//Now unlink one</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">);</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">algo</span><span class="special">::</span><span class="identifier">count</span><span class="special">(&amp;</span><span class="identifier">one</span><span class="special">)</span> <span class="special">==</span> <span class="number">1</span><span class="special">);</span>
 
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
@@ -405,7 +403,6 @@
         algorithms with our nodes:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">rbtree_algorithms</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
@@ -417,24 +414,24 @@
    <span class="special">{}</span>
    <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">parent_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">left_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">right_</span><span class="special">;</span>
    <span class="keyword">int</span>      <span class="identifier">color_</span><span class="special">;</span>
-   <span class="comment">//other members
-</span>   <span class="keyword">int</span>      <span class="identifier">int_</span><span class="special">;</span>
+   <span class="comment">//other members</span>
+   <span class="keyword">int</span>      <span class="identifier">int_</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="comment">//Define our own rbtree_node_traits
-</span><span class="keyword">struct</span> <span class="identifier">my_rbtree_node_traits</span>
+<span class="comment">//Define our own rbtree_node_traits</span>
+<span class="keyword">struct</span> <span class="identifier">my_rbtree_node_traits</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span>                                    <span class="identifier">node</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span> <span class="special">*</span>                                  <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span>                            <span class="identifier">const_node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">int</span>                                        <span class="identifier">color</span><span class="special">;</span>
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_parent</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span><span class="special">;</span>   <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_parent</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">parent</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span> <span class="special">=</span> <span class="identifier">parent</span><span class="special">;</span> <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_left</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span><span class="special">;</span>     <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_left</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">left</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">;</span>     <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_right</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span><span class="special">;</span>    <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_right</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">right</span><span class="special">)</span>  <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">;</span>   <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">color</span> <span class="identifier">get_color</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>           <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">color_</span><span class="special">;</span>    <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_parent</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span><span class="special">;</span>   <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_parent</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">parent</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span> <span class="special">=</span> <span class="identifier">parent</span><span class="special">;</span> <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_left</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span><span class="special">;</span>     <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_left</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">left</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">;</span>     <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_right</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span><span class="special">;</span>    <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_right</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">right</span><span class="special">)</span>  <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">;</span>   <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">color</span> <span class="identifier">get_color</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>           <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">color_</span><span class="special">;</span>    <span class="special">}</span>
    <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_color</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">color</span> <span class="identifier">c</span><span class="special">)</span>         <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">color_</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">;</span>       <span class="special">}</span>
    <span class="keyword">static</span> <span class="identifier">color</span> <span class="identifier">black</span><span class="special">()</span>                               <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">color</span><span class="special">(</span><span class="number">0</span><span class="special">);</span>     <span class="special">}</span>
    <span class="keyword">static</span> <span class="identifier">color</span> <span class="identifier">red</span><span class="special">()</span>                                 <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">color</span><span class="special">(</span><span class="number">1</span><span class="special">);</span>     <span class="special">}</span>
@@ -451,29 +448,29 @@
    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">rbtree_algorithms</span><span class="special">&lt;</span><span class="identifier">my_rbtree_node_traits</span><span class="special">&gt;</span> <span class="identifier">algo</span><span class="special">;</span>
    <span class="identifier">my_node</span> <span class="identifier">header</span><span class="special">,</span> <span class="identifier">two</span><span class="special">(</span><span class="number">2</span><span class="special">),</span> <span class="identifier">three</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
 
-   <span class="comment">//Create an empty rbtree container:
-</span>   <span class="comment">//"header" will be the header node of the tree
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">);</span>
+   <span class="comment">//Create an empty rbtree container:</span>
+   <span class="comment">//"header" will be the header node of the tree</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">);</span>
 
-   <span class="comment">//Now insert node "two" in the tree using the sorting functor
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_upper_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
+   <span class="comment">//Now insert node "two" in the tree using the sorting functor</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_upper_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
 
-   <span class="comment">//Now insert node "three" in the tree using the sorting functor
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_lower_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
+   <span class="comment">//Now insert node "three" in the tree using the sorting functor</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_lower_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
 
-   <span class="comment">//Now take the first node (the left node of the header)
-</span>   <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">n</span> <span class="special">=</span> <span class="identifier">header</span><span class="special">.</span><span class="identifier">left_</span><span class="special">;</span>
+   <span class="comment">//Now take the first node (the left node of the header)</span>
+   <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">n</span> <span class="special">=</span> <span class="identifier">header</span><span class="special">.</span><span class="identifier">left_</span><span class="special">;</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">);</span>
 
-   <span class="comment">//Now go to the next node
-</span>   <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">algo</span><span class="special">::</span><span class="identifier">next_node</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
-   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>      
+   <span class="comment">//Now go to the next node</span>
+   <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">algo</span><span class="special">::</span><span class="identifier">next_node</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
 
-   <span class="comment">//Erase a node just using a pointer to it
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">);</span>
+   <span class="comment">//Erase a node just using a pointer to it</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">);</span>
 
-   <span class="comment">//Erase a node using also the header (faster)
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">erase</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
+   <span class="comment">//Erase a node using also the header (faster)</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">erase</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 
@@ -563,7 +560,6 @@
         algorithms with our nodes:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">splaytree_algorithms</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
@@ -574,23 +570,23 @@
       <span class="special">:</span>  <span class="identifier">int_</span><span class="special">(</span><span class="identifier">i</span><span class="special">)</span>
    <span class="special">{}</span>
    <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">parent_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">left_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">right_</span><span class="special">;</span>
-   <span class="comment">//other members
-</span>   <span class="keyword">int</span>      <span class="identifier">int_</span><span class="special">;</span>
+   <span class="comment">//other members</span>
+   <span class="keyword">int</span>      <span class="identifier">int_</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="comment">//Define our own splaytree_node_traits
-</span><span class="keyword">struct</span> <span class="identifier">my_splaytree_node_traits</span>
+<span class="comment">//Define our own splaytree_node_traits</span>
+<span class="keyword">struct</span> <span class="identifier">my_splaytree_node_traits</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span>                                    <span class="identifier">node</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span> <span class="special">*</span>                                  <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span>                            <span class="identifier">const_node_ptr</span><span class="special">;</span>
 
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_parent</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span><span class="special">;</span>   <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_parent</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">parent</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span> <span class="special">=</span> <span class="identifier">parent</span><span class="special">;</span> <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_left</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span><span class="special">;</span>     <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_left</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">left</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">;</span>     <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_right</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span><span class="special">;</span>    <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_right</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">right</span><span class="special">)</span>  <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">;</span>   <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_parent</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span><span class="special">;</span>   <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_parent</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">parent</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span> <span class="special">=</span> <span class="identifier">parent</span><span class="special">;</span> <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_left</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span><span class="special">;</span>     <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_left</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">left</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">;</span>     <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_right</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span><span class="special">;</span>    <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_right</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">right</span><span class="special">)</span>  <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">;</span>   <span class="special">}</span>
 <span class="special">};</span>
 
 <span class="keyword">struct</span> <span class="identifier">node_ptr_compare</span>
@@ -604,29 +600,29 @@
    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">splaytree_algorithms</span><span class="special">&lt;</span><span class="identifier">my_splaytree_node_traits</span><span class="special">&gt;</span> <span class="identifier">algo</span><span class="special">;</span>
    <span class="identifier">my_node</span> <span class="identifier">header</span><span class="special">,</span> <span class="identifier">two</span><span class="special">(</span><span class="number">2</span><span class="special">),</span> <span class="identifier">three</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
 
-   <span class="comment">//Create an empty splaytree container:
-</span>   <span class="comment">//"header" will be the header node of the tree
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">);</span>
+   <span class="comment">//Create an empty splaytree container:</span>
+   <span class="comment">//"header" will be the header node of the tree</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">);</span>
 
-   <span class="comment">//Now insert node "two" in the tree using the sorting functor
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_upper_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
+   <span class="comment">//Now insert node "two" in the tree using the sorting functor</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_upper_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
 
-   <span class="comment">//Now insert node "three" in the tree using the sorting functor
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_lower_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
+   <span class="comment">//Now insert node "three" in the tree using the sorting functor</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_lower_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
 
-   <span class="comment">//Now take the first node (the left node of the header)
-</span>   <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">n</span> <span class="special">=</span> <span class="identifier">header</span><span class="special">.</span><span class="identifier">left_</span><span class="special">;</span>
+   <span class="comment">//Now take the first node (the left node of the header)</span>
+   <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">n</span> <span class="special">=</span> <span class="identifier">header</span><span class="special">.</span><span class="identifier">left_</span><span class="special">;</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">);</span>
 
-   <span class="comment">//Now go to the next node
-</span>   <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">algo</span><span class="special">::</span><span class="identifier">next_node</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
-   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>      
+   <span class="comment">//Now go to the next node</span>
+   <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">algo</span><span class="special">::</span><span class="identifier">next_node</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
 
-   <span class="comment">//Erase a node just using a pointer to it
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">);</span>
+   <span class="comment">//Erase a node just using a pointer to it</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">);</span>
 
-   <span class="comment">//Erase a node using also the header (faster)
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">erase</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
+   <span class="comment">//Erase a node using also the header (faster)</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">erase</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 
@@ -745,7 +741,6 @@
         algorithms with our nodes:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">avltree_algorithms</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
@@ -757,25 +752,25 @@
    <span class="special">{}</span>
    <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">parent_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">left_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">right_</span><span class="special">;</span>
    <span class="keyword">int</span> <span class="identifier">balance_</span><span class="special">;</span>
-   <span class="comment">//other members
-</span>   <span class="keyword">int</span>      <span class="identifier">int_</span><span class="special">;</span>
+   <span class="comment">//other members</span>
+   <span class="keyword">int</span>      <span class="identifier">int_</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="comment">//Define our own avltree_node_traits
-</span><span class="keyword">struct</span> <span class="identifier">my_avltree_node_traits</span>
+<span class="comment">//Define our own avltree_node_traits</span>
+<span class="keyword">struct</span> <span class="identifier">my_avltree_node_traits</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span>                                    <span class="identifier">node</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span> <span class="special">*</span>                                  <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span>                            <span class="identifier">const_node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">int</span>                                        <span class="identifier">balance</span><span class="special">;</span>
 
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_parent</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span><span class="special">;</span>   <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_parent</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">parent</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span> <span class="special">=</span> <span class="identifier">parent</span><span class="special">;</span> <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_left</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span><span class="special">;</span>     <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_left</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">left</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">;</span>     <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_right</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span><span class="special">;</span>    <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_right</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">right</span><span class="special">)</span>  <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">;</span>   <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">balance</span> <span class="identifier">get_balance</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">balance_</span><span class="special">;</span>  <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_parent</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span><span class="special">;</span>   <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_parent</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">parent</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span> <span class="special">=</span> <span class="identifier">parent</span><span class="special">;</span> <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_left</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span><span class="special">;</span>     <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_left</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">left</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">;</span>     <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_right</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span><span class="special">;</span>    <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_right</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">right</span><span class="special">)</span>  <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">;</span>   <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">balance</span> <span class="identifier">get_balance</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">balance_</span><span class="special">;</span>  <span class="special">}</span>
    <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_balance</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">balance</span> <span class="identifier">b</span><span class="special">)</span>     <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">balance_</span> <span class="special">=</span> <span class="identifier">b</span><span class="special">;</span>     <span class="special">}</span>
    <span class="keyword">static</span> <span class="identifier">balance</span> <span class="identifier">negative</span><span class="special">()</span>                          <span class="special">{</span>  <span class="keyword">return</span> <span class="special">-</span><span class="number">1</span><span class="special">;</span> <span class="special">}</span>
    <span class="keyword">static</span> <span class="identifier">balance</span> <span class="identifier">zero</span><span class="special">()</span>                              <span class="special">{</span>  <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>  <span class="special">}</span>
@@ -793,29 +788,29 @@
    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">avltree_algorithms</span><span class="special">&lt;</span><span class="identifier">my_avltree_node_traits</span><span class="special">&gt;</span> <span class="identifier">algo</span><span class="special">;</span>
    <span class="identifier">my_node</span> <span class="identifier">header</span><span class="special">,</span> <span class="identifier">two</span><span class="special">(</span><span class="number">2</span><span class="special">),</span> <span class="identifier">three</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
 
-   <span class="comment">//Create an empty avltree container:
-</span>   <span class="comment">//"header" will be the header node of the tree
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">);</span>
+   <span class="comment">//Create an empty avltree container:</span>
+   <span class="comment">//"header" will be the header node of the tree</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">);</span>
 
-   <span class="comment">//Now insert node "two" in the tree using the sorting functor
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_upper_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
+   <span class="comment">//Now insert node "two" in the tree using the sorting functor</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_upper_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
 
-   <span class="comment">//Now insert node "three" in the tree using the sorting functor
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_lower_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
+   <span class="comment">//Now insert node "three" in the tree using the sorting functor</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_lower_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">());</span>
 
-   <span class="comment">//Now take the first node (the left node of the header)
-</span>   <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">n</span> <span class="special">=</span> <span class="identifier">header</span><span class="special">.</span><span class="identifier">left_</span><span class="special">;</span>
+   <span class="comment">//Now take the first node (the left node of the header)</span>
+   <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">n</span> <span class="special">=</span> <span class="identifier">header</span><span class="special">.</span><span class="identifier">left_</span><span class="special">;</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">);</span>
 
-   <span class="comment">//Now go to the next node
-</span>   <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">algo</span><span class="special">::</span><span class="identifier">next_node</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
-   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>      
+   <span class="comment">//Now go to the next node</span>
+   <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">algo</span><span class="special">::</span><span class="identifier">next_node</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
 
-   <span class="comment">//Erase a node just using a pointer to it
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">);</span>
+   <span class="comment">//Erase a node just using a pointer to it</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">);</span>
 
-   <span class="comment">//Erase a node using also the header (faster)
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">erase</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
+   <span class="comment">//Erase a node using also the header (faster)</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">erase</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 
@@ -904,7 +899,6 @@
         algorithms with our nodes:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">treap_algorithms</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
@@ -916,23 +910,23 @@
    <span class="special">{}</span>
    <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">parent_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">left_</span><span class="special">,</span> <span class="special">*</span><span class="identifier">right_</span><span class="special">;</span>
    <span class="keyword">int</span> <span class="identifier">prio_</span><span class="special">;</span>
-   <span class="comment">//other members
-</span>   <span class="keyword">int</span>      <span class="identifier">int_</span><span class="special">;</span>
+   <span class="comment">//other members</span>
+   <span class="keyword">int</span>      <span class="identifier">int_</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="comment">//Define our own treap_node_traits
-</span><span class="keyword">struct</span> <span class="identifier">my_treap_node_traits</span>
+<span class="comment">//Define our own treap_node_traits</span>
+<span class="keyword">struct</span> <span class="identifier">my_treap_node_traits</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span>                                    <span class="identifier">node</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="identifier">my_node</span> <span class="special">*</span>                                  <span class="identifier">node_ptr</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="identifier">my_node</span> <span class="special">*</span>                            <span class="identifier">const_node_ptr</span><span class="special">;</span>
 
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_parent</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span><span class="special">;</span>   <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_parent</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">parent</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span> <span class="special">=</span> <span class="identifier">parent</span><span class="special">;</span> <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_left</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span><span class="special">;</span>     <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_left</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">left</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">;</span>     <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_right</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span><span class="special">;</span>    <span class="special">}</span>  
-   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_right</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">right</span><span class="special">)</span>  <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">;</span>   <span class="special">}</span>  
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_parent</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>       <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span><span class="special">;</span>   <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_parent</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">parent</span><span class="special">){</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">parent_</span> <span class="special">=</span> <span class="identifier">parent</span><span class="special">;</span> <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_left</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>         <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span><span class="special">;</span>     <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_left</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">left</span><span class="special">)</span>    <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">left_</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">;</span>     <span class="special">}</span>
+   <span class="keyword">static</span> <span class="identifier">node_ptr</span> <span class="identifier">get_right</span><span class="special">(</span><span class="identifier">const_node_ptr</span> <span class="identifier">n</span><span class="special">)</span>        <span class="special">{</span>  <span class="keyword">return</span> <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span><span class="special">;</span>    <span class="special">}</span>
+   <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">set_right</span><span class="special">(</span><span class="identifier">node_ptr</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">node_ptr</span> <span class="identifier">right</span><span class="special">)</span>  <span class="special">{</span>  <span class="identifier">n</span><span class="special">-&gt;</span><span class="identifier">right_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">;</span>   <span class="special">}</span>
 <span class="special">};</span>
 
 <span class="keyword">struct</span> <span class="identifier">node_ptr_compare</span>
@@ -946,29 +940,29 @@
    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">::</span><span class="identifier">treap_algorithms</span><span class="special">&lt;</span><span class="identifier">my_treap_node_traits</span><span class="special">&gt;</span> <span class="identifier">algo</span><span class="special">;</span>
    <span class="identifier">my_node</span> <span class="identifier">header</span><span class="special">,</span> <span class="identifier">two</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="number">5</span><span class="special">),</span> <span class="identifier">three</span><span class="special">(</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
 
-   <span class="comment">//Create an empty treap container:
-</span>   <span class="comment">//"header" will be the header node of the tree
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">);</span>
+   <span class="comment">//Create an empty treap container:</span>
+   <span class="comment">//"header" will be the header node of the tree</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">init_header</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">);</span>
 
-   <span class="comment">//Now insert node "two" in the tree using the sorting functor
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_upper_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">(),</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
+   <span class="comment">//Now insert node "two" in the tree using the sorting functor</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_upper_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">(),</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
 
-   <span class="comment">//Now insert node "three" in the tree using the sorting functor
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_lower_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">(),</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
+   <span class="comment">//Now insert node "three" in the tree using the sorting functor</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">insert_equal_lower_bound</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_compare</span><span class="special">(),</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
 
-   <span class="comment">//Now take the first node (the left node of the header)
-</span>   <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">n</span> <span class="special">=</span> <span class="identifier">header</span><span class="special">.</span><span class="identifier">left_</span><span class="special">;</span>
+   <span class="comment">//Now take the first node (the left node of the header)</span>
+   <span class="identifier">my_node</span> <span class="special">*</span><span class="identifier">n</span> <span class="special">=</span> <span class="identifier">header</span><span class="special">.</span><span class="identifier">left_</span><span class="special">;</span>
    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">two</span><span class="special">);</span>
 
-   <span class="comment">//Now go to the next node
-</span>   <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">algo</span><span class="special">::</span><span class="identifier">next_node</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
-   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>      
+   <span class="comment">//Now go to the next node</span>
+   <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">algo</span><span class="special">::</span><span class="identifier">next_node</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">n</span> <span class="special">==</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">);</span>
 
-   <span class="comment">//Erase a node just using a pointer to it
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
+   <span class="comment">//Erase a node just using a pointer to it</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">unlink</span><span class="special">(&amp;</span><span class="identifier">two</span><span class="special">,</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
 
-   <span class="comment">//Erase a node using also the header (faster)
-</span>   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">erase</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
+   <span class="comment">//Erase a node using also the header (faster)</span>
+   <span class="identifier">algo</span><span class="special">::</span><span class="identifier">erase</span><span class="special">(&amp;</span><span class="identifier">header</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">three</span><span class="special">,</span> <span class="identifier">node_ptr_priority</span><span class="special">());</span>
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 
@@ -983,7 +977,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -6,6 +6,7 @@ rem  Distributed under the Boost Software License, Version 1.0.
 rem  See http://www.boost.org/LICENSE_1_0.txt
 
 echo Build a branches/release snapshot for Windows, using CRLF line termination...
+echo Revision %BOOST_REVISION_NUMBER%
 
 echo Removing old files...
 rmdir /s /q windows >nul
@@ -14,16 +15,11 @@ del windows.7z >nul
 del windows.zip >nul
 
 echo Exporting files from subversion...
-rem  leave an audit trail, which is used by inspect to determine revision number
-svn co --depth=files http://svn.boost.org/svn/boost/branches/release svn_info
-svn export --non-interactive --native-eol CRLF http://svn.boost.org/svn/boost/branches/release windows
+svn export --non-interactive --native-eol CRLF -r %BOOST_REVISION_NUMBER% http://svn.boost.org/svn/boost/branches/release windows
 
-echo Creating release history README.txt...
-lynx -width=72 -dump -nolist -display_charset=utf-8 http://beta.boost.org/users/history/minimal.php >windows\README.txt
-
-echo Copying docs into windows\doc...
-pushd windows\doc
-xcopy /s /y ..\..\docs_temp\html html
+echo Copying docs into windows...
+pushd windows
+xcopy /s /y ..\docs_temp
 popd
 
 echo Setting SNAPSHOT_DATE

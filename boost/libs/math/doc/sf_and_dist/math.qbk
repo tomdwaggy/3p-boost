@@ -8,10 +8,10 @@
         [@http://www.boost.org/LICENSE_1_0.txt])
     ]
     [authors [Maddock, John], [Bristow, Paul A.], [Holin, Hubert], [Zhang, Xiaogang], [Lalande, Bruno], [Råde, Johan], [Sewani, Gautam], [van den Berg, Thijs]]
-    [/last-revision $Date: 2010-10-04 11:17:21 -0400 (Mon, 04 Oct 2010) $]
+    [/last-revision $Date: 2011-08-23 03:49:00 -0400 (Tue, 23 Aug 2011) $]
 ]
 
-[/ \u00E5 = Latin small letter A wiht ring above doesn't seem to work in authors]
+[/ \u00E5 = Latin small letter A with ring above doesn't seem to work in authors with Quickbook 1.5]
 
 [template equation[name]  '''<inlinemediaobject>
 <imageobject role="html">
@@ -55,10 +55,10 @@
 [def __eacute '''&#233;''']
 [def __quarter '''&#x00BC;''']
 [def __nearequal '''&#x224A;''']
-[def __spaces '''&#x2000;'''] [/spaces - useful for an indent.]
+[def __spaces '''&#x2000;&#x2000;'''] [/ two spaces - useful for an indent.]
 
 [def __caution This is now an official Boost library, but remains a library under
-               construction, the code is fully functional and robust, but
+               development, the code is fully functional and robust, but
                interfaces, library structure, and function and distribution names
                may still be changed without notice.]
 
@@ -80,7 +80,7 @@
 [def __sf_result [link math_toolkit.main_overview.result_type ['calculated-result-type]]]
 
 [/ The following macros expand to links to the various special functions
-and use the function's name as the link text]
+and use the function's name as the link text.]
 
 [/Misc]
 [def __lanczos [link math_toolkit.backgrounders.lanczos Lanczos approximation]]
@@ -163,6 +163,7 @@ and use the function's name as the link text]
 [def __isnan [link math_toolkit.special.fpclass isnan]]
 [def __isinf [link math_toolkit.special.fpclass isinf]]
 [def __isnormal [link math_toolkit.special.fpclass isnormal]]
+[def __fp_facets [link math_toolkit.utils.fp_facets nonfinite fp_facets]]
 
 [/powers etc]
 [def __expm1 [link math_toolkit.special.powers.expm1 expm1]]
@@ -227,8 +228,9 @@ and use the function's name as the link text]
 [def __exp_distrib [link math_toolkit.dist.dist_ref.dists.exp_dist Exponential Distribution]]
 [def __F_distrib [link math_toolkit.dist.dist_ref.dists.f_dist Fisher F Distribution]]
 [def __gamma_distrib [link math_toolkit.dist.dist_ref.dists.gamma_dist Gamma Distribution]]
-[def __hypergeometric_distrib [link math_toolkit.dist.dist_ref.dists.hypergeometric_dist Hypergeometric Distribution]]
+[def __geometric_distrib [link math_toolkit.dist.dist_ref.dists.geometric_dist Geometric Distribution]]
 [def __inverse_gamma_distrib [link math_toolkit.dist.dist_ref.dists.inverse_gamma_dist Inverse Gamma Distribution]]
+[def __inverse_gaussian_distrib [link math_toolkit.dist.dist_ref.dists.inverse_gaussian_dist Inverse Gaussian Distribution]]
 [def __inverse_chi_squared_distrib [link math_toolkit.dist.dist_ref.dists.inverse_chi_squared_dist Inverse chi squared Distribution]]
 [def __laplace_distrib [link math_toolkit.dist.dist_ref.dists.laplace_dist Laplace Distribution]]
 [def __logistic_distrib [link math_toolkit.dist.dist_ref.dists.logistic_dist Logistic Distribution]]
@@ -242,11 +244,11 @@ and use the function's name as the link text]
 [def __normal_distrib [link math_toolkit.dist.dist_ref.dists.normal_dist Normal Distribution]]
 [def __poisson_distrib [link math_toolkit.dist.dist_ref.dists.poisson_dist Poisson Distribution]]
 [def __students_t_distrib [link math_toolkit.dist.dist_ref.dists.students_t_dist Students t Distribution]]
-[def __weibull_distrib [link math_toolkit.dist.dist_ref.dists.weibull Weibull Distribution]]
+[def __weibull_distrib [link math_toolkit.dist.dist_ref.dists.weibull_dist Weibull Distribution]]
 
 [/links to policy]
 [def __Policy [link math_toolkit.policy Policy]] [/ Used in distribution template specifications]
-[def __policy_section [link math_toolkit.policy Policies]] [/ Used in text to refer too.]
+[def __policy_section [link math_toolkit.policy Policies]] [/ Used in text to refer to.]
 [def __policy_class [link math_toolkit.policy.pol_ref.pol_ref_ref policies::policy<>]]
 [def __math_undefined [link math_toolkit.policy.pol_ref.assert_undefined mathematically undefined function]]
 [def __policy_ref [link math_toolkit.policy.pol_ref policy reference]]
@@ -256,6 +258,7 @@ and use the function's name as the link text]
 [def __user_error_handling [link math_toolkit.policy.pol_tutorial.user_def_err_pol user error handling]]
 [def __promotion_policy [link math_toolkit.policy.pol_ref.internal_promotion internal promotion policy]]
 [def __precision_policy [link math_toolkit.policy.pol_ref.precision_pol precision policy]]
+[def __policy_macros [link math_toolkit.policy.pol_ref.policy_defaults Using Macros to Change the Policy Defaults]]
 
 [def __random_variate [@http://en.wikipedia.org/wiki/Random_variate random variate]]
 [def __random_variable [@http://en.wikipedia.org/wiki/Random_variable random variable]]
@@ -279,9 +282,7 @@ and use the function's name as the link text]
 [def __errno [@http://en.wikipedia.org/wiki/Errno `::errno`]]
 [def __Mathworld [@http://mathworld.wolfram.com Wolfram MathWorld]]
 [def __Mathematica [@http://www.wolfram.com/products/mathematica/index.html Wolfram Mathematica]]
-
-
-
+[def __TOMS748 [@http://portal.acm.org/citation.cfm?id=210111 TOMS Algorithm 748: enclosing zeros of continuous functions]]
 [def __why_complements [link why_complements why complements?]]
 [def __complements [link complements complements]]
 [def __performance [link math_toolkit.perf performance]]
@@ -304,7 +305,7 @@ what level of precision to use etc.  Refer to the
 
 [template discrete_quantile_warning[NAME]
 [caution
-The [NAME] distribution is a discrete distribution: internally
+The [NAME] distribution is a discrete distribution: internally,
 functions like the `cdf` and `pdf` are treated "as if" they are continuous
 functions, but in reality the results returned from these functions
 only have meaning if an integer value is provided for the random variate
@@ -332,23 +333,21 @@ for these distributions.
 ] [/ template discrete_quantile_warning]
 
 This manual is also available in 
-[@http://svn.boost.org/svn/boost/sandbox/pdf/math/release/math.pdf 
+[@http://sourceforge.net/projects/boost/files/boost-docs/ 
 printer friendly PDF format],
 and as a CD ISBN 0-9504833-2-X  978-0-9504833-2-0, Classification 519.2-dc22.
 
-
 [section:main_overview Overview]
-
 [include overview.qbk]
 [include structure.qbk] [/getting about, directory and file structure.]
-
 [include result_type_calc.qbk]
 [include error_handling.qbk]
 
 [section:compilers_overview Compilers]
 [compilers_overview]
 [endsect]
-[section:pol_overview Configuration and Policies]
+[include config_macros.qbk]
+[section:pol_overview Policies]
 [policy_overview]
 [endsect]
 
@@ -436,6 +435,7 @@ and as a CD ISBN 0-9504833-2-X  978-0-9504833-2-0, Classification 519.2-dc22.
 [include rounding_func.qbk]
 [include fpclassify.qbk]
 [include sign.qbk]
+[include fp_facets.qbk]
 [include float_next.qbk]
 [endsect]
 
@@ -447,11 +447,11 @@ and as a CD ISBN 0-9504833-2-X  978-0-9504833-2-0, Classification 519.2-dc22.
 [include tr1_ref.qbk]
 [endsect]
 
-[section:toolkit Internal Details and Tools (Experimental)]
+[section:toolkit Tools, Constants and Internal Details]
 
 [include internals_overview.qbk]
 
-[section:internals1 Reused Utilities]
+[section:internals1 Utilities - Constants & Tools]
 [include constants.qbk]
 [include series.qbk]
 [include fraction.qbk]
@@ -460,7 +460,7 @@ and as a CD ISBN 0-9504833-2-X  978-0-9504833-2-0, Classification 519.2-dc22.
 [include roots_without_derivatives.qbk]
 [include minima.qbk]
 [include tuple.qbk]
-[endsect] [/section:internals1 Reused Utilities]
+[endsect] [/section:internals1 Utilities - Constants & Tools]
 
 [section:internals2 Testing and Development]
 [include polynomial.qbk]
@@ -491,9 +491,6 @@ and as a CD ISBN 0-9504833-2-X  978-0-9504833-2-0, Classification 519.2-dc22.
 [section:history1 History and What's New]
 [history]
 [endsect]
-[section:compilers Compilers]
-[compilers_overview]
-[endsect]
 [include issues.qbk]
 [include credits.qbk]
 [/include test_HTML4_symbols.qbk]
@@ -501,9 +498,18 @@ and as a CD ISBN 0-9504833-2-X  978-0-9504833-2-0, Classification 519.2-dc22.
 
 [endsect] [/section:status Status and Roadmap]
 
+[include ../../../../tools/auto_index/include/auto_index_helpers.qbk]
+[named_index function_name Function Index]
+[named_index class_name Class Index]
+[named_index typedef_name Typedef Index]
+[named_index macro_name Macro Index]
+[index]
+
 [/ math.qbk
-  Copyright 2008 John Maddock and Paul A. Bristow.
+  Copyright 2008, 2010 John Maddock and Paul A. Bristow.
   Distributed under the Boost Software License, Version 1.0.
   (See accompanying file LICENSE_1_0.txt or copy at
   http://www.boost.org/LICENSE_1_0.txt).
 ]
+
+

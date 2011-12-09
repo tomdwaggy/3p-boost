@@ -2,7 +2,7 @@
 // chat_server.cpp
 // ~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -182,6 +182,11 @@ public:
     : io_service_(io_service),
       acceptor_(io_service, endpoint)
   {
+    start_accept();
+  }
+
+  void start_accept()
+  {
     chat_session_ptr new_session(new chat_session(io_service_, room_));
     acceptor_.async_accept(new_session->socket(),
         boost::bind(&chat_server::handle_accept, this, new_session,
@@ -194,11 +199,9 @@ public:
     if (!error)
     {
       session->start();
-      chat_session_ptr new_session(new chat_session(io_service_, room_));
-      acceptor_.async_accept(new_session->socket(),
-          boost::bind(&chat_server::handle_accept, this, new_session,
-            boost::asio::placeholders::error));
     }
+
+    start_accept();
   }
 
 private:

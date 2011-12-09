@@ -3,11 +3,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Resolver service requirements</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="ResolveHandler.html" title="Resolve handler requirements">
-<link rel="next" href="SerialPortService.html" title="Serial port service requirements">
+<link rel="next" href="SeqPacketSocketService.html" title="Sequenced packet socket service requirements">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="ResolveHandler.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="SerialPortService.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="ResolveHandler.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="SeqPacketSocketService.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -45,7 +45,7 @@
         <code class="computeroutput"><span class="identifier">error_code</span></code>, and <code class="computeroutput"><span class="identifier">h</span></code> denotes a value meeting <a class="link" href="ResolveHandler.html" title="Resolve handler requirements"><code class="computeroutput"><span class="identifier">ResolveHandler</span></code></a> requirements.
       </p>
 <div class="table">
-<a name="id845430"></a><p class="title"><b>Table&#160;22.&#160;ResolverService requirements</b></p>
+<a name="boost_asio.reference.ResolverService.t0"></a><p class="title"><b>Table&#160;22.&#160;ResolverService requirements</b></p>
 <div class="table-contents"><table class="table" summary="ResolverService requirements">
 <colgroup>
 <col>
@@ -89,7 +89,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">cancel</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">);</span>
 </pre>
@@ -112,7 +111,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">resolve</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">q</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">);</span>
 </pre>
@@ -121,7 +119,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver_iterator</span><span class="special">&lt;</span>
   <span class="identifier">InternetProtocol</span><span class="special">&gt;</span>
@@ -141,7 +138,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">async_resolve</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">q</span><span class="special">,</span> <span class="identifier">h</span><span class="special">);</span>
 </pre>
@@ -154,7 +150,7 @@
                 <p>
                   Initiates an asynchronous resolve operation that is performed via
                   the <code class="computeroutput"><span class="identifier">io_service</span></code>
-                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">io_service</span><span class="special">()</span></code>
+                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">get_io_service</span><span class="special">()</span></code>
                   and behaves according to <a class="link" href="asynchronous_operations.html" title="Requirements on asynchronous operations">asynchronous
                   operation</a> requirements.<br> <br> If the operation completes
                   successfully, the <code class="computeroutput"><span class="identifier">ResolveHandler</span></code>
@@ -169,7 +165,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">resolve</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">e</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">);</span>
 </pre>
@@ -178,7 +173,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver_iterator</span><span class="special">&lt;</span>
   <span class="identifier">InternetProtocol</span><span class="special">&gt;</span>
@@ -198,7 +192,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre class="programlisting"><span class="identifier">a</span><span class="special">.</span><span class="identifier">async_resolve</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">e</span><span class="special">,</span> <span class="identifier">h</span><span class="special">);</span>
 </pre>
@@ -211,7 +204,7 @@
                 <p>
                   Initiates an asynchronous resolve operation that is performed via
                   the <code class="computeroutput"><span class="identifier">io_service</span></code>
-                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">io_service</span><span class="special">()</span></code>
+                  object <code class="computeroutput"><span class="identifier">a</span><span class="special">.</span><span class="identifier">get_io_service</span><span class="special">()</span></code>
                   and behaves according to <a class="link" href="asynchronous_operations.html" title="Requirements on asynchronous operations">asynchronous
                   operation</a> requirements.<br> <br> If the operation completes
                   successfully, the <code class="computeroutput"><span class="identifier">ResolveHandler</span></code>
@@ -230,7 +223,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -238,7 +232,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="ResolveHandler.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="SerialPortService.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="ResolveHandler.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="SeqPacketSocketService.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

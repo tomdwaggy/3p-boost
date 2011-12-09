@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>basic_streambuf</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="basic_stream_socket/write_some/overload2.html" title="basic_stream_socket::write_some (2 of 2 overloads)">
@@ -34,9 +34,9 @@
 <span class="keyword">class</span> <span class="identifier">basic_streambuf</span> <span class="special">:</span>
   <span class="identifier">noncopyable</span>
 </pre>
-<a name="boost_asio.reference.basic_streambuf.types"></a><h5>
-<a name="id1102096"></a>
-        <a class="link" href="basic_streambuf.html#boost_asio.reference.basic_streambuf.types">Types</a>
+<h5>
+<a name="boost_asio.reference.basic_streambuf.h0"></a>
+        <span><a name="boost_asio.reference.basic_streambuf.types"></a></span><a class="link" href="basic_streambuf.html#boost_asio.reference.basic_streambuf.types">Types</a>
       </h5>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -82,10 +82,9 @@
 </tr>
 </tbody>
 </table></div>
-<a name="boost_asio.reference.basic_streambuf.member_functions"></a><h5>
-<a name="id1102212"></a>
-        <a class="link" href="basic_streambuf.html#boost_asio.reference.basic_streambuf.member_functions">Member
-        Functions</a>
+<h5>
+<a name="boost_asio.reference.basic_streambuf.h1"></a>
+        <span><a name="boost_asio.reference.basic_streambuf.member_functions"></a></span><a class="link" href="basic_streambuf.html#boost_asio.reference.basic_streambuf.member_functions">Member Functions</a>
       </h5>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -192,9 +191,9 @@
 </tr>
 </tbody>
 </table></div>
-<a name="boost_asio.reference.basic_streambuf.protected_member_functions"></a><h5>
-<a name="id1102473"></a>
-        <a class="link" href="basic_streambuf.html#boost_asio.reference.basic_streambuf.protected_member_functions">Protected
+<h5>
+<a name="boost_asio.reference.basic_streambuf.h2"></a>
+        <span><a name="boost_asio.reference.basic_streambuf.protected_member_functions"></a></span><a class="link" href="basic_streambuf.html#boost_asio.reference.basic_streambuf.protected_member_functions">Protected
         Member Functions</a>
       </h5>
 <div class="informaltable"><table class="table">
@@ -300,9 +299,9 @@
         the lifetime of each <code class="computeroutput"><span class="identifier">basic_streambuf</span></code>
         object.
       </p>
-<a name="boost_asio.reference.basic_streambuf.examples"></a><h5>
-<a name="id1102852"></a>
-        <a class="link" href="basic_streambuf.html#boost_asio.reference.basic_streambuf.examples">Examples</a>
+<h5>
+<a name="boost_asio.reference.basic_streambuf.h3"></a>
+        <span><a name="boost_asio.reference.basic_streambuf.examples"></a></span><a class="link" href="basic_streambuf.html#boost_asio.reference.basic_streambuf.examples">Examples</a>
       </h5>
 <p>
         Writing directly from an streambuf to a socket:
@@ -311,31 +310,31 @@
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="identifier">os</span><span class="special">(&amp;</span><span class="identifier">b</span><span class="special">);</span>
 <span class="identifier">os</span> <span class="special">&lt;&lt;</span> <span class="string">"Hello, World!\n"</span><span class="special">;</span>
 
-<span class="comment">// try sending some data in input sequence
-</span><span class="identifier">size_t</span> <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">send</span><span class="special">(</span><span class="identifier">b</span><span class="special">.</span><span class="identifier">data</span><span class="special">());</span>
+<span class="comment">// try sending some data in input sequence</span>
+<span class="identifier">size_t</span> <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">send</span><span class="special">(</span><span class="identifier">b</span><span class="special">.</span><span class="identifier">data</span><span class="special">());</span>
 
-<span class="identifier">b</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span> <span class="comment">// sent data is removed from input sequence
-</span></pre>
+<span class="identifier">b</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span> <span class="comment">// sent data is removed from input sequence</span>
+</pre>
 <p>
         Reading from a socket directly into a streambuf:
       </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">streambuf</span> <span class="identifier">b</span><span class="special">;</span>
 
-<span class="comment">// reserve 512 bytes in output sequence
-</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">streambuf</span><span class="special">::</span><span class="identifier">mutable_buffers_type</span> <span class="identifier">bufs</span> <span class="special">=</span> <span class="identifier">b</span><span class="special">.</span><span class="identifier">prepare</span><span class="special">(</span><span class="number">512</span><span class="special">);</span>
+<span class="comment">// reserve 512 bytes in output sequence</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">streambuf</span><span class="special">::</span><span class="identifier">mutable_buffers_type</span> <span class="identifier">bufs</span> <span class="special">=</span> <span class="identifier">b</span><span class="special">.</span><span class="identifier">prepare</span><span class="special">(</span><span class="number">512</span><span class="special">);</span>
 
 <span class="identifier">size_t</span> <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">sock</span><span class="special">.</span><span class="identifier">receive</span><span class="special">(</span><span class="identifier">bufs</span><span class="special">);</span>
 
-<span class="comment">// received data is "committed" from output sequence to input sequence
-</span><span class="identifier">b</span><span class="special">.</span><span class="identifier">commit</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
+<span class="comment">// received data is "committed" from output sequence to input sequence</span>
+<span class="identifier">b</span><span class="special">.</span><span class="identifier">commit</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
 
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">istream</span> <span class="identifier">is</span><span class="special">(&amp;</span><span class="identifier">b</span><span class="special">);</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">s</span><span class="special">;</span>
 <span class="identifier">is</span> <span class="special">&gt;&gt;</span> <span class="identifier">s</span><span class="special">;</span>
 </pre>
-<a name="boost_asio.reference.basic_streambuf.requirements"></a><h5>
-<a name="id1103330"></a>
-        <a class="link" href="basic_streambuf.html#boost_asio.reference.basic_streambuf.requirements">Requirements</a>
+<h5>
+<a name="boost_asio.reference.basic_streambuf.h4"></a>
+        <span><a name="boost_asio.reference.basic_streambuf.requirements"></a></span><a class="link" href="basic_streambuf.html#boost_asio.reference.basic_streambuf.requirements">Requirements</a>
       </h5>
 <p>
         <span class="bold"><strong>Header: </strong></span><code class="literal">boost/asio/basic_streambuf.hpp</code>
@@ -346,7 +345,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

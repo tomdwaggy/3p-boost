@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2001-2010 Joel de Guzman
+    Copyright (c) 2001-2011 Joel de Guzman
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -87,15 +87,9 @@ main()
         s.clear();
         BOOST_TEST(test_attr("b b b b ", *char_, s, space)  && s == "bbbb");
 
-        // The following 4 tests show that omit does not inhibit explicit attributes
-        s.clear();
-        BOOST_TEST(test_attr("bbbb", *omit[char_('b')], s) && s == "bbbb");
-
+        // The following 2 tests show that omit does not inhibit explicit attributes
         s.clear();
         BOOST_TEST(test_attr("bbbb", omit[*char_('b')], s) && s == "bbbb");
-
-        s.clear();
-        BOOST_TEST(test_attr("b b b b", *omit[char_('b')], s, space) && s == "bbbb");
 
         s.clear();
         BOOST_TEST(test_attr("b b b b", omit[*char_('b')], s, space) && s == "bbbb");

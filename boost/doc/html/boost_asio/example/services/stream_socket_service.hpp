@@ -2,7 +2,7 @@
 // stream_socket_service.hpp
 // ~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2010 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -41,7 +41,7 @@ public:
   typedef typename service_impl_type::implementation_type implementation_type;
 
   /// The native type of a stream socket.
-  typedef typename service_impl_type::native_type native_type;
+  typedef typename service_impl_type::native_handle_type native_handle_type;
 
   /// Construct a new stream socket service for the specified io_service.
   explicit stream_socket_service(boost::asio::io_service& io_service)
@@ -78,7 +78,7 @@ public:
 
   /// Open a stream socket from an existing native socket.
   boost::system::error_code assign(implementation_type& impl,
-      const protocol_type& protocol, const native_type& native_socket,
+      const protocol_type& protocol, const native_handle_type& native_socket,
       boost::system::error_code& ec)
   {
     logger_.log("Assigning from a native socket");

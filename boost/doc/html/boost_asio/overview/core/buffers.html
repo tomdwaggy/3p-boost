@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Buffers</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../core.html" title="Core Concepts and Functionality">
 <link rel="prev" href="strands.html" title="Strands: Use Threads Without Explicit Locking">
@@ -98,9 +98,9 @@
           <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span></code>, <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span></code>
           or <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span></code> can be used.
         </p>
-<a name="boost_asio.overview.core.buffers.streambuf_for_integration_with_iostreams"></a><h6>
-<a name="id763050"></a>
-          <a class="link" href="buffers.html#boost_asio.overview.core.buffers.streambuf_for_integration_with_iostreams">Streambuf
+<h6>
+<a name="boost_asio.overview.core.buffers.h0"></a>
+          <span><a name="boost_asio.overview.core.buffers.streambuf_for_integration_with_iostreams"></a></span><a class="link" href="buffers.html#boost_asio.overview.core.buffers.streambuf_for_integration_with_iostreams">Streambuf
           for Integration with Iostreams</a>
         </h6>
 <p>
@@ -138,9 +138,9 @@
           internal data beyond this limit will throw a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">length_error</span></code>
           exception.
         </p>
-<a name="boost_asio.overview.core.buffers.bytewise_traversal_of_buffer_sequences"></a><h6>
-<a name="id763236"></a>
-          <a class="link" href="buffers.html#boost_asio.overview.core.buffers.bytewise_traversal_of_buffer_sequences">Bytewise
+<h6>
+<a name="boost_asio.overview.core.buffers.h1"></a>
+          <span><a name="boost_asio.overview.core.buffers.bytewise_traversal_of_buffer_sequences"></a></span><a class="link" href="buffers.html#boost_asio.overview.core.buffers.bytewise_traversal_of_buffer_sequences">Bytewise
           Traversal of Buffer Sequences</a>
         </h6>
 <p>
@@ -161,9 +161,9 @@
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffers_begin</span><span class="special">(</span><span class="identifier">bufs</span><span class="special">),</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffers_begin</span><span class="special">(</span><span class="identifier">bufs</span><span class="special">)</span> <span class="special">+</span> <span class="identifier">n</span><span class="special">);</span>
 </pre>
-<a name="boost_asio.overview.core.buffers.buffer_debugging"></a><h6>
-<a name="id763588"></a>
-          <a class="link" href="buffers.html#boost_asio.overview.core.buffers.buffer_debugging">Buffer
+<h6>
+<a name="boost_asio.overview.core.buffers.h2"></a>
+          <span><a name="boost_asio.overview.core.buffers.buffer_debugging"></a></span><a class="link" href="buffers.html#boost_asio.overview.core.buffers.buffer_debugging">Buffer
           Debugging</a>
         </h6>
 <p>
@@ -175,9 +175,9 @@
         </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">(</span><span class="number">1</span><span class="special">)</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;::</span><span class="identifier">iterator</span> <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">();</span>
-<span class="identifier">v</span><span class="special">.</span><span class="identifier">clear</span><span class="special">();</span> <span class="comment">// invalidates iterators
-</span><span class="special">*</span><span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="comment">// assertion!
-</span></pre>
+<span class="identifier">v</span><span class="special">.</span><span class="identifier">clear</span><span class="special">();</span> <span class="comment">// invalidates iterators</span>
+<span class="special">*</span><span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="comment">// assertion!</span>
+</pre>
 <p>
           Boost.Asio takes advantage of this feature to add buffer debugging. Consider
           the following code:
@@ -211,9 +211,10 @@
           by defining <code class="computeroutput"><span class="identifier">BOOST_ASIO_ENABLE_BUFFER_DEBUGGING</span></code>.
           It can also be explicitly disabled by defining <code class="computeroutput"><span class="identifier">BOOST_ASIO_DISABLE_BUFFER_DEBUGGING</span></code>.
         </p>
-<a name="boost_asio.overview.core.buffers.see_also"></a><h6>
-<a name="id763988"></a>
-          <a class="link" href="buffers.html#boost_asio.overview.core.buffers.see_also">See Also</a>
+<h6>
+<a name="boost_asio.overview.core.buffers.h3"></a>
+          <span><a name="boost_asio.overview.core.buffers.see_also"></a></span><a class="link" href="buffers.html#boost_asio.overview.core.buffers.see_also">See
+          Also</a>
         </h6>
 <p>
           <a class="link" href="../../reference/buffer.html" title="buffer">buffer</a>, <a class="link" href="../../reference/buffers_begin.html" title="buffers_begin">buffers_begin</a>,
@@ -229,7 +230,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

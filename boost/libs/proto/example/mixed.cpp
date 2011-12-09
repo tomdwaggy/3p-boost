@@ -40,7 +40,7 @@ struct iterator_wrapper
       : it(iter)
     {}
 
-    Iter it;
+    mutable Iter it;
 };
 
 struct begin : proto::callable
@@ -182,7 +182,7 @@ struct MixedExpr
   : proto::extends<Expr, MixedExpr<Expr>, MixedDomain>
 {
     explicit MixedExpr(Expr const &expr)
-      : proto::extends<Expr, MixedExpr<Expr>, MixedDomain>(expr)
+      : MixedExpr::proto_extends(expr)
     {}
 private:
     // hide this:

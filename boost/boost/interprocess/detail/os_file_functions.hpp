@@ -17,6 +17,7 @@
 #include <boost/interprocess/permissions.hpp>
 
 #include <string>
+#include <limits>
 
 #if (defined BOOST_INTERPROCESS_WINDOWS)
 #  include <boost/interprocess/detail/win32_api.hpp>
@@ -64,7 +65,7 @@ typedef enum { file_begin     = winapi::file_begin
              , file_current   = winapi::file_current
              } file_pos_t;
 
-namespace detail{
+namespace ipcdetail{
 
 inline mapping_handle_t mapping_handle_from_file_handle(file_handle_t hnd)
 {
@@ -93,7 +94,7 @@ inline const char *get_temporary_path()
 
 
 inline file_handle_t create_new_file
-   (const char *name, mode_t mode, const permissions & perm, bool temporary = false)
+   (const char *name, mode_t mode, const permissions & perm = permissions(), bool temporary = false)
 {  
    unsigned long attr = temporary ? winapi::file_attribute_temporary : 0;
    return winapi::create_file
@@ -102,7 +103,7 @@ inline file_handle_t create_new_file
 }
 
 inline file_handle_t create_or_open_file
-   (const char *name, mode_t mode, const permissions & perm, bool temporary = false)
+   (const char *name, mode_t mode, const permissions & perm = permissions(), bool temporary = false)
 {  
    unsigned long attr = temporary ? winapi::file_attribute_temporary : 0;
    return winapi::create_file
@@ -126,6 +127,11 @@ inline bool truncate_file (file_handle_t hnd, std::size_t size)
    offset_t filesize;
    if(!winapi::get_file_size(hnd, filesize))
       return false;
+
+   if(size > (std::numeric_limits<offset_t>::max)()){
+      winapi::set_last_error(winapi::error_file_too_large);
+      return false;
+   }
 
    if(size > (unsigned long long)filesize){
       if(!winapi::set_file_pointer_ex(hnd, filesize, 0, winapi::file_begin)){
@@ -365,7 +371,7 @@ typedef enum { file_begin     = SEEK_SET
              , file_current   = SEEK_CUR
              } file_pos_t;
 
-namespace detail{
+namespace ipcdetail{
 
 inline mapping_handle_t mapping_handle_from_file_handle(file_handle_t hnd)
 {
@@ -395,7 +401,7 @@ inline const char *get_temporary_path()
 }
 
 inline file_handle_t create_new_file
-   (const char *name, mode_t mode, const permissions & perm, bool temporary = false)
+   (const char *name, mode_t mode, const permissions & perm = permissions(), bool temporary = false)
 {  
    (void)temporary;
    int ret = ::open(name, ((int)mode) | O_EXCL | O_CREAT, perm.get_permissions());
@@ -406,12 +412,23 @@ inline file_handle_t create_new_file
 }
 
 inline file_handle_t create_or_open_file
-   (const char *name, mode_t mode, const permissions & perm, bool temporary = false)
-{  
+   (const char *name, mode_t mode, const permissions & perm = permissions(), bool temporary = false)
+{
    (void)temporary;
-   int ret = ::open(name, ((int)mode) | O_CREAT, perm.get_permissions());
-   if(ret >= 0){
-      ::fchmod(ret, perm.get_permissions());
+   int ret = -1;
+   //We need a loop to change permissions correctly using fchmod, since
+   //with "O_CREAT only" ::open we don't know if we've created or opened the file.
+   while(1){
+      ret = ::open(name, ((int)mode) | O_EXCL | O_CREAT, perm.get_permissions());
+      if(ret >= 0){
+         ::fchmod(ret, perm.get_permissions());
+         break;
+      }
+      else if(errno == EEXIST){
+         if((ret = ::open(name, (int)mode)) >= 0 || errno != ENOENT){
+            break;
+         }
+      }
    }
    return ret;
 }
@@ -420,14 +437,20 @@ inline file_handle_t open_existing_file
    (const char *name, mode_t mode, bool temporary = false)
 {  
    (void)temporary;
-   return ::open(name, (int)mode, 0666);
+   return ::open(name, (int)mode);
 }
 
 inline bool delete_file(const char *name)
 {  return ::unlink(name) == 0;   }
 
 inline bool truncate_file (file_handle_t hnd, std::size_t size)
-{  return 0 == ::ftruncate(hnd, size);   }
+{
+   if(off_t(size) < 0){
+      errno = EINVAL;
+      return false;
+   }
+   return 0 == ::ftruncate(hnd, size);
+}
 
 inline bool get_file_size(file_handle_t hnd, offset_t &size)
 {  
@@ -658,7 +681,7 @@ inline bool open_or_create_directory(const char *dir_name)
 }
 
 
-}  //namespace detail{
+}  //namespace ipcdetail{
 }  //namespace interprocess {
 }  //namespace boost {
 

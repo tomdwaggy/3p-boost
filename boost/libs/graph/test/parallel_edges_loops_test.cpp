@@ -16,6 +16,8 @@ This test needs to be linked against Boost.Filesystem.
 
 */
 
+#define BOOST_FILESYSTEM_VERSION 3
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -109,7 +111,7 @@ void read_dimacs(Graph& g, const std::string& filename)
           vertex_iterator_t vi, vi_end;
           long count = 0;
           long mult_count = 0;
-          for(tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+          for(boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
             {
               if (count % vertex_stride == 0)
                 {
@@ -208,7 +210,7 @@ int test_graph(const std::string& dimacs_filename)
   // Initialize the interior edge index
   property_map<graph, edge_index_t>::type e_index = get(edge_index, g);
   e_size_t edge_count = 0;
-  for(tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
+  for(boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei)
     put(e_index, *ei, edge_count++);
 
   // Initialize the interior vertex index - not needed if the vertices
@@ -216,7 +218,7 @@ int test_graph(const std::string& dimacs_filename)
   /*
   property_map<graph, vertex_index_t>::type v_index = get(vertex_index, g);
   v_size_t vertex_count = 0;
-  for(tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
+  for(boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi)
     put(v_index, *vi, vertex_count++);
   */
 
@@ -340,20 +342,19 @@ int test_main(int argc, char* argv[])
             << std::endl;
 
   filesystem::path input_directory = 
-    filesystem::system_complete
-    (filesystem::path(input_directory_str, filesystem::native));
-  const std::string dimacs_suffix = ".dimacs";
+    filesystem::system_complete(filesystem::path(input_directory_str));
+  const std::string dimacs_extension = ".dimacs";
 
   filesystem::directory_iterator dir_end;
   for( filesystem::directory_iterator dir_itr(input_directory);
        dir_itr != dir_end; ++dir_itr)
   { 
 
-    if (!ends_with(dir_itr->string(), dimacs_suffix))
+    if (dir_itr->path().extension() != dimacs_extension)
       continue;
 
     std::cerr << "Testing " << dir_itr->path().leaf() << "... ";
-    BOOST_REQUIRE (test_graph(dir_itr->string()) == 0);
+    BOOST_REQUIRE (test_graph(dir_itr->path().string()) == 0);
 
     std::cerr << std::endl;
   }

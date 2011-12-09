@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Performance</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;10.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;12.&#160;Boost.Intrusive">
 <link rel="prev" href="design_notes.html" title="Design Notes">
 <link rel="next" href="release_notes.html" title="Release Notes">
 </head>
@@ -112,10 +112,9 @@
       some other utilities:
     </p>
 <p>
-      
 </p>
-<pre class="programlisting"><span class="comment">//Iteration and element count defines
-</span><span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">NumIter</span> <span class="special">=</span> <span class="number">100</span><span class="special">;</span>
+<pre class="programlisting"><span class="comment">//Iteration and element count defines</span>
+<span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">NumIter</span> <span class="special">=</span> <span class="number">100</span><span class="special">;</span>
 <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">NumElements</span>   <span class="special">=</span> <span class="number">50000</span><span class="special">;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
@@ -123,8 +122,8 @@
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">BigSize</span><span class="special">&gt;</span>  <span class="keyword">struct</span> <span class="identifier">filler</span>        <span class="special">{</span>  <span class="keyword">int</span> <span class="identifier">dummy</span><span class="special">[</span><span class="number">10</span><span class="special">];</span>   <span class="special">};</span>
 <span class="keyword">template</span> <span class="special">&lt;&gt;</span>             <span class="keyword">struct</span> <span class="identifier">filler</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span> <span class="special">{};</span>
 
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">BigSize</span><span class="special">&gt;</span> <span class="comment">//The object for non-intrusive containers
-</span><span class="keyword">struct</span> <span class="identifier">test_class</span> <span class="special">:</span>  <span class="keyword">private</span> <span class="identifier">filler</span><span class="special">&lt;</span><span class="identifier">BigSize</span><span class="special">&gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">BigSize</span><span class="special">&gt;</span> <span class="comment">//The object for non-intrusive containers</span>
+<span class="keyword">struct</span> <span class="identifier">test_class</span> <span class="special">:</span>  <span class="keyword">private</span> <span class="identifier">filler</span><span class="special">&lt;</span><span class="identifier">BigSize</span><span class="special">&gt;</span>
 <span class="special">{</span>
    <span class="keyword">int</span> <span class="identifier">i_</span><span class="special">;</span>
    <span class="identifier">test_class</span><span class="special">()</span>               <span class="special">{}</span>
@@ -134,15 +133,15 @@
 <span class="special">};</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">BigSize</span><span class="special">,</span> <span class="identifier">link_mode_type</span> <span class="identifier">LinkMode</span><span class="special">&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">itest_class</span>   <span class="comment">//The object for intrusive containers
-</span>   <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">list_base_hook</span><span class="special">&lt;</span><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">LinkMode</span><span class="special">&gt;</span> <span class="special">&gt;,</span>  <span class="keyword">public</span> <span class="identifier">test_class</span><span class="special">&lt;</span><span class="identifier">BigSize</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">itest_class</span>   <span class="comment">//The object for intrusive containers</span>
+   <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">list_base_hook</span><span class="special">&lt;</span><span class="identifier">link_mode</span><span class="special">&lt;</span><span class="identifier">LinkMode</span><span class="special">&gt;</span> <span class="special">&gt;,</span>  <span class="keyword">public</span> <span class="identifier">test_class</span><span class="special">&lt;</span><span class="identifier">BigSize</span><span class="special">&gt;</span>
 <span class="special">{</span>
    <span class="identifier">itest_class</span><span class="special">()</span>                                <span class="special">{}</span>
    <span class="identifier">itest_class</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">test_class</span><span class="special">&lt;</span><span class="identifier">BigSize</span><span class="special">&gt;(</span><span class="identifier">i</span><span class="special">)</span>  <span class="special">{}</span>
 <span class="special">};</span>
 
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">FuncObj</span><span class="special">&gt;</span> <span class="comment">//Adapts functors taking values to functors taking pointers
-</span><span class="keyword">struct</span> <span class="identifier">func_ptr_adaptor</span>  <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">FuncObj</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">FuncObj</span><span class="special">&gt;</span> <span class="comment">//Adapts functors taking values to functors taking pointers</span>
+<span class="keyword">struct</span> <span class="identifier">func_ptr_adaptor</span>  <span class="special">:</span>  <span class="keyword">public</span> <span class="identifier">FuncObj</span>
 <span class="special">{</span>
    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">FuncObj</span><span class="special">::</span><span class="identifier">first_argument_type</span><span class="special">*</span>  <span class="identifier">first_argument_type</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">FuncObj</span><span class="special">::</span><span class="identifier">second_argument_type</span><span class="special">*</span> <span class="identifier">second_argument_type</span><span class="special">;</span>
@@ -186,15 +185,14 @@
         insertion tests:
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ilist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="identifier">objects</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">);</span>
 <span class="identifier">ilist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
    <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">objects</span><span class="special">[</span><span class="identifier">i</span><span class="special">]);</span>
-<span class="comment">//Elements are unlinked in ilist's destructor
-</span><span class="comment">//Elements are destroyed in vector's destructor
-</span></pre>
+<span class="comment">//Elements are unlinked in ilist's destructor</span>
+<span class="comment">//Elements are destroyed in vector's destructor</span>
+</pre>
 <p>
       </p>
 <p>
@@ -202,28 +200,26 @@
         that inserted in the intrusive list.
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">stdlist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
    <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
-<span class="comment">//Elements unlinked and destroyed in stdlist's destructor
-</span></pre>
+<span class="comment">//Elements unlinked and destroyed in stdlist's destructor</span>
+</pre>
 <p>
       </p>
 <p>
         For a standard list, elements are pushed back using push_back().
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="identifier">objects</span><span class="special">(</span><span class="identifier">NumElements</span><span class="special">);</span>
 <span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
    <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(&amp;</span><span class="identifier">objects</span><span class="special">[</span><span class="identifier">i</span><span class="special">]);</span>
-<span class="comment">//Pointers to elements unlinked and destroyed in stdptrlist's destructor
-</span><span class="comment">//Elements destroyed in vector's destructor
-</span></pre>
+<span class="comment">//Pointers to elements unlinked and destroyed in stdptrlist's destructor</span>
+<span class="comment">//Elements destroyed in vector's destructor</span>
+</pre>
 <p>
       </p>
 <p>
@@ -231,16 +227,15 @@
         pushed back in the pointer list using push_back().
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">stdlist</span> <span class="identifier">objects</span><span class="special">;</span>  <span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
    <span class="identifier">objects</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
    <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(&amp;</span><span class="identifier">objects</span><span class="special">.</span><span class="identifier">back</span><span class="special">());</span>
 <span class="special">}</span>
-<span class="comment">//Pointers to elements unlinked and destroyed in stdptrlist's destructor
-</span><span class="comment">//Elements unlinked and destroyed in stdlist's destructor
-</span></pre>
+<span class="comment">//Pointers to elements unlinked and destroyed in stdptrlist's destructor</span>
+<span class="comment">//Elements unlinked and destroyed in stdlist's destructor</span>
+</pre>
 <p>
       </p>
 <p>
@@ -251,7 +246,7 @@
         These are the times in microseconds for each case, and the normalized time:
       </p>
 <div class="table">
-<a name="id1651153"></a><p class="title"><b>Table&#160;10.2.&#160;Back insertion + destruction times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="intrusive.performance.performance_results_push_back.t0"></a><p class="title"><b>Table&#160;12.2.&#160;Back insertion + destruction times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -385,7 +380,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1651380"></a><p class="title"><b>Table&#160;10.3.&#160;Back insertion + destruction times for GCC 4.1.1 / MinGW over Windows
+<a name="intrusive.performance.performance_results_push_back.t1"></a><p class="title"><b>Table&#160;12.3.&#160;Back insertion + destruction times for GCC 4.1.1 / MinGW over Windows
         XP</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for GCC 4.1.1 / MinGW over Windows
         XP">
@@ -521,7 +516,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1651607"></a><p class="title"><b>Table&#160;10.4.&#160;Back insertion + destruction times for GCC 4.1.2 / Linux Kernel 2.6.18
+<a name="intrusive.performance.performance_results_push_back.t2"></a><p class="title"><b>Table&#160;12.4.&#160;Back insertion + destruction times for GCC 4.1.2 / Linux Kernel 2.6.18
         (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Back insertion + destruction times for GCC 4.1.2 / Linux Kernel 2.6.18
         (OpenSuse 10.2)">
@@ -698,7 +693,7 @@
         These are the results:
       </p>
 <div class="table">
-<a name="id1652066"></a><p class="title"><b>Table&#160;10.5.&#160;Reverse times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="intrusive.performance.performance_results_reversing.t0"></a><p class="title"><b>Table&#160;12.5.&#160;Reverse times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -832,7 +827,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1652291"></a><p class="title"><b>Table&#160;10.6.&#160;Reverse times for GCC 4.1.1 / MinGW over Windows XP</b></p>
+<a name="intrusive.performance.performance_results_reversing.t1"></a><p class="title"><b>Table&#160;12.6.&#160;Reverse times for GCC 4.1.1 / MinGW over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for GCC 4.1.1 / MinGW over Windows XP">
 <colgroup>
 <col>
@@ -966,7 +961,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1652517"></a><p class="title"><b>Table&#160;10.7.&#160;Reverse times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
+<a name="intrusive.performance.performance_results_reversing.t2"></a><p class="title"><b>Table&#160;12.7.&#160;Reverse times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Reverse times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)">
 <colgroup>
 <col>
@@ -1108,17 +1103,17 @@
         of the pointer list might be more dispersed, since allocations from both
         lists are interleaved in the code:
       </p>
-<pre class="programlisting"><span class="comment">//Object list (holding `test_class`)
-</span><span class="identifier">stdlist</span> <span class="identifier">objects</span><span class="special">;</span>
+<pre class="programlisting"><span class="comment">//Object list (holding `test_class`)</span>
+<span class="identifier">stdlist</span> <span class="identifier">objects</span><span class="special">;</span>
 
-<span class="comment">//Pointer list (holding `test_class` pointers)
-</span><span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
+<span class="comment">//Pointer list (holding `test_class` pointers)</span>
+<span class="identifier">stdptrlist</span> <span class="identifier">l</span><span class="special">;</span>
 
 <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">NumElements</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">){</span>
-   <span class="comment">//Allocation from the object list
-</span>   <span class="identifier">objects</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
-   <span class="comment">//Allocation from the pointer list
-</span>   <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(&amp;</span><span class="identifier">objects</span><span class="special">.</span><span class="identifier">back</span><span class="special">());</span>
+   <span class="comment">//Allocation from the object list</span>
+   <span class="identifier">objects</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">stdlist</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">(</span><span class="identifier">i</span><span class="special">));</span>
+   <span class="comment">//Allocation from the pointer list</span>
+   <span class="identifier">l</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(&amp;</span><span class="identifier">objects</span><span class="special">.</span><span class="identifier">back</span><span class="special">());</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -1170,7 +1165,7 @@
         These are the results:
       </p>
 <div class="table">
-<a name="id1653576"></a><p class="title"><b>Table&#160;10.8.&#160;Sort times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="intrusive.performance.performance_results_sorting.t0"></a><p class="title"><b>Table&#160;12.8.&#160;Sort times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -1304,7 +1299,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1653802"></a><p class="title"><b>Table&#160;10.9.&#160;Sort times for GCC 4.1.1 / MinGW over Windows XP</b></p>
+<a name="intrusive.performance.performance_results_sorting.t1"></a><p class="title"><b>Table&#160;12.9.&#160;Sort times for GCC 4.1.1 / MinGW over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for GCC 4.1.1 / MinGW over Windows XP">
 <colgroup>
 <col>
@@ -1438,7 +1433,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1654028"></a><p class="title"><b>Table&#160;10.10.&#160;Sort times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
+<a name="intrusive.performance.performance_results_sorting.t2"></a><p class="title"><b>Table&#160;12.10.&#160;Sort times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Sort times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)">
 <colgroup>
 <col>
@@ -1609,7 +1604,7 @@
         These are the results:
       </p>
 <div class="table">
-<a name="id1654609"></a><p class="title"><b>Table&#160;10.11.&#160;Write access times for Visual C++ 7.1 / Windows XP</b></p>
+<a name="intrusive.performance.performance_results_write_access.t0"></a><p class="title"><b>Table&#160;12.11.&#160;Write access times for Visual C++ 7.1 / Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for Visual C++ 7.1 / Windows XP">
 <colgroup>
 <col>
@@ -1743,7 +1738,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1654833"></a><p class="title"><b>Table&#160;10.12.&#160;Write access times for GCC 4.1.1 / MinGW over Windows XP</b></p>
+<a name="intrusive.performance.performance_results_write_access.t1"></a><p class="title"><b>Table&#160;12.12.&#160;Write access times for GCC 4.1.1 / MinGW over Windows XP</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for GCC 4.1.1 / MinGW over Windows XP">
 <colgroup>
 <col>
@@ -1877,7 +1872,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="id1655058"></a><p class="title"><b>Table&#160;10.13.&#160;Write access times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
+<a name="intrusive.performance.performance_results_write_access.t2"></a><p class="title"><b>Table&#160;12.13.&#160;Write access times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)</b></p>
 <div class="table-contents"><table class="table" summary="Write access times for GCC 4.1.2 / Linux Kernel 2.6.18 (OpenSuse 10.2)">
 <colgroup>
 <col>
@@ -2032,7 +2027,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla, 2006-2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2010 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

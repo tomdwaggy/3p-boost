@@ -2,7 +2,7 @@
     Boost.Wave: A Standard compliant C++ preprocessor library
     http://www.boost.org/
 
-    Copyright (c) 2001-2010 Hartmut Kaiser. Distributed under the Boost
+    Copyright (c) 2001-2011 Hartmut Kaiser. Distributed under the Boost
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
@@ -26,7 +26,7 @@ SCAN( MACRO EMPTY() )(1)    //R (1)
 //H 00: t_1_030.cpp(17): EMPTY(), [t_1_030.cpp(12): EMPTY()=]
 //H 02: 
 //H 03: _
-//H 02: MACRO
+//H 02:  MACRO  
 //H 03: MACRO
 //H 00: t_1_030.cpp(17): MACRO(1), [t_1_030.cpp(14): MACRO(x)=(x)]
 //H 02: (1)

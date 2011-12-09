@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>io_service::strand::dispatch</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../io_service__strand.html" title="io_service::strand">
 <link rel="prev" href="../io_service__strand.html" title="io_service::strand">
@@ -27,13 +27,13 @@
 <a name="boost_asio.reference.io_service__strand.dispatch"></a><a class="link" href="dispatch.html" title="io_service::strand::dispatch">io_service::strand::dispatch</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="id1166231"></a> 
+          <a class="indexterm" name="id1348159"></a> 
 Request the strand to invoke the given handler.
         </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <a class="link" href="../Handler.html" title="Handlers">Handler</a><span class="special">&gt;</span>
+    <span class="keyword">typename</span> <a class="link" href="../CompletionHandler.html" title="Completion handler requirements">CompletionHandler</a><span class="special">&gt;</span>
 <span class="keyword">void</span> <span class="identifier">dispatch</span><span class="special">(</span>
-    <span class="identifier">Handler</span> <span class="identifier">handler</span><span class="special">);</span>
+    <span class="identifier">CompletionHandler</span> <span class="identifier">handler</span><span class="special">);</span>
 </pre>
 <p>
           This function is used to ask the strand to execute the given handler.
@@ -51,9 +51,9 @@ Request the strand to invoke the given handler.
           handler will only be called in a thread in which the io_service's run member
           function is currently being invoked.
         </p>
-<a name="boost_asio.reference.io_service__strand.dispatch.parameters"></a><h6>
-<a name="id1166366"></a>
-          <a class="link" href="dispatch.html#boost_asio.reference.io_service__strand.dispatch.parameters">Parameters</a>
+<h6>
+<a name="boost_asio.reference.io_service__strand.dispatch.h0"></a>
+          <span><a name="boost_asio.reference.io_service__strand.dispatch.parameters"></a></span><a class="link" href="dispatch.html#boost_asio.reference.io_service__strand.dispatch.parameters">Parameters</a>
         </h6>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -63,9 +63,8 @@ Request the strand to invoke the given handler.
 <p>
                 The handler to be called. The strand will make a copy of the handler
                 object as required. The function signature of the handler must be:
-                
 </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">();</span> 
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">();</span>
 </pre>
 <p>
               </p>
@@ -75,7 +74,8 @@ Request the strand to invoke the given handler.
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003 - 2010 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 Christopher
+      M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

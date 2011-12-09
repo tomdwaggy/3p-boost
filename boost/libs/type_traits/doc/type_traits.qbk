@@ -6,11 +6,11 @@
 ]
 
 [library Boost.TypeTraits
-    [quickbook 1.4]
-    [copyright 2000 2006 Adobe Systems Inc, David Abrahams, Steve Cleary, 
-    Beman Dawes, Aleksey Gurtovoy, Howard Hinnant, Jesse Jones, Mat Marcus, 
-    Itay Maman, John Maddock, Alexander Nasonov, Thorsten Ottosen,
-    Robert Ramey and Jeremy Siek]
+    [quickbook 1.5]
+    [copyright 2000 2011 Adobe Systems Inc, David Abrahams, Frederic Bron,
+    Steve Cleary, Beman Dawes, Aleksey Gurtovoy, Howard Hinnant, Jesse Jones,
+    Mat Marcus, Itay Maman, John Maddock, Alexander Nasonov, Thorsten Ottosen,
+    Roman Perepelitsa, Robert Ramey, Jeremy Siek, Robert Stewart and Steven Watanabe]
     [purpose Meta-programming support library]
     [license
          Distributed under the Boost Software License, Version 1.0.
@@ -20,9 +20,10 @@
     [authors [authors, various]]
     [category template]
     [category generic]
-    [last-revision $Date: 2010-11-07 12:39:07 -0500 (Sun, 07 Nov 2010) $]
+    [last-revision $Date: 2011-10-09 18:28:33 -0400 (Sun, 09 Oct 2011) $]
 ]
 
+[include ../../../tools/auto_index/include/auto_index_helpers.qbk]
 
 [def __boost_root ../../../../]
 [def __tof '''<replaceable><link linkend="boost_typetraits.reference.integral_constant">true_type</link>-or-<link linkend="boost_typetraits.reference.integral_constant">false_type</link></replaceable>''']
@@ -124,7 +125,7 @@
 [def __decay [link boost_typetraits.reference.decay decay]]
 [def __is_complex [link boost_typetraits.reference.is_complex is_complex]]
 
-A printer-friendly [@http://svn.boost.org/svn/boost/sandbox/pdf/type_traits/release/type_traits.pdf 
+A printer-friendly [@http://sourceforge.net/projects/boost/files/boost-docs/ 
  PDF version of this manual is also available].
 
 [section:intro Introduction]
@@ -180,7 +181,35 @@ that is the result of the transformation.
 [include floating_point_promotion.qbk]
 [include function_traits.qbk]
 
+[include has_bit_and.qbk]
+[include has_bit_and_assign.qbk]
+[include has_bit_or.qbk]
+[include has_bit_or_assign.qbk]
+[include has_bit_xor.qbk]
+[include has_bit_xor_assign.qbk]
+[include has_complement.qbk]
+[include has_dereference.qbk]
+[include has_divides.qbk]
+[include has_divides_assign.qbk]
+[include has_equal_to.qbk]
+[include has_greater.qbk]
+[include has_greater_equal.qbk]
+[include has_left_shift.qbk]
+[include has_left_shift_assign.qbk]
+[include has_less.qbk]
+[include has_less_equal.qbk]
+[include has_logical_and.qbk]
+[include has_logical_not.qbk]
+[include has_logical_or.qbk]
+[include has_minus.qbk]
+[include has_minus_assign.qbk]
+[include has_modulus.qbk]
+[include has_modulus_assign.qbk]
+[include has_multiplies.qbk]
+[include has_multiplies_assign.qbk]
+[include has_negate.qbk]
 [include has_new_operator.qbk]
+[include has_not_equal_to.qbk]
 [include has_nothrow_assign.qbk]
 [include has_nothrow_constructor.qbk]
 [include has_nothrow_copy.qbk]
@@ -190,6 +219,14 @@ See __has_nothrow_copy.
 [section:has_no_throw_def_cons has_nothrow_default_constructor]
 See __has_nothrow_constructor.
 [endsect]
+[include has_plus.qbk]
+[include has_plus_assign.qbk]
+[include has_post_decrement.qbk]
+[include has_post_increment.qbk]
+[include has_pre_decrement.qbk]
+[include has_pre_increment.qbk]
+[include has_right_shift.qbk]
+[include has_right_shift_assign.qbk]
 [include has_trivial_assign.qbk]
 [include has_trivial_constructor.qbk]
 [include has_trivial_copy.qbk]
@@ -200,6 +237,8 @@ See __has_trivial_copy.
 See __has_trivial_constructor.
 [endsect]
 [include has_trivial_destructor.qbk]
+[include has_unary_minus.qbk]
+[include has_unary_plus.qbk]
 [include has_virtual_destructor.qbk]
 
 [include integral_constant.qbk]
@@ -260,8 +299,10 @@ See __has_trivial_constructor.
 [include history.qbk]
 [include credits.qbk]
 
-
-
+[named_index class_name Class Index]
+[named_index typedef_name Typedef Index]
+[named_index macro_name Macro Index]
+[index]
 
 
 

@@ -8,7 +8,7 @@
         [@http://www.boost.org/LICENSE_1_0.txt])
     ]
     [authors [Maddock, John]]
-    [/last-revision $Date: 2010-10-02 07:34:33 -0400 (Sat, 02 Oct 2010) $]
+    [/last-revision $Date: 2011-08-23 04:47:38 -0400 (Tue, 23 Aug 2011) $]
 ]
 
 [template super[x]'''<superscript>'''[x]'''</superscript>''']
@@ -44,7 +44,7 @@
 [template regfree[] [link boost_regex.ref.posix.regfree `regfree`]]
 
 A printer-friendly 
-[@http://svn.boost.org/svn/boost/sandbox/pdf/regex/release/regex.pdf 
+[@http://sourceforge.net/projects/boost/files/boost-docs/ 
 PDF version of this manual is also available].
 
 [include configuration.qbk]
@@ -83,6 +83,10 @@ PDF version of this manual is also available].
 [include regex_grep.qbk]
 [include regex_split.qbk]
 [include old_regex.qbk]
+[endsect]
+
+[section Internal Details]
+[include unicode_iterators.qbk]
 [endsect]
 
 [endsect]
