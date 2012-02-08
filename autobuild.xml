@@ -14,9 +14,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>bf49640cf72be96dba5296acb7761a92</string>
+              <string>7de2760f2394e974148bf222a0632b48</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/246086/arch/Darwin/installer/icu4c-48.1-darwin-20111202.tar.bz2</string>
+              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/3p-icu4c/rev/249111/arch/Darwin/installer/icu4c-48.1-darwin-20120208.tar.bz2</string>
             </map>
             <key>name</key>
             <string>darwin</string>
@@ -26,9 +26,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>80c56fa407836b3118fcb5c1f10a54fc</string>
+              <string>a92f871b03f56bb5d7ee6c08eaef3f8c</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/246086/arch/Linux/installer/icu4c-48.1-linux-20111202.tar.bz2</string>
+              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/3p-icu4c/rev/249111/arch/Linux/installer/icu4c-48.1-linux-20120208.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux</string>
@@ -38,9 +38,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>b2220310fef50b4c12fcb92d432af712</string>
+              <string>b50d860f803f3f5e69bfeb523a9d83be</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/log_3p-icu4c/rev/246086/arch/CYGWIN/installer/icu4c-48.1-windows-20111202.tar.bz2</string>
+              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/3p-icu4c/rev/249111/arch/CYGWIN/installer/icu4c-48.1-windows-20120208.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -58,9 +58,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>ceca14de13cf48236ad8b343638eafe9</string>
+              <string>86f045c2a8881309eedb3d4ca960077f</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/huseby_3p-zlib-new-server-layout/rev/246111/arch/Darwin/installer/zlib-1.2.5-darwin-20111202.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib/rev/249037/arch/Darwin/installer/zlib-1.2.6-darwin-20120207.tar.bz2</string>
             </map>
             <key>name</key>
             <string>darwin</string>
@@ -70,9 +70,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>51918e7651693a553d17cf57767ef512</string>
+              <string>39797a9e13ece9c05c713b55ee0175f0</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/huseby_3p-zlib-new-server-layout/rev/246111/arch/Linux/installer/zlib-1.2.5-linux-20111202.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib/rev/249037/arch/Linux/installer/zlib-1.2.6-linux-20120207.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux</string>
@@ -82,9 +82,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>3bfd020803cd09867b8d5d99f8964562</string>
+              <string>81ee608ed385b291e4e7af973ec4b021</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/huseby_3p-zlib-new-server-layout/rev/246111/arch/CYGWIN/installer/zlib-1.2.5-windows-20111202.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib/rev/249037/arch/CYGWIN/installer/zlib-1.2.6-windows-20120207.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
