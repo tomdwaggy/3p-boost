@@ -23,9 +23,12 @@
 
 #ifdef BOOST_MSVC
    #ifndef _CRT_SECURE_NO_DEPRECATE
-   #define  BOOST_INTERPROCESS_CRT_SECURE_NO_DEPRECATE
-   #define _CRT_SECURE_NO_DEPRECATE
-   #define _SCL_SECURE_NO_WARNINGS
+      #define  BOOST_INTERPROCESS_CRT_SECURE_NO_DEPRECATE
+      #define _CRT_SECURE_NO_DEPRECATE
+   #endif
+   #ifndef _SCL_SECURE_NO_WARNINGS
+      #define  BOOST_INTERPROCESS_SCL_SECURE_NO_WARNINGS
+      #define _SCL_SECURE_NO_WARNINGS
    #endif
    #pragma warning (push)
    #pragma warning(disable:4996)
