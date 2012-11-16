@@ -57,17 +57,18 @@ case "$AUTOBUILD_PLATFORM" in
 	ZLIB_RELEASE_PATH=$(cygpath -m $stage/packages/lib/release)
 	ZLIB_DEBUG_PATH=$(cygpath -m $stage/packages/lib/debug)
 	ICU_PATH=$(cygpath -m $stage/packages)
-	
-	RELEASE_BJAM_OPTIONS="--toolset=msvc-10.0 include=$INCLUDE_PATH \
-        -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH -sICU_PATH=$ICU_PATH \
-        $BOOST_BJAM_OPTIONS"
-        
-	./bjam variant=release $RELEASE_BJAM_OPTIONS stage -j2
 
-	DEBUG_BJAM_OPTIONS="--toolset=msvc-10.0 include=$INCLUDE_PATH \
-        -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sICU_PATH=$ICU_PATH \
-        $BOOST_BJAM_OPTIONS"
-	./bjam variant=debug $DEBUG_BJAM_OPTIONS stage -j2
+	# Windows build of viewer expects /Zc:wchar_t-, have to match that
+	WINDOWS_BJAM_OPTIONS="--toolset=msvc-10.0 stage -j2 \
+	    include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
+	    cxxflags=-Zc:wchar_t- \
+	    $BOOST_BJAM_OPTIONS"
+
+	RELEASE_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH"
+	./bjam variant=release $RELEASE_BJAM_OPTIONS
+
+	DEBUG_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH"
+	./bjam variant=debug $DEBUG_BJAM_OPTIONS
 
 	# Move the debug libs first, then the leftover release libs
 	mv ${stage_lib}/*-gd.lib "$stage_debug"
