@@ -339,7 +339,7 @@ namespace boost
             thread_info.swap(x.thread_info);
         }
 
-        class BOOST_SYMBOL_VISIBLE id;
+        class /* BOOST_SYMBOL_VISIBLE */ id;
         id get_id() const BOOST_NOEXCEPT;
 
 
