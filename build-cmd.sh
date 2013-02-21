@@ -14,7 +14,7 @@ if [ -z "$AUTOBUILD" ] ; then
 fi
 
 BOOST_BJAM_OPTIONS="address-model=32 architecture=x86 --layout=tagged \
-                            --with-date_time --with-filesystem \
+                            --with-context --with-date_time --with-filesystem \
                             --with-iostreams --with-program_options \
                             --with-regex --with-signals --with-system \
                             --with-thread  -sNO_BZIP2=1"
@@ -41,7 +41,7 @@ mkdir -p "$stage_debug"
 # bjam doesn't support a -sICU_LIBPATH to point to the location
 # of the icu libraries like it does for zlib. Instead, it expects
 # the library files to be immediately in the ./lib directory
-# and the headres to be in the ./include directory and doesn't
+# and the headers to be in the ./include directory and doesn't
 # provide a way to work around this. Because of this, we break
 # the standard packaging layout, with the debug library files
 # in ./lib/debug and the release in ./lib/release and instead

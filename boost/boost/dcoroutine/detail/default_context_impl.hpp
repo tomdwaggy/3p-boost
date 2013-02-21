@@ -94,29 +94,9 @@
      make copiable.
 */
 
-#if defined(__linux) || defined(linux) || defined(__linux__)
-
-#include <boost/dcoroutine/detail/context_linux.hpp>
+#include <boost/dcoroutine/detail/context_context.hpp>
 namespace boost { namespace dcoroutines { namespace detail {
-  typedef oslinux::context_impl default_context_impl;
+  typedef context::context_impl default_context_impl;
 } } }
-
-#elif defined(_POSIX_VERSION)
-
-#include <boost/dcoroutine/detail/context_posix.hpp>
-namespace boost { namespace dcoroutines { namespace detail {
-  typedef posix::context_impl default_context_impl;
-} } }
-#elif defined(BOOST_WINDOWS)
-#include <boost/dcoroutine/detail/context_windows.hpp>
-namespace boost { namespace dcoroutines { namespace detail {
-  typedef windows::context_impl default_context_impl;
-} } }
-
-#else 
-
-#error No default_context_impl available for this system
-
-#endif
 
 #endif
