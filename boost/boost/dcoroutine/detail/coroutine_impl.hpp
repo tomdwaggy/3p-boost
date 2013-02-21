@@ -69,6 +69,9 @@ namespace boost { namespace dcoroutines { namespace detail {
 	m_arg(0),
 	m_result(0){}
                 
+    // have to match throw() guarantee of ~context_base()
+    ~coroutine_impl() throw() {}
+
     arg_slot_type * args() {
       BOOST_ASSERT(m_arg);
       return m_arg;
@@ -182,6 +185,9 @@ namespace boost { namespace dcoroutines { namespace detail {
 
 		super_type(this, stack_size),
       m_fun(f){}
+
+    // have to keep throw() promise made by base-class destructor
+    ~coroutine_impl_wrapper() throw() {}
 
     void operator()() {
       typedef typename super_type::context_exit_status
