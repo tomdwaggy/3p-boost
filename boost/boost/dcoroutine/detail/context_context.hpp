@@ -224,7 +224,7 @@ namespace boost { namespace dcoroutines { namespace detail {
 
         // delegate to subclass the problem of supplying an appropriate
         // pointer to pass to jump_fcontext()
-        virtual intptr_t get_arg() const { return NULL; }
+        virtual intptr_t get_arg() const { return 0; }
 
     protected:
         // Get a non-NULL fcontext_t*
@@ -314,7 +314,7 @@ namespace boost { namespace dcoroutines { namespace detail {
             // pick up prepared arg
             intptr_t arg = m_arg;
             // but after the first time, reset to NULL -- this is why m_arg is mutable
-            m_arg = NULL;
+            m_arg = 0;
             return arg;
         }
 
