@@ -59,11 +59,11 @@ jump_fcontext:
 
     mov     a4, a1
     add     a4, #52
-    fstmiax a4, {d8-d15}            @ save S16-S31
+    vstmia  a4, {d8-d15}            @ save S16-S31
 
     mov     a4, a2
     add     a4, #52
-    fldmiax a4, {d8-d15}            @ restore S16-S31
+    vldmia  a4, {d8-d15}            @ restore S16-S31
 1:
 #endif
 
@@ -71,3 +71,6 @@ jump_fcontext:
                                     @ and as first arg in context function
     ldmia   a2, {v1-v8,sp-pc}       @ restore v1-V8,SP-PC
 .size jump_fcontext,.-jump_fcontext
+
+/* Mark that we don't need executable stack.  */
+.section .note.GNU-stack,"",%progbits

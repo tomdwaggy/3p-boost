@@ -19,7 +19,8 @@
 #include <functional>
 #include "print_container.hpp"
 #include "input_from_forward_iterator.hpp"
-#include <boost/move/move.hpp>
+#include <boost/move/utility.hpp>
+#include <boost/move/iterator.hpp>
 #include <string>
 
 namespace boost{
@@ -147,7 +148,7 @@ int list_test (bool copied_allocators_equal = true)
    const int max = 100;
    typedef list_push_data_function<DoublyLinked> push_data_t;
 
-   try{
+   BOOST_TRY{
       MyBoostList *boostlist = new MyBoostList;
       MyStdList *stdlist = new MyStdList;
 
@@ -337,9 +338,10 @@ int list_test (bool copied_allocators_equal = true)
       delete boostlist;
       delete stdlist;
    }
-   catch(...){
-      throw;
+   BOOST_CATCH(...){
+      BOOST_RETHROW;
    }
+   BOOST_CATCH_END
    return 0;
 }
 

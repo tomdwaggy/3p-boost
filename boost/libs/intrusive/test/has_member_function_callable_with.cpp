@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
 //
-// (C) Copyright Ion Gaztanaga 2011-2012. Distributed under the Boost
+// (C) Copyright Ion Gaztanaga 2011-2013. Distributed under the Boost
 // Software License, Version 1.0. (See accompanying file
 // LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
@@ -53,7 +53,7 @@ class has_member_function_named_func
       void func();
    };
 
-   struct Base : public Type, public BaseMixin {};
+   struct Base : public ::boost::intrusive::detail::remove_cv<Type>::type, public BaseMixin {};
    template <typename T, T t> class Helper{};
 
    template <typename U>

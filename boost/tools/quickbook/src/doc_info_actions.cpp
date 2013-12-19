@@ -29,7 +29,7 @@ namespace quickbook
     static std::string doc_info_output(value const& p, unsigned version)
     {
         if (qbk_version_n < version) {
-            std::string value = p.get_quickbook();
+            std::string value = detail::to_s(p.get_quickbook());
             value.erase(value.find_last_not_of(" \t") + 1);
             return value;
         }
@@ -141,7 +141,7 @@ namespace quickbook
 
         if (values.check(doc_info_tags::type))
         {
-            doc_type = values.consume(doc_info_tags::type).get_quickbook();
+            doc_type = detail::to_s(values.consume(doc_info_tags::type).get_quickbook());
             doc_title = values.consume(doc_info_tags::title);
             use_doc_info = !nested_file || qbk_version_n >= 106u;
         }
@@ -200,20 +200,23 @@ namespace quickbook
         std::string include_doc_id_, id_;
 
         if (!include_doc_id.empty())
-            include_doc_id_ = include_doc_id.get_quickbook();
+            include_doc_id_ = detail::to_s(include_doc_id.get_quickbook());
         if (!id.empty())
-            id_ = id.get_quickbook();
+            id_ = detail::to_s(id.get_quickbook());
 
         // Quickbook version
 
         unsigned new_version = get_version(state, use_doc_info, qbk_version);
 
-        if (new_version != qbk_version_n && new_version >= 106)
+        if (new_version != qbk_version_n)
         {
-            detail::outwarn(state.current_file->path)
-                << "Quickbook " << (new_version / 100) << "." << (new_version % 100)
-                << " is still under development and is "
-                "likely to change in the future." << std::endl;
+            if (new_version >= 107u)
+            {
+                detail::outwarn(state.current_file->path)
+                    << "Quickbook " << (new_version / 100) << "." << (new_version % 100)
+                    << " is still under development and is "
+                    "likely to change in the future." << std::endl;
+            }
         }
 
         if (new_version) {

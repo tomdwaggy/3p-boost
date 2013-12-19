@@ -135,7 +135,7 @@ bool test_insert_with_expand_bwd()
    for(int iteration = 0; iteration < Iterations; ++iteration)
    {
       value_type *memory = new value_type[MemorySize];
-      try {
+      BOOST_TRY {
          std::vector<non_volatile_value_type> initial_data;
          initial_data.resize(InitialSize[iteration]);
          for(int i = 0; i < InitialSize[iteration]; ++i){
@@ -165,10 +165,11 @@ bool test_insert_with_expand_bwd()
             return false;
          }
       }
-      catch(...){
+      BOOST_CATCH(...){
          delete [](const_cast<non_volatile_value_type*>(memory));
-         throw;
+         BOOST_RETHROW;
       }
+      BOOST_CATCH_END
       delete [](const_cast<non_volatile_value_type*>(memory));
    }
 
@@ -182,7 +183,6 @@ bool test_assign_with_expand_bwd()
 {
    typedef typename VectorWithExpandBwdAllocator::value_type value_type;
    typedef typename boost::remove_volatile<value_type>::type non_volatile_value_type;
-   typedef std::vector<non_volatile_value_type> Vect;
    const int MemorySize = 200;
 
    const int Offset[]      = { 50, 50, 50};
@@ -193,7 +193,7 @@ bool test_assign_with_expand_bwd()
    for(int iteration = 0; iteration <Iterations; ++iteration)
    {
       value_type *memory = new value_type[MemorySize];
-      try {
+      BOOST_TRY {
          //Create initial data
          std::vector<non_volatile_value_type> initial_data;
          initial_data.resize(InitialSize[iteration]);
@@ -227,10 +227,11 @@ bool test_assign_with_expand_bwd()
             return false;
          }
       }
-      catch(...){
+      BOOST_CATCH(...){
          delete [](const_cast<typename boost::remove_volatile<value_type>::type*>(memory));
-         throw;
+         BOOST_RETHROW;
       }
+      BOOST_CATCH_END
       delete [](const_cast<typename boost::remove_volatile<value_type>::type*>(memory));
    }
 

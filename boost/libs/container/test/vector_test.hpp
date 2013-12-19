@@ -19,7 +19,7 @@
 #include <functional>
 #include <list>
 
-#include <boost/move/move.hpp>
+#include <boost/move/utility.hpp>
 #include <boost/container/detail/mpl.hpp>
 #include "print_container.hpp"
 #include "check_equal_containers.hpp"
@@ -28,10 +28,132 @@
 #include <vector>
 #include "emplace_test.hpp"
 #include "input_from_forward_iterator.hpp"
+#include <boost/move/utility.hpp>
+#include <boost/move/iterator.hpp>
+#include <boost/detail/no_exceptions_support.hpp>
+#include <boost/static_assert.hpp>
+#include "insert_test.hpp"
 
 namespace boost{
 namespace container {
 namespace test{
+
+//
+template<int Dummy = 0>
+class default_init_allocator_base
+{
+   protected:
+   static unsigned char s_pattern;
+   static bool          s_ascending;
+
+   public:
+   static void reset_pattern(unsigned char value)
+   {  s_pattern = value;   }
+
+   static void set_ascending(bool enable)
+   {  s_ascending = enable;   }
+};
+
+template<int Dummy>
+unsigned char default_init_allocator_base<Dummy>::s_pattern = 0u;
+
+template<int Dummy>
+bool default_init_allocator_base<Dummy>::s_ascending = true;
+
+template<class T>
+class default_init_allocator
+   : public default_init_allocator_base<0>
+{
+   typedef default_init_allocator_base<0> base_t;
+   public:
+   typedef T value_type;
+
+   default_init_allocator()
+   {}
+
+   template <class U>
+   default_init_allocator(default_init_allocator<U>)
+   {}
+
+   T* allocate(std::size_t n)
+   {
+      //Initialize memory to a pattern
+      T *const p = ::new T[n];
+      unsigned char *puc_raw = reinterpret_cast<unsigned char*>(p);
+      std::size_t max = sizeof(T)*n;
+      if(base_t::s_ascending){
+         for(std::size_t i = 0; i != max; ++i){
+            puc_raw[i] = static_cast<unsigned char>(s_pattern++);
+         }
+      }
+      else{
+         for(std::size_t i = 0; i != max; ++i){
+            puc_raw[i] = static_cast<unsigned char>(s_pattern--);
+         }
+      }
+      return p;
+   }
+
+   void deallocate(T *p, std::size_t)
+   {  delete[] p;  }
+};
+
+template<class T>
+inline bool check_ascending_byte_pattern(const T&t)
+{
+   const unsigned char *pch = &reinterpret_cast<const unsigned char &>(t);
+   const std::size_t max = sizeof(T);
+   for(std::size_t i = 1; i != max; ++i){
+      if( (pch[i-1] != ((unsigned char)(pch[i]-1u))) ){
+         return false;
+      }
+   }
+   return true;
+}
+
+template<class T>
+inline bool check_descending_byte_pattern(const T&t)
+{
+   const unsigned char *pch = &reinterpret_cast<const unsigned char &>(t);
+   const std::size_t max = sizeof(T);
+   for(std::size_t i = 1; i != max; ++i){
+      if( (pch[i-1] != ((unsigned char)(pch[i]+1u))) ){
+         return false;
+      }
+   }
+   return true;
+}
+
+template<class IntDefaultInitAllocVector>
+bool default_init_test()//Test for default initialization
+{
+   const std::size_t Capacity = 100;
+
+   {
+      test::default_init_allocator<int>::reset_pattern(0);
+      test::default_init_allocator<int>::set_ascending(true);
+      IntDefaultInitAllocVector v(Capacity, default_init);
+      typename IntDefaultInitAllocVector::iterator it = v.begin();
+      //Compare with the pattern
+      for(std::size_t i = 0; i != Capacity; ++i, ++it){
+         if(!test::check_ascending_byte_pattern(*it))
+            return false;
+      }
+   }
+   {
+      test::default_init_allocator<int>::reset_pattern(100);
+      test::default_init_allocator<int>::set_ascending(false);
+      IntDefaultInitAllocVector v;
+      v.resize(Capacity, default_init);
+      typename IntDefaultInitAllocVector::iterator it = v.begin();
+      //Compare with the pattern
+      for(std::size_t i = 0; i != Capacity; ++i, ++it){
+         if(!test::check_descending_byte_pattern(*it))
+            return false;
+      }
+   }
+   return true;
+}
 
 template<class V1, class V2>
 bool vector_copyable_only(V1 *, V2 *, boost::container::container_detail::false_type)
@@ -77,6 +199,17 @@ bool vector_copyable_only(V1 *boostvector, V2 *stdvector, boost::container::cont
       stdvector->push_back(int(3));
       if(!test::CheckEqualContainers(boostvector, stdvector)) return false;
    }
+   {
+      V1 *pv1 = new V1(*boostvector);
+      V2 *pv2 = new V2(*stdvector);
+      boostvector->clear();
+      stdvector->clear();
+      boostvector->assign(pv1->begin(), pv1->end());
+      stdvector->assign(pv2->begin(), pv2->end());
+      if(!test::CheckEqualContainers(boostvector, stdvector)) return 1;
+      delete pv1;
+      delete pv2;
+   }
 
    return true;
 }
@@ -85,11 +218,15 @@ template<class MyBoostVector>
 int vector_test()
 {
    typedef std::vector<int>                     MyStdVector;
-   typedef typename MyBoostVector::value_type     IntType;
+   typedef typename MyBoostVector::value_type   IntType;
    const int max = 100;
 
+   if(!test_range_insertion<MyBoostVector>()){
+      return 1;
+   }
+
    {
-      try{
+      BOOST_TRY{
          MyBoostVector *boostvector = new MyBoostVector;
          MyStdVector *stdvector = new MyStdVector;
          boostvector->resize(100);
@@ -158,38 +295,38 @@ int vector_test()
 
             IntType aux_vect[50];
             for(int i = 0; i < 50; ++i){
-               IntType new_int(-2);
+               IntType new_int(-i);
                aux_vect[i] = boost::move(new_int);
             }
             int aux_vect2[50];
             for(int i = 0; i < 50; ++i){
-               aux_vect2[i] = -2;
+               aux_vect2[i] = -i;
             }
             typename MyBoostVector::size_type old_size = boostvector->size();
             typename MyBoostVector::iterator insert_it =
-               boostvector->insert(boostvector->begin() + old_size
+               boostvector->insert(boostvector->begin() + old_size/2
                               ,boost::make_move_iterator(&aux_vect[0])
                               ,boost::make_move_iterator(aux_vect + 50));
-            if(boostvector->begin() + old_size != insert_it) return 1;
-            stdvector->insert(stdvector->begin() + old_size, aux_vect2, aux_vect2 + 50);
+            if(boostvector->begin() + old_size/2 != insert_it) return 1;
+            stdvector->insert(stdvector->begin() + old_size/2, aux_vect2, aux_vect2 + 50);
             if(!test::CheckEqualContainers(boostvector, stdvector)) return 1;
 
             for(int i = 0; i < 50; ++i){
-               IntType new_int(-3);
+               IntType new_int(-i);
                aux_vect[i] = boost::move(new_int);
             }
 
             for(int i = 0; i < 50; ++i){
-               aux_vect2[i] = -3;
+               aux_vect2[i] = -i;
             }
             old_size = boostvector->size();
             //Now try with input iterators instead
-            insert_it = boostvector->insert(boostvector->begin() + old_size
+            insert_it = boostvector->insert(boostvector->begin() + old_size/2
                               ,boost::make_move_iterator(make_input_from_forward_iterator(&aux_vect[0]))
                               ,boost::make_move_iterator(make_input_from_forward_iterator(aux_vect + 50))
                            );
-            if(boostvector->begin() + old_size != insert_it) return 1;
-            stdvector->insert(stdvector->begin() + old_size, aux_vect2, aux_vect2 + 50);
+            if(boostvector->begin() + old_size/2 != insert_it) return 1;
+            stdvector->insert(stdvector->begin() + old_size/2, aux_vect2, aux_vect2 + 50);
             if(!test::CheckEqualContainers(boostvector, stdvector)) return 1;
          }
 /*       //deque has no reserve
@@ -213,7 +350,12 @@ int vector_test()
          stdvector->push_back(int(1));
          if(!test::CheckEqualContainers(boostvector, stdvector)) return 1;
          }
-         {  //push_back with enough capacity
+
+         {  //test back()
+         const IntType test_this(1);
+         if(test_this != boostvector->back())   return 1;
+         }
+         {  //pop_back with enough capacity
          boostvector->pop_back();
          boostvector->pop_back();
          stdvector->pop_back();
@@ -290,11 +432,15 @@ int vector_test()
          delete stdvector;
          delete boostvector;
       }
-      catch(std::exception &ex){
+      BOOST_CATCH(std::exception &ex){
+         #ifndef BOOST_NO_EXCEPTIONS
          std::cout << ex.what() << std::endl;
+         #endif
          return 1;
       }
+      BOOST_CATCH_END
    }
+
    std::cout << std::endl << "Test OK!" << std::endl;
    return 0;
 }
@@ -306,4 +452,3 @@ int vector_test()
 #include <boost/container/detail/config_end.hpp>
 
 #endif //BOOST_CONTAINER_TEST_VECTOR_TEST_HEADER
-

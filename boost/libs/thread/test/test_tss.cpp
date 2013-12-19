@@ -5,6 +5,9 @@
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#define BOOST_THREAD_VERSION 2
+#define BOOST_THREAD_PROVIDES_INTERRUPTIONS
+
 #include <boost/thread/detail/config.hpp>
 
 #include <boost/thread/tss.hpp>
@@ -31,14 +34,14 @@ struct tss_value_t
 {
     tss_value_t()
     {
-        boost::mutex::scoped_lock lock(tss_mutex);
+        boost::unique_lock<boost::mutex> lock(tss_mutex);
         ++tss_instances;
         ++tss_total;
         value = 0;
     }
     ~tss_value_t()
     {
-        boost::mutex::scoped_lock lock(tss_mutex);
+        boost::unique_lock<boost::mutex> lock(tss_mutex);
         --tss_instances;
     }
     int value;
@@ -56,7 +59,7 @@ void test_tss_thread()
         // be thread safe. Must evaluate further.
         if (n != i)
         {
-            boost::mutex::scoped_lock lock(check_mutex);
+            boost::unique_lock<boost::mutex> lock(check_mutex);
             BOOST_CHECK_EQUAL(n, i);
         }
         ++n;
@@ -368,18 +371,4 @@ boost::unit_test::test_suite* init_unit_test_suite(int, char*[])
     test->add(BOOST_TEST_CASE(test_tss_cleanup_not_called_for_null_pointer));
 
     return test;
-}
-
-void remove_unused_warning()
-{
-
-  //../../../boost/test/results_collector.hpp:40:13: warning: unused function 'first_failed_assertion' [-Wunused-function]
-  //(void)boost::unit_test::first_failed_assertion;
-
-  //../../../boost/test/tools/floating_point_comparison.hpp:304:25: warning: unused variable 'check_is_close' [-Wunused-variable]
-  //../../../boost/test/tools/floating_point_comparison.hpp:326:25: warning: unused variable 'check_is_small' [-Wunused-variable]
-  (void)boost::test_tools::check_is_close;
-  (void)boost::test_tools::check_is_small;
-
-
 }

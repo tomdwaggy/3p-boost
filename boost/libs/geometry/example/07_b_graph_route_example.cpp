@@ -31,16 +31,13 @@
 #include <boost/geometry/geometries/linestring.hpp>
 #include <boost/geometry/io/wkt/read.hpp>
 
+// For output:
+#include <boost/geometry/io/svg/svg_mapper.hpp>
 
-// Yes, this example currently uses some extensions:
+// Yes, this example currently uses an extension:
 
-    // For output:
-    #if defined(HAVE_SVG)
-    #  include <boost/geometry/extensions/io/svg/svg_mapper.hpp>
-    #endif
-
-    // For distance-calculations over the Earth:
-    //#include <boost/geometry/extensions/gis/geographic/strategies/andoyer.hpp>
+// For distance-calculations over the Earth:
+//#include <boost/geometry/extensions/gis/geographic/strategies/andoyer.hpp>
 
 
 
@@ -296,7 +293,7 @@ int main()
         << std::fixed << std::setprecision(0);
 
     // To calculate distance, declare and construct a strategy with average earth radius
-    boost::geometry::strategy::distance::haversine<point_type> haversine(6372795.0);
+    boost::geometry::strategy::distance::haversine<double> haversine(6372795.0);
         
     // Main functionality: calculate shortest routes from/to all cities
 

@@ -10,7 +10,8 @@
 #endif
 
 #include <boost/math/concepts/real_concept.hpp>
-#include <boost/test/test_exec_monitor.hpp>
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/math/special_functions/math_fwd.hpp>
 #include <boost/array.hpp>
@@ -28,7 +29,6 @@
 template <class Real, typename T>
 void do_test_sn(T& data, const char* type_name, const char* test)
 {
-   typedef typename T::value_type row_type;
    typedef Real                   value_type;
 
    std::cout << "Testing: " << test << std::endl;
@@ -78,6 +78,7 @@ void do_test_sn(T& data, const char* type_name, const char* test)
 template <typename T>
 void test_spots(T, const char* type_name)
 {
+    BOOST_MATH_STD_USING
     // Function values calculated on http://functions.wolfram.com/
     // Note that Mathematica's Sn/Cn/Dn accepts k^2 as the second parameter.
     // Arguments here are theta, k, sn, cn, dn
@@ -137,7 +138,7 @@ void test_spots(T, const char* type_name)
     //
     // Sanity checks for all the various derived functions - these are all
     // trivial wrappers around the main three that are tested above - so just
-    // use a simple sanity check for each one.  
+    // use a simple sanity check for each one.
     // Test values are from functions.wolfram.com:
     //
     T tol = boost::math::tools::epsilon<T>() * 100;

@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
 //
-// (C) Copyright David Abrahams, Vicente Botet, Ion Gaztanaga 2010-2011.
+// (C) Copyright David Abrahams, Vicente Botet, Ion Gaztanaga 2010-2012.
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -8,12 +8,14 @@
 // See http://www.boost.org/libs/move for documentation.
 //
 //////////////////////////////////////////////////////////////////////////////
-#include <boost/move/move.hpp>
+#include <boost/move/detail/config_begin.hpp>
+#include <boost/move/utility.hpp>
 
 #include <boost/type_traits/aligned_storage.hpp>
 #include <boost/type_traits/is_class.hpp>
 #include <cassert>
-#include <boost/move/move_helpers.hpp>
+#include <new>
+#include <boost/move/detail/move_helpers.hpp>
 
 
 enum ConstructionType { Copied, Moved, Other };
@@ -82,34 +84,99 @@ class conversion_target_movable
 template<class T>
 class container
 {
-   typename ::boost::aligned_storage<sizeof(T), ::boost::alignment_of<T>::value>::type storage_;
+   T *storage_;
    public:
+   struct const_iterator{};
+   struct iterator : const_iterator{};
+   container()
+      : storage_(0)
+   {}
 
-   typedef T *       iterator;
-   typedef const T * const_iterator;
+   ~container()
+   {  delete storage_; }
+
+   container(const container &c)
+      : storage_(c.storage_ ? new T(*c.storage_) : 0)
+   {}
+
+   container &operator=(const container &c)
+   {
+      if(storage_){
+         delete storage_;
+         storage_ = 0;
+      }
+      storage_ = c.storage_ ? new T(*c.storage_) : 0;
+      return *this;
+   }
 
    BOOST_MOVE_CONVERSION_AWARE_CATCH(push_back, T, void, priv_push_back)
 
-   BOOST_MOVE_CONVERSION_AWARE_CATCH_1ARG(insert, T, iterator, priv_insert, const_iterator)
+   BOOST_MOVE_CONVERSION_AWARE_CATCH_1ARG(insert, T, iterator, priv_insert, const_iterator, const_iterator)
+
+    template <class Iterator>
+   iterator insert(Iterator, Iterator){ return iterator(); }
 
    ConstructionType construction_type() const
-      {  return construction_type_impl(typename ::boost::is_class<T>::type()); }
+     {  return construction_type_impl(typename ::boost::is_class<T>::type()); }
+
    ConstructionType construction_type_impl(::boost::true_type) const
-      {  return reinterpret_cast<const T&>(storage_).construction_type(); }
+     {  return storage_->construction_type(); }
+
    ConstructionType construction_type_impl(::boost::false_type) const
-      {  return Copied; }
+     {  return Copied; }
 
-   iterator begin() { return iterator(0); }
-
+   iterator begin() const { return iterator(); }
+   
    private:
+   template<class U>
+    void priv_construct(BOOST_MOVE_CATCH_FWD(U) x)
+   {
+      if(storage_){
+         delete storage_;
+         storage_ = 0;
+      }
+      storage_ = new T(::boost::forward<U>(x));
+   }
 
    template<class U>
    void priv_push_back(BOOST_MOVE_CATCH_FWD(U) x)
-      { new (&storage_) T(::boost::forward<U>(x)); }
+   {  priv_construct(::boost::forward<U>(x));   }
 
    template<class U>
    iterator priv_insert(const_iterator, BOOST_MOVE_CATCH_FWD(U) x)
-      { new (&storage_) T(::boost::forward<U>(x)); return 0;  }
+   {  priv_construct(::boost::forward<U>(x));   return iterator();   }
+};
+
+class recursive_container
+{
+   BOOST_COPYABLE_AND_MOVABLE(recursive_container)
+   public:
+   recursive_container()
+   {}
+
+   recursive_container(const recursive_container &c)
+      : container_(c.container_)
+   {}
+
+   recursive_container(BOOST_RV_REF(recursive_container) c)
+      : container_(::boost::move(c.container_))
+   {}
+
+   recursive_container & operator =(BOOST_COPY_ASSIGN_REF(recursive_container) c)
+   {
+      container_= c.container_;
+      return *this;
+   }
+
+   recursive_container & operator =(BOOST_RV_REF(recursive_container) c)
+   {
+      container_= ::boost::move(c.container_);
+      return *this;
+   }
+
+   container<recursive_container> container_;
+   friend bool operator< (const recursive_container &a, const recursive_container &b)
+   {  return &a < &b;   }
 };
 
 
@@ -287,13 +354,70 @@ int main()
          c.insert(c.begin(), conversion_source());
          assert(c.construction_type() == Copied);
       }
+      //c.insert(c.begin(), c.begin());
+   }
+
+   {
+      container<int> c;
+      {
+         int x;
+         c.push_back(x);
+         assert(c.construction_type() == Copied);
+         c.insert(c.begin(), c.construction_type());
+         assert(c.construction_type() == Copied);
+      }
+      {
+         const int x = 0;
+         c.push_back(x);
+         assert(c.construction_type() == Copied);
+         c.insert(c.begin(), x);
+         assert(c.construction_type() == Copied);
+      }
+      {
+         c.push_back(int(0));
+         assert(c.construction_type() == Copied);
+         c.insert(c.begin(), int(0));
+         assert(c.construction_type() == Copied);
+      }
+      {
+         conversion_source x;
+         c.push_back(x);
+         assert(c.construction_type() == Copied);
+         c.insert(c.begin(), x);
+         assert(c.construction_type() == Copied);
+      }
+
+      {
+         const conversion_source x;
+         c.push_back(x);
+         assert(c.construction_type() == Copied);
+         c.insert(c.begin(), x);
+         assert(c.construction_type() == Copied);
+      }
+      {
+         c.push_back(conversion_source());
+         assert(c.construction_type() == Copied);
+         c.insert(c.begin(), conversion_source());
+         assert(c.construction_type() == Copied);
+      }
+      c.insert(c.begin(), c.begin());
+   }
+
+   {
+      recursive_container c;
+      recursive_container internal;
+      c.container_.insert(c.container_.begin(), recursive_container());
+      c.container_.insert(c.container_.begin(), internal);
+      c.container_.insert(c.container_.begin(), c.container_.begin());
    }
 
    return 0;
 }
 
+#include <boost/move/detail/config_end.hpp>
+
 /*
-#include <boost/move/move.hpp>
+#include <boost/move/utility.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/enable_if.hpp>
 #include <boost/mpl/if.hpp>
@@ -366,7 +490,7 @@ class conversion_target_movable
 
 struct not_a_type;
 
-#if defined(BOOST_NO_RVALUE_REFERENCES)
+#if defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
 #define BOOST_MOVE_CATCH_CONST(U)  \
    typename ::boost::mpl::if_< ::boost::is_class<T>, BOOST_CATCH_CONST_RLVALUE(U), const U &>::type
 #define BOOST_MOVE_CATCH_RVALUE(U)\
@@ -470,7 +594,7 @@ class container
    {  return priv_push_back(::boost::move(x));  }
 
    //Tricks for C++03
-   #if defined(BOOST_NO_RVALUE_REFERENCES)
+   #if defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
    void push_back(T &x)
    { priv_push_back(const_cast<const T &>(x)); }
 
@@ -673,5 +797,4 @@ int main()
 
    return 0;
 }
-
 */

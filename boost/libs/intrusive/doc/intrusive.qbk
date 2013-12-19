@@ -1,14 +1,14 @@
 [/
- / Copyright (c) 2006-2012 Ion Gaztanaga
+ / Copyright (c) 2006-2013 Ion Gaztanaga
  /
  / Distributed under the Boost Software License, Version 1.0. (See accompanying
  / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  /]
 
 [library Boost.Intrusive
-    [quickbook 1.4]
+    [quickbook 1.5]
     [authors [Krzikalla, Olaf], [Gaztanaga, Ion]]
-    [copyright 2005 Olaf Krzikalla, 2006-2012 Ion Gaztanaga]
+    [copyright 2005 Olaf Krzikalla, 2006-2013 Ion Gaztanaga]
     [id intrusive]
     [dirname intrusive]
     [purpose Intrusive containers]
@@ -34,8 +34,8 @@ to design high performance code like memory allocation algorithms.
 
 While intrusive containers were and are widely used in C, they
 became more and more forgotten in C++ due to the presence of the standard
-containers which don't support intrusive techniques.[*Boost.Intrusive] not only
-reintroduces this technique to C++, but also encapsulates the implementation in
+containers which don't support intrusive techniques.[*Boost.Intrusive] wants to
+push intrusive containers usage encapsulating the implementation in
 STL-like interfaces. Hence anyone familiar with standard containers can easily use
 [*Boost.Intrusive].
 
@@ -433,6 +433,14 @@ Now we can use the container:
    assert(&list.front() == &foo_object);
 
 [endsect]
+
+However, member hooks have some implementation limitations: If there is a virtual inheritance
+relationship between the parent and the member hook, then the distance between the parent
+and the hook is not a compile-time fixed value so obtaining the address of
+the parent from the member hook is not possible without reverse engineering compiler
+produced RTTI. Apart from this, the non-standard pointer to member implementation for classes
+with complex inheritance relationships in MSVC ABI compatible-compilers is not supported
+by member hooks since it also depends on compiler-produced RTTI information.
 
 [section:usage_both_hooks Using both hooks]
 
@@ -3040,6 +3048,7 @@ For a complete list of functions see
 /
 /[endsect]
 /]
+
 [endsect]
 
 [section:value_traits Containers with custom ValueTraits]
@@ -3353,6 +3362,52 @@ To analyze the thread safety, consider the following points:
 *  The safe mode and auto-unlink hooks' `is_linked()` functions are a read access to the container.
 *  Inserting an object in containers that will be modified by different threads has no thread safety
    guarantee, although in most platforms it will be thread-safe without locking.
+
+[endsect]
+
+[section:scary_iterators Scary Iterators]
+
+The paper N2913, titled [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2913.pdf,
+SCARY Iterator Assignment and Initialization], proposed a requirement that a standard container's
+iterator types have no dependency on any type argument apart from the container's `value_type`,
+`difference_type`, `pointer type`, and `const_pointer` type. In particular, according to the proposal,
+the types of a standard container's iterators should not depend on the container's `key_compare`,
+`hasher`, `key_equal`, or `allocator` types.
+
+That paper demonstrated that SCARY operations were crucial to the performant implementation of common
+design patterns using STL components. It showed that implementations that support SCARY operations reduce
+object code bloat by eliminating redundant specializations of iterator and algorithm templates.
+
+[*Boost.Intrusive] containers are a bit different from standard containers. In particular, they have no
+allocator parameter and they can be configured with additional options not present in STL-like containers.
+Thus [*Boost.Intrusive] offers its own `SCARY iterator` implementation, where iterator types don't
+change when the container is configured with an option that does not alter the value <-> node transformation.
+More concretely, the following options and conditions guarantee that iterator types are unchanged:
+
+* [*All containers]: `size_type<>`, `constant_time_size<>`, 
+* [*`slist`]: `cache_last<>`, `linear<>`, 
+* [*`unordered_[multi]set`]: `hash<>`, `equal<>`, `power_2_buckets<>`, `cache_begin<>`.
+* [*All tree-like containers] (`[multi]set`, `avl_[multi]set`, `sg_[multi]set`, `bs_[multi]set`,
+   `splay_[multi]set`, `treap_[multi]set`): `compare<>`.
+* [*`treap_[multi]set`]: `priority<>`
+* [*`bs_[multi]set`, `sg_[multi]set`, `treap_[multi]set`, `splay_[multi]set`]:
+   They share the same iterator type when configured with the same options.
+
+[endsect]
+
+[section:equal_range_stability Stability and insertion with hint in ordered associative containers with equivalent keys]
+
+[*Boost.Intrusive] ordered associative containers with equivalent keys offer stability guarantees, following
+[@http://open-std.org/jtc1/sc22/wg21/docs/lwg-defects.html#233 C++ standard library's defect #233 resolution],
+explained in document [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1780.html Comments on LWG issue 233: Insertion hints in associative containers].
+This means that:
+
+*  A ['Insert without hint] member function always insert at the upper bound of an equal range.
+*  A ['Insert with hint] member function inserts the new value [*before the hint] if hint's and new node's keys are equivalent.
+*  Implements Andrew Koenig ['as close as possible to hint] proposal. A new element is always be inserted as close to the hint as possible.
+   So, for example, if there is a subsequence of equivalent values, `a.begin()` as the hint means that the new element should be inserted
+   before the subsequence even if `a.begin()` is far away. This allows code to always append (or prepend) an equal range with something
+   as simple as: `m.insert(m.end(), new_node);` or `m.insert(m.begin(), new_node);`
 
 [endsect]
 
@@ -3820,14 +3875,51 @@ The disperse list is again the slowest.
 Intrusive containers can offer performance benefits that cannot be achieved with
 equivalent non-intrusive containers. Memory locality improvements are noticeable
 when the objects to be inserted are small. Minimizing memory allocation/deallocation calls is also
-an important factor and intrusive containers make this simple if the user allocates
-all the objects to be inserted in intrusive containers in containers like `std::vector` or `std::deque`.
+an important factor and intrusive containers make this simple if all objects 
+to be inserted in intrusive containers are allocated using `std::vector` or `std::deque`.
 
 [endsect]
 
 [endsect]
 
 [section:release_notes Release Notes]
+
+[section:release_notes_boost_1_55_00 Boost 1.55 Release]
+
+*  [*Source breaking]: Deprecated `xxx_dont_splay` functions from splay containers.
+   Deprecated `splay_set_hook` from splay containers, use `bs_set_hook` instead.
+   Both will be removed in Boost 1.56.
+
+*  [*ABI breaking]: Hash containers' end iterator was implemented pointing to one-past the end of the bucket array
+   (see [@https://svn.boost.org/trac/boost/ticket/8698 #8698]) causing severe bugs when values to be inserted
+   where allocated next to the bucket array. End iterator implementation was changed to point to the beginning
+   of the bucket array.
+
+*  Big refactoring in order to reduce template and debug symbol bloat. Test object files have been slashed
+   to half in MSVC compilers in Debug mode. Toolchains without Identical COMDAT Folding (ICF) should notice size improvements.
+
+*  Implemented [link intrusive.scary_iterators SCARY iterators].
+
+[endsect]
+
+[section:release_notes_boost_1_54_00 Boost 1.54 Release]
+
+*  Added `BOOST_NO_EXCEPTIONS` support (bug [@https://svn.boost.org/trac/boost/ticket/7849 #7849]).
+
+[endsect]
+
+[section:release_notes_boost_1_53_00 Boost 1.53 Release]
+
+*  Fixed bugs
+   [@https://svn.boost.org/trac/boost/ticket/7174 #7174],
+   [@https://svn.boost.org/trac/boost/ticket/7529 #7529],
+   [@https://svn.boost.org/trac/boost/ticket/7815 #7815].
+*  Fixed GCC -Wshadow warnings.
+*  Added missing `explicit` keyword in several intrusive container constructors.
+*  Replaced deprecated BOOST_NO_XXXX with newer BOOST_NO_CXX11_XXX macros.
+*  Small documentation fixes.
+
+[endsect]
 
 [section:release_notes_boost_1_51_00 Boost 1.51 Release]
 
@@ -3896,7 +3988,7 @@ all the objects to be inserted in intrusive containers in containers like `std::
 
 [section:release_notes_boost_1_40_00 Boost 1.40 Release]
 
-*  Code cleanup in tree_algorithms.hpp and avl_tree_algorithms.hpp
+*  Code cleanup in bstree_algorithms.hpp and avl_tree_algorithms.hpp
 *  Fixed bug
   [@https://svn.boost.org/trac/boost/ticket/3164 #3164].
 
