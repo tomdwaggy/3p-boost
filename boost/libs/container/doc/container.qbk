@@ -1,5 +1,5 @@
 [/
- / Copyright (c) 2009-2012 Ion Gazta\u00F1aga
+ / Copyright (c) 2009-2013 Ion Gazta\u00F1aga
  /
  / Distributed under the Boost Software License, Version 1.0. (See accompanying
  / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,7 +8,7 @@
 [library Boost.Container
     [quickbook 1.5]
     [authors [Gaztanaga, Ion]]
-    [copyright 2009-2012 Ion Gaztanaga]
+    [copyright 2009-2013 Ion Gaztanaga]
     [id container]
     [dirname container]
     [purpose Containers library]
@@ -66,6 +66,8 @@ compiler include path.
 [endsect]
 
 [endsect]
+
+[section:main_features Main features]
 
 [section:move_emplace Efficient insertion]
 
@@ -189,11 +191,93 @@ Finally, we can just compile, link, and run!
 
 [endsect]
 
+[section:scary_iterators SCARY iterators]
+
+The paper N2913, titled [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2913.pdf,
+SCARY Iterator Assignment and Initialization], proposed a requirement that a standard container's
+iterator types have no dependency on any type argument apart from the container's `value_type`,
+`difference_type`, `pointer type`, and `const_pointer` type. In particular, according to the proposal,
+the types of a standard container's iterators should not depend on the container's `key_compare`,
+`hasher`, `key_equal`, or `allocator` types.
+
+That paper demonstrated that SCARY operations were crucial to the performant implementation of common
+design patterns using STL components. It showed that implementations that support SCARY operations reduce
+object code bloat by eliminating redundant specializations of iterator and algorithm templates.
+
+[*Boost.Container] containers implement SCARY iterators so the iterator type of a container is only dependent
+on the `allocator_traits<allocator_type>::pointer` type (the pointer type of the `value_type` to be inserted
+in the container). Reference types and all other typedefs are deduced from the pointer type using the
+C++11 `pointer_traits` utility. This leads to lower code bloat in algorithms and classes templated on
+iterators.
+
+[endsect]
+
+[section:other_features Other features]
+
+* Default constructors don't allocate memory which improves performance and
+  usually implies a no-throw guarantee (if predicate's or allocator's default constructor doesn't throw).
+
+* Small string optimization for [classref boost::container::basic_string basic_string],
+  with an internal buffer of 11/23 bytes (32/64 bit systems)
+  [*without] increasing the usual `sizeof` of the string (3 words).
+
+* `[multi]set/map` containers are size optimized embedding the color bit of the red-black tree nodes
+   in the parent pointer.
+
+* `[multi]set/map` containers use no recursive functions so stack problems are avoided.
+
+[endsect]
+
+[endsect]
+
+[section:exception_handling Boost.Container and C++ exceptions]
+
+In some environments, such as game development or embedded systems, C++ exceptions are disabled or a customized error handling is needed.
+According to document [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2271.html N2271 EASTL -- Electronic Arts Standard Template Library]
+exceptions can be disabled for several reasons:
+
+*  ["['Exception handling incurs some kind of cost in all compiler implementations, including those that avoid
+   the cost during normal execution. However, in some cases this cost may arguably offset the cost of the code that it is replacing.]]
+*  ["['Exception handling is often agreed to be a superior solution for handling a large range of function return values. However,
+   avoiding the creation of functions that need large ranges of return values is superior to using exception handling to handle such values.]]
+*  ["['Using exception handling correctly can be difficult in the case of complex software.]]
+*  ["['The execution of throw and catch can be significantly expensive with some implementations.]]
+*  ["['Exception handling violates the don't-pay-for-what-you-don't-use design of C++, as it incurs overhead in any non-leaf function that
+   has destructible stack objects regardless of whether they use exception handling.]]
+*  ["['The approach that game software usually takes is to avoid the need for exception handling where possible; avoid the possibility
+   of circumstances that may lead to exceptions. For example, verify up front that there is enough memory for a subsystem to do its job
+   instead of trying to deal with the problem via exception handling or any other means after it occurs.]]
+*  ["['However, some game libraries may nevertheless benefit from the use of exception handling. It's best, however,
+   if such libraries keep the exception handling internal lest they force their usage of exception handling on the rest of the application.]]
+
+In order to support environments without C++ exception support or environments with special error handling needs,
+[*Boost.Container] changes error signalling behaviour when `BOOST_CONTAINER_USER_DEFINED_THROW_CALLBACKS` or `BOOST_NO_EXCEPTIONS`
+is defined. The former shall be defined by the user and the latter can be either defined by the user or implicitly defined by [*Boost.Confg]
+when the compiler has been invoked with the appropriate flag (like `-fno-exceptions` in GCC).
+
+When dealing with user-defined classes, (e.g. when constructing user-defined classes):
+
+*  If `BOOST_NO_EXCEPTIONS` is defined, the library avoids using `try`/`catch`/`throw` statements. The class writer must handle and
+   propagate error situations internally as no error will be propagated through [*Boost.Container].
+*  If `BOOST_NO_EXCEPTIONS` is *not* defined, the library propagates exceptions offering the exception guarantees detailed in the documentation.
+
+When the library needs to throw an exception (such as `out_of_range` when an incorrect index is used in `vector::at`)], the library calls
+a throw callback declared in `<boost/container/throw_exception.hpp>`:
+
+*  If `BOOST_CONTAINER_USER_DEFINED_THROW_CALLBACKS` is defined, then the programmer must provide its own definition for all
+   `throw_xxx` functions. Those functions can't return, they must throw an exception or call `std::exit` or `std::abort`.
+*  Else if `BOOST_NO_EXCEPTIONS` is defined, a `BOOST_ASSERT_MSG` assertion is triggered
+   (see [@http://www.boost.org/libs/utility/assert.html Boost.Assert] for more information). 
+   If this assertion returns, then `std::abort` is called.
+*  Else, an appropriate standard library exception is thrown (like `std::out_of_range`).
+
+[endsect]
+
 [section:non_standard_containers Non-standard containers]
 
 [section:stable_vector ['stable_vector]]
 
-This useful, fully STL-compliant stable container [@http://bannalia.blogspot.com/2008/09/introducing-stablevector.html designed by by Joaqu\u00EDn M. L\u00F3pez Mu\u00F1oz]
+This useful, fully STL-compliant stable container [@http://bannalia.blogspot.com/2008/09/introducing-stablevector.html designed by Joaqu\u00EDn M. L\u00F3pez Mu\u00F1oz]
 is an hybrid between `vector` and `list`, providing most of
 the features of `vector` except [@http://www.open-std.org/jtc1/sc22/wg21/docs/lwg-defects.html#69 element contiguity].
 
@@ -210,7 +294,7 @@ can a stable design approach the behavior of `vector` (random access iterators, 
 insertion/deletion, minimal memory overhead, etc.)?
 The following image describes the layout of a possible data structure upon which to base the design of a stable vector:
 
-[$images/stable_vector.png [width 50%] [align center] ]
+[$../../libs/container/doc/html/images/stable_vector.png  [width 50%] [align center] ]
 
 Each element is stored in its own separate node. All the nodes are referenced from a contiguous array of pointers, but
 also every node contains an "up" pointer referring back to the associated array cell. This up pointer is the key element
@@ -332,7 +416,8 @@ and erasure times considerably. Flat associative containers have the following
 attributes:
 
 * Faster lookup than standard associative containers
-* Much faster iteration than standard associative containers
+* Much faster iteration than standard associative containers.
+   Random-access iterators instead of bidirectional iterators.
 * Less memory consumption for small objects (and for big objects if `shrink_to_fit` is used)
 * Improved cache performance (data is stored in contiguous memory)
 * Non-stable iterators (iterators are invalidated when inserting and erasing elements)
@@ -388,6 +473,78 @@ can speed up `slist` merging when the programmer already knows the size. `slist`
 complementary.
 
 [endsect]
+
+[section:static_vector ['static_vector]]
+
+`static_vector` is an hybrid between `vector` and `array`: like `vector`, it's a sequence container 
+with contiguous storage that can change in size, along with the static allocation, low overhead,
+and fixed capacity of `array`. `static_vector` is based on Adam Wulkiewicz and Andrew Hundt's
+high-performance [@https://svn.boost.org/svn/boost/sandbox/varray/doc/html/index.html varray]
+class.
+
+The number of elements in a `static_vector` may vary dynamically up to a fixed capacity 
+because elements are stored within the object itself similarly to an array. However, objects are 
+initialized as they are inserted into `static_vector` unlike C arrays or `std::array` which must construct 
+all elements on instantiation. The behavior of `static_vector` enables the use of statically allocated 
+elements in cases with complex object lifetime requirements that would otherwise not be trivially 
+possible. Some other properties:
+
+* Random access to elements
+* Constant time insertion and removal of elements at the end
+* Linear time insertion and removal of elements at the beginning or in the middle.
+ 
+`static_vector` is well suited for use in a buffer, the internal implementation of other 
+classes, or use cases where there is a fixed limit to the number of elements that must be stored.
+Embedded and realtime applications where allocation either may not be available or acceptable 
+are a particular case where `static_vector` can be beneficial. 
+
+[endsect]
+
+[endsect]
+
+[section:extended_functionality Extended functionality]
+
+[section:default_initialialization Default initialization for vector-like containers]
+
+STL and most other containers value initialize new elements in common operations like
+`vector::resize(size_type n)` or `explicit vector::vector(size_type n)`.
+
+In some performance-sensitive environments, where vectors are used as a replacement for
+variable-size buffers for file or network operations,
+[@http://en.cppreference.com/w/cpp/language/value_initialization value initialization]
+is a cost that is not negligible as elements are going to be overwritten by an external source
+shortly after new elements are added to the container.
+
+[*Boost.Container] offers two new members for `vector`, `static_vector` and `stable_vector`:
+`explicit container::container(size_type n, default_init_t)` and
+`explicit container::resize(size_type n, default_init_t)`, where new elements are constructed
+using [@http://en.cppreference.com/w/cpp/language/default_initialization default initialization].
+
+[endsect]
+
+[/
+/a__section:get_stored_allocator Obtain stored allocator__a
+/
+/STL containers offer a `get_allocator()` member to obtain a copy of the allocator that
+/the container is using to allocate and construct elements. For performance reasons, some
+/applications need o
+/
+/http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2271.html
+/
+/a__endsect__a
+/
+/a__section:ordered_range_insertion Ordered range insertion (a__'ordered_unique_range__a, a__'ordered_range__a) __a
+/
+/a__endsect__a
+/
+/a__section:constant_time_range_splice Constant-time range splice__a
+/
+/a__endsect__a
+/
+/a__section:previous_element_slist Slist previous element__a
+/
+/a__endsect__a
+/]
 
 [endsect]
 
@@ -455,7 +612,7 @@ elements' elements, and so on.
 [*Boost.Container] implements its own `scoped_allocator_adaptor` class and [*backports this feature also
 to C++03 compilers]. Due to C++03 limitations, in those compilers
 the allocator propagation implemented by `scoped_allocator_adaptor::construct` functions
-will be based on traits([classref boost::container::constructible_with_allocator_suffix constructible_with_allocator_suffix]
+will be based on traits ([classref boost::container::constructible_with_allocator_suffix constructible_with_allocator_suffix]
 and [classref boost::container::constructible_with_allocator_prefix constructible_with_allocator_prefix])
 proposed in [@http://www.open-std.org/jtc1/sc22/WG21/docs/papers/2008/n2554.pdf
 N2554: The Scoped Allocator Model (Rev 2) proposal]. In conforming C++11 compilers or compilers supporting SFINAE
@@ -512,22 +669,6 @@ If you need a memory optimized version of `boost::container::vector<bool>` funct
 
 [endsect]
 
-[section:other_features Other features]
-
-* Default constructors don't allocate memory which improves performance and
-  usually implies a no-throw guarantee (if predicate's or allocator's default constructor doesn't throw).
-
-* Small string optimization for [classref boost::container::basic_string basic_string],
-  with an internal buffer of 11/23 bytes (32/64 bit systems)
-  [*without] increasing the usual `sizeof` of the string (3 words).
-
-* `[multi]set/map` containers are size optimized embedding the color bit of the red-black tree nodes
-   in the parent pointer.
-
-* `[multi]set/map` containers use no recursive functions so stack problems are avoided.
-
-[endsect]
-
 [section:history_and_reasons History and reasons to use Boost.Container]
 
 [section:boost_container_history Boost.Container history]
@@ -569,6 +710,8 @@ use [*Boost.Container]? There are several reasons for that:
    usually implies a no-throw guarantee (if predicate's or allocator's default constructor doesn't throw).
    * Small string optimization for [classref boost::container::basic_string basic_string].
 * New extensions beyond the standard based on user feedback to improve code performance.
+* You need a portable implementation that works when compiling without exceptions support or 
+  you need to customize the error handling when a container needs to signall an exceptional error.
 
 [endsect]
 
@@ -591,9 +734,8 @@ use [*Boost.Container]? There are several reasons for that:
 [section:acknowledgements_notes Acknowledgements, notes and links]
 
 *  Original standard container code comes from [@http://www.sgi.com/tech/stl/ SGI STL library],
-   which enhanced the original HP STL code. Most of this code was rewritten for
-   [*Boost.Interprocess] and moved to [*Boost.Intrusive]. `deque` and `string` containers still
-   have fragments of the original SGI code. Many thanks to Alexander Stepanov, Meng Lee, David Musser,
+   which enhanced the original HP STL code. Code was rewritten for
+   [*Boost.Interprocess] and moved to [*Boost.Intrusive]. Many thanks to Alexander Stepanov, Meng Lee, David Musser,
    Matt Austern... and all HP and SGI STL developers.
 
 *  `flat_[multi]_map/set` containers were originally based on [@http://en.wikipedia.org/wiki/Loki_%28C%2B%2B%29 Loki's]
@@ -602,6 +744,9 @@ use [*Boost.Container]? There are several reasons for that:
 *  `stable_vector` was invented and coded by
    [@http://bannalia.blogspot.com/2008/09/introducing-stablevector.html Joaqu\u00EDn M. L\u00F3pez Mu\u00F1oz],
    then adapted for [*Boost.Interprocess]. Thanks for such a great container.
+
+*  `static_vector` was based on Andrew Hundt's and Adam Wulkiewicz's high-performance `varray` class.
+   Many performance improvements of `vector` were also inspired in their implementation. Thanks!
 
 *  Howard Hinnant's help and advices were essential when implementing move semantics,
    improving allocator support or implementing small string optimization. Thanks Howard
@@ -613,6 +758,46 @@ use [*Boost.Container]? There are several reasons for that:
 [endsect]
 
 [section:release_notes Release Notes]
+
+[section:release_notes_boost_1_55_00 Boost 1.55 Release]
+
+*  Implemented [link container.main_features.scary_iterators SCARY iterators].
+
+*  Fixed bugs [@https://svn.boost.org/trac/boost/ticket/8269 #8269],
+              [@https://svn.boost.org/trac/boost/ticket/8473 #8473],
+              [@https://svn.boost.org/trac/boost/ticket/8892 #8892],
+              [@https://svn.boost.org/trac/boost/ticket/9009 #9009],
+              [@https://svn.boost.org/trac/boost/ticket/9064 #9064],
+              [@https://svn.boost.org/trac/boost/ticket/9092 #9092],
+              [@https://svn.boost.org/trac/boost/ticket/9108 #9108].
+
+[endsect]
+
+[section:release_notes_boost_1_54_00 Boost 1.54 Release]
+
+*  Added experimental `static_vector` class, based on Andrew Hundt's and Adam Wulkiewicz's
+   high performance `varray` class.
+*  Speed improvements in `vector` constructors/copy/move/swap, dispatching to memcpy when possible.
+*  Support for `BOOST_NO_EXCEPTIONS` [@https://svn.boost.org/trac/boost/ticket/7227 #7227].
+*  Fixed bugs [@https://svn.boost.org/trac/boost/ticket/7921 #7921],
+              [@https://svn.boost.org/trac/boost/ticket/7969 #7969],
+              [@https://svn.boost.org/trac/boost/ticket/8118 #8118],
+              [@https://svn.boost.org/trac/boost/ticket/8294 #8294],
+              [@https://svn.boost.org/trac/boost/ticket/8553 #8553],
+              [@https://svn.boost.org/trac/boost/ticket/8724 #8724].
+
+[endsect]
+
+[section:release_notes_boost_1_53_00 Boost 1.53 Release]
+
+*  Fixed bug [@https://svn.boost.org/trac/boost/ticket/7650 #7650].
+*  Improved `vector`'s insertion performance.
+*  Changed again experimental multiallocation interface for better performance (still experimental).
+*  Added no exception support for those willing to disable exceptions in their compilers.
+*  Fixed GCC -Wshadow warnings.
+*  Replaced deprecated BOOST_NO_XXXX with newer BOOST_NO_CXX11_XXX macros.
+
+[endsect]
 
 [section:release_notes_boost_1_52_00 Boost 1.52 Release]
 

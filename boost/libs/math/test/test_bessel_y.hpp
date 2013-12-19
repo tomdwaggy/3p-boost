@@ -5,7 +5,8 @@
 
 #define BOOST_MATH_OVERFLOW_ERROR_POLICY ignore_error
 #include <boost/math/concepts/real_concept.hpp>
-#include <boost/test/test_exec_monitor.hpp>
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/math/special_functions/math_fwd.hpp>
 #include <boost/math/constants/constants.hpp>
@@ -24,7 +25,6 @@
 template <class Real, class T>
 void do_test_cyl_neumann_y(const T& data, const char* type_name, const char* test_name)
 {
-   typedef typename T::value_type row_type;
    typedef Real                   value_type;
 
    typedef value_type (*pg)(value_type, value_type);
@@ -76,7 +76,6 @@ T cyl_neumann_int_wrapper(T v, T x)
 template <class Real, class T>
 void do_test_cyl_neumann_y_int(const T& data, const char* type_name, const char* test_name)
 {
-   typedef typename T::value_type row_type;
    typedef Real                   value_type;
 
    typedef value_type (*pg)(value_type, value_type);
@@ -105,7 +104,6 @@ void do_test_cyl_neumann_y_int(const T& data, const char* type_name, const char*
 template <class Real, class T>
 void do_test_sph_neumann_y(const T& data, const char* type_name, const char* test_name)
 {
-   typedef typename T::value_type row_type;
    typedef Real                   value_type;
 
    typedef value_type (*pg)(unsigned, value_type);
@@ -114,8 +112,6 @@ void do_test_sph_neumann_y(const T& data, const char* type_name, const char* tes
 #else
    pg funcp = boost::math::sph_neumann;
 #endif
-
-   typedef int (*cast_t)(value_type);
 
    boost::math::tools::test_result<value_type> result;
 

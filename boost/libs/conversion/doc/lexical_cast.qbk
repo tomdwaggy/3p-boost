@@ -3,7 +3,7 @@
     [version 1.0]
     [copyright 2000-2005 Kevlin Henney]
     [copyright 2006-2010 Alexander Nasonov]
-    [copyright 2011-2012 Antony Polukhin]
+    [copyright 2011-2013 Antony Polukhin]
     [category String and text processing]
     [category Miscellaneous]
     [license
@@ -38,54 +38,22 @@ For a good discussion of the options and issues involved in string-based formatt
 [endsect]
 
 [section Examples]
-The following example treats command line arguments as a sequence of numeric data:
-``
-    int main(int argc, char * argv[])
-    {
-        using boost::lexical_cast;
-        using boost::bad_lexical_cast;
 
-        std::vector<short> args;
+[import ../example/args_to_numbers.cpp]
 
-        while(*++argv)
-        {
-            try
-            {
-                args.push_back(lexical_cast<short>(*argv));
-            }
-            catch(bad_lexical_cast &)
-            {
-                args.push_back(0);
-            }
-        }
-        ...
-    }
-``
-The following example uses numeric data in a string expression:
-``
-    void log_message(const std::string &);
+[section Strings to numbers conversion] [lexical_cast_args_example] [endsect]
 
-    void log_errno(int yoko)
-    {
-        log_message("Error " + boost::lexical_cast<std::string>(yoko) + ": " + strerror(yoko));
-    }
-``
-Following example converts some number and puts it to file:
-``
-    int i;
-    FILE* file;
-    ...
-    typedef boost::array<char, 50> buf_t; // You can use std::array if your compiler supports it
-    buf_t buffer = boost::lexical_cast<buf_t>(i); // No dynamic memory allocation
-    puts(buffer.begin(), file);
-``
-Following example takes part of the string and converts it to `int`:
-``
-int convert_strings_part(const std::string& s, std::size_t pos, std::size_t n) 
-{
-    return boost::lexical_cast<int>(s.data() + pos, n);
-}
-``
+[import ../example/small_examples.cpp]
+[section Numbers to strings conversion] [lexical_cast_log_errno] [endsect]
+[section Converting to string without dynamic memory allocation] [lexical_cast_fixed_buffer] [endsect]
+[section Converting part of the string] [lexical_cast_substring_conversion] [endsect]
+
+[import ../example/generic_stringize.cpp]
+[section Generic programming (Boost.Fusion)] [lexical_cast_stringize] [endsect]
+
+[import ../example/variant_to_long_double.cpp]
+[section Generic programming (Boost.Variant)] [lexical_cast_variant_to_long_double] [endsect]
+
 [endsect]
 
 [section Synopsis]
@@ -94,8 +62,12 @@ Library features defined in [@boost:boost/lexical_cast.hpp boost/lexical_cast.hp
     namespace boost
     {
         class bad_lexical_cast;
+        
         template<typename Target, typename Source>
           Target lexical_cast(const Source& arg);
+
+        template <typename Target>
+          Target lexical_cast(const AnyCharacterType* chars, std::size_t count);
     }
 ``
 
@@ -119,14 +91,13 @@ The requirements on the argument and result types for both functions are:
 * Target is CopyConstructible [20.1.3].
 * Target is DefaultConstructible, meaning that it is possible to default-initialize an object of that type [8.5, 20.1.4].
 
-The character type of the underlying stream is assumed to be `char` unless either the `Source` or the `Target` requires wide-character streaming, in which case the underlying stream uses `wchar_t`, `char16_t` or `char32_t`. Wide-character streaming is currently detected for:
+The character type of the underlying stream is assumed to be `char` unless either the `Source` or the `Target` requires wide-character streaming, in which case the underlying stream uses `wchar_t`. Following types also can use `char16_t` or `char32_t` for wide-character streaming:
 
-* Single character: `wchar_t`, `char16_t`, `char32_t`
-* Arrays of characters: `wchar_t *`, `char16_t *`, `char32_t *`, `const wchar_t *`, `const char16_t *`, `const char32_t *`
+* Single character: `char16_t`, `char32_t`
+* Arrays of characters: `char16_t *`, `char32_t *`, `const char16_t *`, `const char32_t *`
 * Strings: `std::basic_string`, `boost::containers::basic_string`
 * `boost::iterator_range<WideCharPtr>`, where `WideCharPtr` is a pointer to wide-character or pointer to const wide-character
 * `boost::array<CharT, N>` and `std::array<CharT, N>`, `boost::array<const CharT, N>` and `std::array<const CharT, N>` 
-
 
 [important Many compilers and runtime libraries fail to make conversions using new Unicode characters. Make sure that the following code compiles and outputs nonzero values, before using new types:
 ``
@@ -152,56 +123,6 @@ Exception used to indicate runtime lexical_cast failure.
 [endsect]
 
 [endsect]
-
-[/ Commenting out bad advise (this will break the ability to get correct function pointers via &lexical_cast<Target, Source>)
-[section Tuning classes for fast lexical conversions]
-Because of `boost::lexical_cast` optimizations for `boost::iterator_range<character_type*>`, it is possibile to make very fast lexical conversions for non zero terminated strings, substrings and user-defined classes.
-
-Consider the following example:
-``
-    class example_class {
-        char non_zero_terminated_data[10];
-        std::size_t data_length;
-
-    public:
-        example_class();
-        void fill_data();
-
-        const char* data() const {
-            return non_zero_terminated_data;
-        }
-
-        std::size_t size() const {
-            return data_length;
-        }
-    };
-
-    inline std::ostream& operator << (std::ostream& ostr, const example_class& rhs) {
-        return ostr << boost::make_iterator_range(rhs.data(), rhs.data() + rhs.size());
-    }
-``
-
-This is a good generic solution for most use cases.
-But we can make it even faster for some performance critical applications. During conversion, we loose speed at:
-
- * `std::ostream` construction     (it makes some heap allocations)
- * `operator <<`                   (it copyies one by one all the symbols to an instance of `std::ostream`)
- * `std::ostream` destruction      (it makes some heap deallocations)
-
-We can avoid all of this, by specifieng an overload for `boost::lexical_cast`:
-``
-namespace boost {
-    template <class OutT>
-    OutT lexical_cast(const example_class& rhs) {
-        return boost::lexical_cast<OutT>(
-            boost::make_iterator_range(rhs.data(), rhs.data() + rhs.size())
-        );
-    }
-}
-``
-Now `boost::lexical_cast<some_type>(example_class_instance)` conversions won't copy data and construct heavy STL stream objects. See [link boost_lexical_cast.performance Performance] section for info on `boost::iterator_range` conversion performance.
-[endsect]
-]
 
 [section Frequently Asked Questions]
 
@@ -235,7 +156,7 @@ It breaks my `operator>>` that works only in presence of this flag. Can you remo
   * [*Answer:]      May be in a future version. There is no requirement in
 __proposallong__ to reset the flag but
 remember that __proposalshort__ is not yet accepted by the committee. By the way, it's a great opportunity to
-make your `operator>>` conform to the standard.
+make your `operator>>` more general.
 Read a good C++ book, study `std::sentry` and [@boost:libs/io/doc/ios_state.html `ios_state_saver`].
 
 [pre
@@ -272,6 +193,21 @@ limitation of compiler options that you use.
 [endsect]
 
 [section Changes]
+
+* [*boost 1.54.0 :]
+
+    * Fix some issues with `boost::int128_type` and `boost::uint128_type` conversions. Notify user at compile time 
+      if the `std::numeric_limits` are not specialized for 128bit types and `boost::lexical_cast` can not make conversions.
+
+* [*boost 1.54.0 :]
+
+    * Added code to convert `boost::int128_type` and `boost::uint128_type` types (requires GCC 4.7 or higher).
+    * Conversions to pointers will now fail to compile, instead of throwing at runtime.
+    * Restored ability to get pointers to `lexical_cast` function (was broken in 1.53.0).
+
+* [*boost 1.53.0 :]
+
+    * Much better input and output streams detection for user defined types.
 
 * [*boost 1.52.0 :]
 
@@ -872,6 +808,132 @@ Do not use this results to compare compilers, because tests were taken on differ
   [[ char->signed char ][ !!! *<1* !!! ][ 97 ][ 8 ][ --- ]]
 ]
 [endsect]
+
+[section Microsoft Visual C++ version 11.0]
+[table:id Performance Table ( Microsoft Visual C++ version 11.0)
+[[From->To] [lexical_cast] [std::stringstream with construction] [std::stringstream without construction][scanf/printf]]
+  [[ string->char ][ !!! *<1* !!! ][ 43 ][ 17 ][ 7 ]]
+  [[ string->signed char ][ !!! *<1* !!! ][ 43 ][ 17 ][ 8 ]]
+  [[ string->unsigned char ][ !!! *<1* !!! ][ 42 ][ 17 ][ 8 ]]
+  [[ string->int ][ !!! *8* !!! ][ 71 ][ 49 ][ 10 ]]
+  [[ string->short ][ !!! *8* !!! ][ 72 ][ 47 ][ 10 ]]
+  [[ string->long int ][ !!! *8* !!! ][ 71 ][ 47 ][ 10 ]]
+  [[ string->long long ][ !!! *8* !!! ][ 71 ][ 47 ][ 10 ]]
+  [[ string->unsigned int ][ !!! *8* !!! ][ 72 ][ 46 ][ 10 ]]
+  [[ string->unsigned short ][ !!! *8* !!! ][ 71 ][ 47 ][ 10 ]]
+  [[ string->unsigned long int ][ !!! *8* !!! ][ 70 ][ 45 ][ 10 ]]
+  [[ string->unsigned long long ][ !!! *8* !!! ][ 70 ][ 46 ][ 10 ]]
+  [[ string->float ][ !!! *14* !!! ][ 586 ][ 559 ][ 37 ]]
+  [[ string->double ][ 601 ][ 618 ][ 592 ][ !!! *37* !!! ]]
+  [[ string->long double ][ 629 ][ 645 ][ 618 ][ !!! *37* !!! ]]
+  [[ string->array<char, 50> ][ !!! *<1* !!! ][ 52 ][ 28 ][ 11 ]]
+  [[ string->string ][ !!! *1* !!! ][ 59 ][ 34 ][ --- ]]
+  [[ string->container::string ][ !!! *2* !!! ][ 54 ][ 31 ][ --- ]]
+  [[ string->char ][ !!! *2* !!! ][ 50 ][ 24 ][ 9 ]]
+  [[ string->signed char ][ !!! *2* !!! ][ 50 ][ 24 ][ 13 ]]
+  [[ string->unsigned char ][ !!! *2* !!! ][ 50 ][ 24 ][ 13 ]]
+  [[ int->string ][ !!! *9* !!! ][ 86 ][ 59 ][ 13 ]]
+  [[ short->string ][ !!! *9* !!! ][ 86 ][ 59 ][ 13 ]]
+  [[ long int->string ][ !!! *9* !!! ][ 87 ][ 59 ][ 13 ]]
+  [[ long long->string ][ !!! *9* !!! ][ 88 ][ 62 ][ 13 ]]
+  [[ unsigned int->string ][ !!! *9* !!! ][ 87 ][ 60 ][ 13 ]]
+  [[ unsigned short->string ][ !!! *9* !!! ][ 91 ][ 63 ][ 13 ]]
+  [[ unsigned long int->string ][ !!! *9* !!! ][ 91 ][ 62 ][ 13 ]]
+  [[ unsigned long long->string ][ !!! *9* !!! ][ 88 ][ 60 ][ 13 ]]
+  [[ float->string ][ 73 ][ 167 ][ 137 ][ !!! *56* !!! ]]
+  [[ double->string ][ 77 ][ 176 ][ 144 ][ !!! *64* !!! ]]
+  [[ long double->string ][ 79 ][ 175 ][ 143 ][ !!! *63* !!! ]]
+  [[ char*->char ][ !!! *<1* !!! ][ 43 ][ 17 ][ 7 ]]
+  [[ char*->signed char ][ !!! *<1* !!! ][ 43 ][ 17 ][ 8 ]]
+  [[ char*->unsigned char ][ !!! *<1* !!! ][ 44 ][ 17 ][ 8 ]]
+  [[ char*->int ][ !!! *8* !!! ][ 70 ][ 47 ][ 10 ]]
+  [[ char*->short ][ !!! *8* !!! ][ 72 ][ 48 ][ 10 ]]
+  [[ char*->long int ][ !!! *8* !!! ][ 72 ][ 47 ][ 10 ]]
+  [[ char*->long long ][ !!! *8* !!! ][ 71 ][ 47 ][ 10 ]]
+  [[ char*->unsigned int ][ !!! *8* !!! ][ 72 ][ 46 ][ 10 ]]
+  [[ char*->unsigned short ][ !!! *8* !!! ][ 72 ][ 47 ][ 10 ]]
+  [[ char*->unsigned long int ][ !!! *8* !!! ][ 70 ][ 46 ][ 10 ]]
+  [[ char*->unsigned long long ][ !!! *8* !!! ][ 70 ][ 45 ][ 10 ]]
+  [[ char*->float ][ !!! *14* !!! ][ 586 ][ 560 ][ 37 ]]
+  [[ char*->double ][ 598 ][ 617 ][ 597 ][ !!! *40* !!! ]]
+  [[ char*->long double ][ 635 ][ 653 ][ 622 ][ !!! *37* !!! ]]
+  [[ char*->array<char, 50> ][ !!! *1* !!! ][ 53 ][ 28 ][ 11 ]]
+  [[ char*->string ][ !!! *1* !!! ][ 59 ][ 35 ][ --- ]]
+  [[ char*->container::string ][ !!! *3* !!! ][ 54 ][ 30 ][ --- ]]
+  [[ unsigned char*->char ][ !!! *<1* !!! ][ 41 ][ 17 ][ 7 ]]
+  [[ unsigned char*->signed char ][ !!! *<1* !!! ][ 42 ][ 17 ][ 8 ]]
+  [[ unsigned char*->unsigned char ][ !!! *<1* !!! ][ 41 ][ 17 ][ 8 ]]
+  [[ unsigned char*->int ][ !!! *8* !!! ][ 72 ][ 47 ][ 10 ]]
+  [[ unsigned char*->short ][ !!! *8* !!! ][ 72 ][ 47 ][ 10 ]]
+  [[ unsigned char*->long int ][ !!! *8* !!! ][ 72 ][ 47 ][ 10 ]]
+  [[ unsigned char*->long long ][ !!! *8* !!! ][ 72 ][ 47 ][ 11 ]]
+  [[ unsigned char*->unsigned int ][ !!! *8* !!! ][ 70 ][ 46 ][ 10 ]]
+  [[ unsigned char*->unsigned short ][ !!! *8* !!! ][ 72 ][ 48 ][ 10 ]]
+  [[ unsigned char*->unsigned long int ][ !!! *8* !!! ][ 71 ][ 46 ][ 10 ]]
+  [[ unsigned char*->unsigned long long ][ !!! *8* !!! ][ 70 ][ 45 ][ 11 ]]
+  [[ unsigned char*->float ][ !!! *14* !!! ][ 589 ][ 564 ][ 38 ]]
+  [[ unsigned char*->double ][ 601 ][ 615 ][ 588 ][ !!! *37* !!! ]]
+  [[ unsigned char*->long double ][ 628 ][ 644 ][ 620 ][ !!! *38* !!! ]]
+  [[ unsigned char*->array<char, 50> ][ !!! *1* !!! ][ 54 ][ 28 ][ 11 ]]
+  [[ unsigned char*->string ][ !!! *2* !!! ][ 59 ][ 36 ][ --- ]]
+  [[ unsigned char*->container::string ][ !!! *3* !!! ][ 54 ][ 30 ][ --- ]]
+  [[ signed char*->char ][ !!! *<1* !!! ][ 41 ][ 17 ][ 7 ]]
+  [[ signed char*->signed char ][ !!! *<1* !!! ][ 43 ][ 17 ][ 8 ]]
+  [[ signed char*->unsigned char ][ !!! *<1* !!! ][ 42 ][ 17 ][ 8 ]]
+  [[ signed char*->int ][ !!! *8* !!! ][ 71 ][ 47 ][ 10 ]]
+  [[ signed char*->short ][ !!! *8* !!! ][ 72 ][ 48 ][ 10 ]]
+  [[ signed char*->long int ][ !!! *8* !!! ][ 71 ][ 47 ][ 10 ]]
+  [[ signed char*->long long ][ !!! *8* !!! ][ 72 ][ 47 ][ 10 ]]
+  [[ signed char*->unsigned int ][ !!! *8* !!! ][ 70 ][ 46 ][ 10 ]]
+  [[ signed char*->unsigned short ][ !!! *8* !!! ][ 72 ][ 47 ][ 10 ]]
+  [[ signed char*->unsigned long int ][ !!! *8* !!! ][ 70 ][ 46 ][ 10 ]]
+  [[ signed char*->unsigned long long ][ !!! *8* !!! ][ 70 ][ 46 ][ 11 ]]
+  [[ signed char*->float ][ !!! *14* !!! ][ 586 ][ 562 ][ 37 ]]
+  [[ signed char*->double ][ 603 ][ 615 ][ 589 ][ !!! *37* !!! ]]
+  [[ signed char*->long double ][ 630 ][ 644 ][ 623 ][ !!! *40* !!! ]]
+  [[ signed char*->array<char, 50> ][ !!! *1* !!! ][ 54 ][ 28 ][ 11 ]]
+  [[ signed char*->string ][ !!! *2* !!! ][ 59 ][ 36 ][ --- ]]
+  [[ signed char*->container::string ][ !!! *3* !!! ][ 54 ][ 30 ][ --- ]]
+  [[ iterator_range<char*>->char ][ !!! *<1* !!! ][ 74 ][ 46 ][ 7 ]]
+  [[ iterator_range<char*>->signed char ][ !!! *<1* !!! ][ 75 ][ 46 ][ 8 ]]
+  [[ iterator_range<char*>->unsigned char ][ !!! *<1* !!! ][ 74 ][ 46 ][ 8 ]]
+  [[ iterator_range<char*>->int ][ !!! *8* !!! ][ 98 ][ 70 ][ 10 ]]
+  [[ iterator_range<char*>->short ][ !!! *8* !!! ][ 103 ][ 72 ][ 10 ]]
+  [[ iterator_range<char*>->long int ][ !!! *8* !!! ][ 111 ][ 71 ][ 10 ]]
+  [[ iterator_range<char*>->long long ][ !!! *8* !!! ][ 98 ][ 70 ][ 10 ]]
+  [[ iterator_range<char*>->unsigned int ][ !!! *7* !!! ][ 103 ][ 76 ][ 10 ]]
+  [[ iterator_range<char*>->unsigned short ][ !!! *8* !!! ][ 104 ][ 75 ][ 10 ]]
+  [[ iterator_range<char*>->unsigned long int ][ !!! *7* !!! ][ 104 ][ 71 ][ 10 ]]
+  [[ iterator_range<char*>->unsigned long long ][ !!! *8* !!! ][ 99 ][ 71 ][ 11 ]]
+  [[ iterator_range<char*>->float ][ !!! *13* !!! ][ 123 ][ 93 ][ 37 ]]
+  [[ iterator_range<char*>->double ][ 603 ][ 111 ][ 82 ][ !!! *38* !!! ]]
+  [[ iterator_range<char*>->long double ][ 629 ][ 116 ][ 83 ][ !!! *38* !!! ]]
+  [[ iterator_range<char*>->array<char, 50> ][ !!! *<1* !!! ][ 82 ][ 52 ][ 11 ]]
+  [[ iterator_range<char*>->string ][ !!! *2* !!! ][ 83 ][ 56 ][ --- ]]
+  [[ iterator_range<char*>->container::string ][ !!! *2* !!! ][ 81 ][ 53 ][ --- ]]
+  [[ array<char, 50>->char ][ !!! *<1* !!! ][ 41 ][ 17 ][ 7 ]]
+  [[ array<char, 50>->signed char ][ !!! *<1* !!! ][ 41 ][ 17 ][ 8 ]]
+  [[ array<char, 50>->unsigned char ][ !!! *<1* !!! ][ 41 ][ 17 ][ 8 ]]
+  [[ array<char, 50>->int ][ !!! *8* !!! ][ 73 ][ 46 ][ 10 ]]
+  [[ array<char, 50>->short ][ !!! *8* !!! ][ 73 ][ 47 ][ 10 ]]
+  [[ array<char, 50>->long int ][ !!! *8* !!! ][ 75 ][ 48 ][ 10 ]]
+  [[ array<char, 50>->long long ][ !!! *8* !!! ][ 73 ][ 48 ][ 11 ]]
+  [[ array<char, 50>->unsigned int ][ !!! *8* !!! ][ 73 ][ 47 ][ 10 ]]
+  [[ array<char, 50>->unsigned short ][ !!! *8* !!! ][ 74 ][ 50 ][ 10 ]]
+  [[ array<char, 50>->unsigned long int ][ !!! *8* !!! ][ 71 ][ 46 ][ 10 ]]
+  [[ array<char, 50>->unsigned long long ][ !!! *8* !!! ][ 70 ][ 47 ][ 11 ]]
+  [[ array<char, 50>->float ][ !!! *14* !!! ][ 586 ][ 567 ][ 37 ]]
+  [[ array<char, 50>->double ][ 599 ][ 624 ][ 590 ][ !!! *37* !!! ]]
+  [[ array<char, 50>->long double ][ 632 ][ 643 ][ 618 ][ !!! *37* !!! ]]
+  [[ array<char, 50>->array<char, 50> ][ !!! *1* !!! ][ 52 ][ 28 ][ 11 ]]
+  [[ array<char, 50>->string ][ !!! *2* !!! ][ 59 ][ 34 ][ --- ]]
+  [[ array<char, 50>->container::string ][ !!! *3* !!! ][ 55 ][ 30 ][ --- ]]
+  [[ int->int ][ !!! *<1* !!! ][ 105 ][ 79 ][ --- ]]
+  [[ float->double ][ !!! *<1* !!! ][ 226 ][ 188 ][ --- ]]
+  [[ char->signed char ][ !!! *<1* !!! ][ 40 ][ 16 ][ --- ]]
+]
+[endsect]
+
 
 
 [/ END of section, generated by performance measuring program ]

@@ -36,6 +36,7 @@
 #include <boost/type_traits/integral_promotion.hpp>
 #include <string>
 #include <vector>
+#include <algorithm> // std::transform
 #include <memory>
 
 #if (defined(BOOST_HAS_LONG_LONG) || defined(BOOST_HAS_MS_INT64)) \
@@ -66,7 +67,6 @@ void test_conversion_to_bool();
 void test_conversion_with_nonconst_char();
 void test_conversion_to_string();
 void test_conversion_from_to_wchar_t_alias();
-void test_conversion_to_pointer();
 void test_conversion_from_wchar_t();
 void test_conversion_to_wchar_t();
 void test_conversion_from_wstring();
@@ -82,10 +82,10 @@ void test_wallocator();
 #endif
 void test_char_types_conversions();
 void operators_overload_test();
-#if !defined(BOOST_NO_CHAR16_T) && !defined(BOOST_NO_UNICODE_LITERALS)
+#if !defined(BOOST_NO_CXX11_CHAR16_T) && !defined(BOOST_NO_CXX11_UNICODE_LITERALS)
 void test_char16_conversions();
 #endif
-#if !defined(BOOST_NO_CHAR32_T) && !defined(BOOST_NO_UNICODE_LITERALS)
+#if !defined(BOOST_NO_CXX11_CHAR32_T) && !defined(BOOST_NO_CXX11_UNICODE_LITERALS)
 void test_char32_conversions();
 #endif
 void test_getting_pointer_to_function();
@@ -99,7 +99,6 @@ unit_test::test_suite *init_unit_test_suite(int, char *[])
     suite->add(BOOST_TEST_CASE(test_conversion_to_double));
     suite->add(BOOST_TEST_CASE(test_conversion_to_bool));
     suite->add(BOOST_TEST_CASE(test_conversion_from_to_wchar_t_alias));
-    suite->add(BOOST_TEST_CASE(test_conversion_to_pointer));
     suite->add(BOOST_TEST_CASE(test_conversion_to_string));
     suite->add(BOOST_TEST_CASE(test_conversion_with_nonconst_char));
 #ifndef BOOST_LCAST_NO_WCHAR_T
@@ -120,10 +119,10 @@ unit_test::test_suite *init_unit_test_suite(int, char *[])
 
     suite->add(BOOST_TEST_CASE(&test_char_types_conversions));
     suite->add(BOOST_TEST_CASE(&operators_overload_test));
-#if !defined(BOOST_NO_CHAR16_T) && !defined(BOOST_NO_UNICODE_LITERALS)
+#if !defined(BOOST_NO_CXX11_CHAR16_T) && !defined(BOOST_NO_CXX11_UNICODE_LITERALS)
     suite->add(BOOST_TEST_CASE(&test_char16_conversions));
 #endif
-#if !defined(BOOST_NO_CHAR32_T) && !defined(BOOST_NO_UNICODE_LITERALS)
+#if !defined(BOOST_NO_CXX11_CHAR32_T) && !defined(BOOST_NO_CXX11_UNICODE_LITERALS)
     suite->add(BOOST_TEST_CASE(&test_char32_conversions));
 #endif
     suite->add(BOOST_TEST_CASE(&test_getting_pointer_to_function));
@@ -243,9 +242,15 @@ void test_conversion_to_bool()
     BOOST_CHECK_EQUAL(false, lexical_cast<bool>(0));
     BOOST_CHECK_THROW(lexical_cast<bool>(123), bad_lexical_cast);
     BOOST_CHECK_EQUAL(true, lexical_cast<bool>(1.0));
+    BOOST_CHECK_THROW(lexical_cast<bool>(-123), bad_lexical_cast);
     BOOST_CHECK_EQUAL(false, lexical_cast<bool>(0.0));
+    BOOST_CHECK_THROW(lexical_cast<bool>(1234), bad_lexical_cast);
+#if !defined(_CRAYC)
+    // Looks like a bug in CRAY compiler (throws bad_lexical_cast)
+    // TODO: localize the bug and report it to developers.
     BOOST_CHECK_EQUAL(true, lexical_cast<bool>(true));
     BOOST_CHECK_EQUAL(false, lexical_cast<bool>(false));
+#endif
     BOOST_CHECK_EQUAL(true, lexical_cast<bool>("1"));
     BOOST_CHECK_EQUAL(false, lexical_cast<bool>("0"));
     BOOST_CHECK_THROW(lexical_cast<bool>(""), bad_lexical_cast);
@@ -303,14 +308,6 @@ void test_conversion_from_to_wchar_t_alias()
         lexical_cast<std::string>(static_cast<unsigned short>(123)));
     BOOST_CHECK_EQUAL(std::string("123"), lexical_cast<std::string>(123u));
     BOOST_CHECK_EQUAL(std::string("123"), lexical_cast<std::string>(123ul));
-}
-
-void test_conversion_to_pointer()
-{
-    BOOST_CHECK_THROW(lexical_cast<char *>("Test"), bad_lexical_cast);
-#ifndef BOOST_LCAST_NO_WCHAR_T
-    BOOST_CHECK_THROW(lexical_cast<wchar_t *>("Test"), bad_lexical_cast);
-#endif
 }
 
 void test_conversion_from_wchar_t()
@@ -585,7 +582,7 @@ void operators_overload_test()
 }
 
 
-#if !defined(BOOST_NO_CHAR16_T) && !defined(BOOST_NO_UNICODE_LITERALS)
+#if !defined(BOOST_NO_CXX11_CHAR16_T) && !defined(BOOST_NO_CXX11_UNICODE_LITERALS)
 void test_char16_conversions()
 {
     BOOST_CHECK(u"100" == lexical_cast<std::u16string>(u"100"));
@@ -593,7 +590,7 @@ void test_char16_conversions()
 }
 #endif
 
-#if !defined(BOOST_NO_CHAR16_T) && !defined(BOOST_NO_UNICODE_LITERALS)
+#if !defined(BOOST_NO_CXX11_CHAR16_T) && !defined(BOOST_NO_CXX11_UNICODE_LITERALS)
 void test_char32_conversions()
 {
     BOOST_CHECK(U"100" == lexical_cast<std::u32string>(U"100"));
@@ -601,17 +598,25 @@ void test_char32_conversions()
 }
 #endif
 
-template <class To, class From, class Func>
-To try_cast_by_ptr(const From& from, const Func& f) {
-    return f(from);
-};
-
 void test_getting_pointer_to_function()
 {
     // Just checking that &lexical_cast<To, From> is not ambiguous
-    BOOST_CHECK_EQUAL(100, try_cast_by_ptr<int>("100", &boost::lexical_cast<int, const char[4]>));
-    BOOST_CHECK_EQUAL(100, try_cast_by_ptr<int>("100", &boost::lexical_cast<int, std::string>));
-    BOOST_CHECK_EQUAL(std::string("100"), try_cast_by_ptr<std::string>(100, &boost::lexical_cast<std::string, int>));
+    typedef char char_arr[4];    
+    typedef int(*f1)(const char_arr&);
+    f1 p1 = &boost::lexical_cast<int, char_arr>;
+    BOOST_CHECK(p1);
+
+    typedef int(*f2)(const std::string&);
+    f2 p2 = &boost::lexical_cast<int, std::string>;
+    BOOST_CHECK(p2);
+
+    typedef std::string(*f3)(const int&);
+    f3 p3 = &boost::lexical_cast<std::string, int>;
+    BOOST_CHECK(p3);
+
+    std::vector<int> values;
+    std::vector<std::string> ret;
+    std::transform(values.begin(), values.end(), ret.begin(), boost::lexical_cast<std::string, int>);
 }
 
 

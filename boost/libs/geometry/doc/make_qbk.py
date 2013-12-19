@@ -31,10 +31,12 @@ cmd = cmd + " --convenience_header_path ../../../boost/geometry/"
 cmd = cmd + " --convenience_headers geometry.hpp,geometries/geometries.hpp,multi/multi.hpp"
 cmd = cmd + " --skip_namespace boost::geometry::"
 cmd = cmd + " --copyright src/copyright_block.qbk"
+cmd = cmd + " --output_member_variables false"
 cmd = cmd + " > generated/%s.qbk"
 
 def call_doxygen():
     os.chdir("doxy");
+    os.system("rm -f doxygen_output/xml/*.xml")
     os.system(doxygen_cmd)
     os.chdir("..")
 
@@ -145,7 +147,15 @@ for i in views:
 model_to_quickbook2("d2_1_1point__xy", "point_xy")
 
 group_to_quickbook("arithmetic")
-group_to_quickbook("register")
 group_to_quickbook("enum")
+group_to_quickbook("register")
+group_to_quickbook("svg")
+class_to_quickbook("svg_mapper")
+group_to_quickbook("wkt")
 
-os.system("../../../b2") 
+os.chdir("index")
+execfile("make_qbk.py")
+os.chdir("..")
+
+# Use either bjam or b2 or ../../../b2 (the last should be done on Release branch)
+os.system("bjam") 

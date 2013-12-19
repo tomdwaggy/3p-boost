@@ -32,6 +32,15 @@ template class boost::container::list<test::movable_and_copyable_int,
 template class boost::container::list<test::movable_and_copyable_int,
    std::allocator<test::movable_and_copyable_int> >;
 
+namespace container_detail {
+
+template class iterator
+   <intrusive_list_type< std::allocator<int> >::container_type::iterator, true >;
+template class iterator
+   <intrusive_list_type< std::allocator<int> >::container_type::iterator, false>;
+
+}
+
 }}
 
 typedef list<int> MyList;

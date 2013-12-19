@@ -15,6 +15,27 @@
 
 namespace quickbook { namespace detail
 {
+    std::string encode_string(boost::string_ref str)
+    {
+        std::string result;
+        result.reserve(str.size());
+
+        for (boost::string_ref::const_iterator it = str.begin();
+            it != str.end(); ++it)
+        {
+            switch (*it)
+            {
+                case '<': result += "&lt;";    break;
+                case '>': result += "&gt;";    break;
+                case '&': result += "&amp;";   break;
+                case '"': result += "&quot;";  break;
+                default:  result += *it;       break;
+            }
+        }
+
+        return result;
+    }
+
     void print_char(char ch, std::ostream& out)
     {
         switch (ch)
@@ -29,9 +50,9 @@ namespace quickbook { namespace detail
         }
     }
 
-    void print_string(std::basic_string<char> const& str, std::ostream& out)
+    void print_string(boost::string_ref str, std::ostream& out)
     {
-        for (std::string::const_iterator cur = str.begin();
+        for (boost::string_ref::const_iterator cur = str.begin();
             cur != str.end(); ++cur)
         {
             print_char(*cur, out);
@@ -45,8 +66,11 @@ namespace quickbook { namespace detail
         return static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
     }
 
-    std::string escape_uri(std::string uri)
+    std::string escape_uri(std::string uri_param)
     {
+        std::string uri;
+        uri.swap(uri_param);
+
         for (std::string::size_type n = 0; n < uri.size(); ++n)
         {
             static char const mark[] = "-_.!~*'()?\\/";
@@ -60,6 +84,7 @@ namespace quickbook { namespace detail
                 n += 2;
             }
         }
+
         return uri;
     }
 }}

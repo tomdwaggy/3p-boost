@@ -30,6 +30,7 @@ template class boost::container::slist<test::movable_and_copyable_int,
 
 template class boost::container::slist<test::movable_and_copyable_int,
    std::allocator<test::movable_and_copyable_int> >;
+
 }}
 
 typedef slist<int> MyList;

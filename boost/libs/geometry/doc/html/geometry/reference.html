@@ -3,10 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Reference</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Geometry">
 <link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Geometry">
-<link rel="prev" href="indexes/alphabetical_index.html" title="Alphabetical Index">
+<link rel="prev" href="spatial_indexes/rtree_examples/index_stored_in_shared_memory_using_boost_interprocess.html" title="Index stored in shared memory using Boost.Interprocess">
 <link rel="next" href="reference/access.html" title="Access Functions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,13 +20,13 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="indexes/alphabetical_index.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference/access.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="spatial_indexes/rtree_examples/index_stored_in_shared_memory_using_boost_interprocess.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference/access.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="geometry.reference"></a><a class="link" href="reference.html" title="Reference">Reference</a>
 </h2></div></div></div>
-<div class="toc"><dl>
+<div class="toc"><dl class="toc">
 <dt><span class="section"><a href="reference/access.html">Access Functions</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="reference/access/get.html">get</a></span></dt>
@@ -152,6 +152,11 @@
 <dt><span class="section"><a href="reference/exceptions/exception.html">exception</a></span></dt>
 <dt><span class="section"><a href="reference/exceptions/centroid_exception.html">centroid_exception</a></span></dt>
 </dl></dd>
+<dt><span class="section"><a href="reference/io.html">IO (input/output)</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="reference/io/wkt.html">WKT (Well-Known Text)</a></span></dt>
+<dt><span class="section"><a href="reference/io/svg.html">SVG (Scalable Vector Graphics)</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="reference/iterators.html">Iterators</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="reference/iterators/closing_iterator.html">closing_iterator</a></span></dt>
@@ -170,6 +175,22 @@
 <dt><span class="section"><a href="reference/models/model_ring.html">model::ring</a></span></dt>
 <dt><span class="section"><a href="reference/models/model_segment.html">model::segment</a></span></dt>
 <dt><span class="section"><a href="reference/models/model_referring_segment.html">model::referring_segment</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="reference/spatial_indexes.html">Spatial Indexes</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="reference/spatial_indexes/boost__geometry__index__rtree.html">boost::geometry::index::rtree</a></span></dt>
+<dt><span class="section"><a href="reference/spatial_indexes/group__rtree__functions.html">R-tree
+        free functions (boost::geometry::index::)</a></span></dt>
+<dt><span class="section"><a href="reference/spatial_indexes/parameters.html">R-tree
+        parameters (boost::geometry::index::)</a></span></dt>
+<dt><span class="section"><a href="reference/spatial_indexes/observers.html">Observers
+        (boost::geometry::index::)</a></span></dt>
+<dt><span class="section"><a href="reference/spatial_indexes/group__inserters.html">Inserters
+        (boost::geometry::index::)</a></span></dt>
+<dt><span class="section"><a href="reference/spatial_indexes/group__adaptors.html">Adaptors
+        (boost::geometry::index::adaptors::)</a></span></dt>
+<dt><span class="section"><a href="reference/spatial_indexes/group__predicates.html">Predicates
+        (boost::geometry::index::)</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="reference/strategies.html">Strategies</a></span></dt>
 <dd><dl>
@@ -208,8 +229,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Barend
-      Gehrels, Bruno Lalande, Mateusz Loskot<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Barend Gehrels, Bruno Lalande, Mateusz Loskot, Adam Wulkiewicz<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -217,7 +237,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="indexes/alphabetical_index.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference/access.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="spatial_indexes/rtree_examples/index_stored_in_shared_memory_using_boost_interprocess.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference/access.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

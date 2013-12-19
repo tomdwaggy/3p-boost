@@ -38,7 +38,7 @@
 // Include some always-included-for-testing files
 #if ! defined(BOOST_GEOMETRY_NO_BOOST_TEST)
 
-// Until Boost fixes it, silence warning issued by clang:
+// Until Boost.Test fixes it, silence warning issued by clang:
 // warning: unused variable 'check_is_close' [-Wunused-variable]
 #ifdef __clang__
 # pragma clang diagnostic push
@@ -73,6 +73,15 @@
 #  include <boost/numeric_adaptor/cln_value_type.hpp>
 #endif
 
+// For all tests:
+// - do NOT use "using namespace boost::geometry" to make clear what is Boost.Geometry
+// - use bg:: as short alias
+#include <boost/geometry/core/coordinate_type.hpp>
+#include <boost/geometry/core/closure.hpp>
+#include <boost/geometry/core/point_order.hpp>
+#include <boost/geometry/core/tag.hpp>
+namespace bg = boost::geometry;
+
 
 template <typename T>
 struct string_from_type {};
@@ -88,6 +97,9 @@ template <> struct string_from_type<double>
 
 template <> struct string_from_type<long double>
 { static std::string name() { return "e"; }  };
+
+template <> struct string_from_type<int>
+{ static std::string name() { return "i"; }  };
 
 #if defined(HAVE_TTMATH)
     template <> struct string_from_type<ttmath_big>
@@ -127,8 +139,22 @@ inline T if_typed(T value_typed, T value)
     return boost::is_same<CoordinateType, Specified>::value ? value_typed : value;
 }
 
+template <typename Geometry1, typename Geometry2>
+inline std::string type_for_assert_message()
+{
+    bool const ccw =
+        bg::point_order<Geometry1>::value == bg::counterclockwise
+        || bg::point_order<Geometry2>::value == bg::counterclockwise;
+    bool const open =
+        bg::closure<Geometry1>::value == bg::open
+        || bg::closure<Geometry2>::value == bg::open;
 
-
+    std::ostringstream out;
+    out << string_from_type<typename bg::coordinate_type<Geometry1>::type>::name()
+        << (ccw ? " ccw" : "")
+        << (open ? " open" : "");
+    return out.str();
+}
 
 struct geographic_policy
 {
@@ -149,14 +175,6 @@ struct mathematical_policy
     
 };
 
-
-
-
-// For all tests:
-// - do NOT use "using namespace boost::geometry" to make clear what is Boost.Geometry
-// - use bg:: as short alias
-#include <boost/geometry/core/tag.hpp>
-namespace bg = boost::geometry;
 
 
 #endif // GEOMETRY_TEST_GEOMETRY_TEST_COMMON_HPP

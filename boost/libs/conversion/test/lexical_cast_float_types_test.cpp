@@ -264,8 +264,11 @@ void test_converion_to_float_types()
     BOOST_CHECK_THROW(lexical_cast<test_t>("."), bad_lexical_cast);
 
     BOOST_CHECK_THROW(lexical_cast<test_t>("-B"), bad_lexical_cast);
-    BOOST_CHECK_THROW(lexical_cast<test_t>("0xB"), bad_lexical_cast);
-    BOOST_CHECK_THROW(lexical_cast<test_t>("0x0"), bad_lexical_cast);
+
+    // Following two tests are not valid for C++11 compilers    
+    //BOOST_CHECK_THROW(lexical_cast<test_t>("0xB"), bad_lexical_cast);
+    //BOOST_CHECK_THROW(lexical_cast<test_t>("0x0"), bad_lexical_cast);
+
     BOOST_CHECK_THROW(lexical_cast<test_t>("--1.0"), bad_lexical_cast);
     BOOST_CHECK_THROW(lexical_cast<test_t>("1.0e--1"), bad_lexical_cast);
     BOOST_CHECK_THROW(lexical_cast<test_t>("1.0.0"), bad_lexical_cast);
@@ -294,12 +297,16 @@ void test_float_typess_for_overflows()
     BOOST_CHECK_CLOSE_FRACTION(maxvalue, lexical_cast<test_t>(maxvalue), (std::numeric_limits<test_t>::epsilon()));
     BOOST_CHECK_CLOSE_FRACTION(maxvalue, lexical_cast<test_t>(s_max_value), (std::numeric_limits<test_t>::epsilon()));
 
+#ifndef _LIBCPP_VERSION
+    // libc++ had a bug in implementation of stream conversions for values that must be represented as infinity. 
+    // http://llvm.org/bugs/show_bug.cgi?id=15723#c4
     BOOST_CHECK_THROW(lexical_cast<test_t>(s_max_value+"1"), bad_lexical_cast);
     BOOST_CHECK_THROW(lexical_cast<test_t>(s_max_value+"9"), bad_lexical_cast);
 
-    // VC9 can fail the fllowing tests on floats and doubles when using stingstream...
+    // VC9 can fail the following tests on floats and doubles when using stingstream...
     BOOST_CHECK_THROW(lexical_cast<test_t>("1"+s_max_value), bad_lexical_cast);
     BOOST_CHECK_THROW(lexical_cast<test_t>("9"+s_max_value), bad_lexical_cast);
+#endif
 
     if ( is_same<test_t,float>::value )
     {
@@ -505,7 +512,11 @@ void test_conversion_from_to_double()
 }
 void test_conversion_from_to_long_double()
 {
+// We do not run tests on compilers with bugs
+#ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
     test_conversion_from_to_float<long double>();
+#endif
+    BOOST_CHECK(true);
 }
 
 

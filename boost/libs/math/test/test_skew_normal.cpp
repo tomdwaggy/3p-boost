@@ -17,7 +17,8 @@
 //#include <pch.hpp> // include directory libs/math/src/tr1/ is needed.
 
 #include <boost/math/concepts/real_concept.hpp> // for real_concept
-#include <boost/test/test_exec_monitor.hpp> // Boost.Test
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp> // Boost.Test
 #include <boost/test/floating_point_comparison.hpp>
 
 #include <boost/math/distributions/skew_normal.hpp>
@@ -336,7 +337,7 @@ void test_spots(RealType)
 
         BOOST_CHECK_CLOSE(      // mean:
            mean(dist)
-           , static_cast<RealType>(-0.579908992539856825862549L), tol100);
+           , static_cast<RealType>(-0.579908992539856825862549L), tol100 * 2);
          BOOST_CHECK_CLOSE(      // variance:
           variance(dist)
           , static_cast<RealType>(2.0179057767837232633904L), tol100);
@@ -447,7 +448,7 @@ void test_spots(RealType)
 
 } // template <class RealType>void test_spots(RealType)
 
-int test_main(int, char* [])
+BOOST_AUTO_TEST_CASE( test_main )
 {
 
 
@@ -496,8 +497,8 @@ int test_main(int, char* [])
     "to pass.</note>" << std::cout;
 #endif
   /*      */
-  return 0;
-} // int test_main(int, char* [])
+  
+} // BOOST_AUTO_TEST_CASE( test_main )
 
 /*
 

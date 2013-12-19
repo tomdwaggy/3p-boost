@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class template reference_wrapper</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../ref/reference.html#header.boost.ref_hpp" title="Header &lt;boost/ref.hpp&gt;">
 <link rel="prev" href="../ref/reference.html" title="Reference">
@@ -41,22 +41,22 @@
   <span class="keyword">typedef</span> <span class="identifier">T</span> <a name="boost.reference_wrapper.type"></a><span class="identifier">type</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="reference_wrapper.html#boost.reference_wrapperconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <span class="keyword">explicit</span> <a class="link" href="reference_wrapper.html#id1397824-bb"><span class="identifier">reference_wrapper</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="reference_wrapper.html#idp89455736-bb"><span class="identifier">reference_wrapper</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="reference_wrapper.html#id1503706-bb">access</a></span>
-  <a class="link" href="reference_wrapper.html#id1503709-bb"><span class="keyword">operator</span> <span class="identifier">T</span><span class="special">&amp;</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">T</span><span class="special">&amp;</span> <a class="link" href="reference_wrapper.html#id1503726-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">T</span><span class="special">*</span> <a class="link" href="reference_wrapper.html#id1503743-bb"><span class="identifier">get_pointer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="reference_wrapper.html#idp89457592-bb">access</a></span>
+  <a class="link" href="reference_wrapper.html#idp89457784-bb"><span class="keyword">operator</span> <span class="identifier">T</span><span class="special">&amp;</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">T</span><span class="special">&amp;</span> <a class="link" href="reference_wrapper.html#idp89458808-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">T</span><span class="special">*</span> <a class="link" href="reference_wrapper.html#idp89459832-bb"><span class="identifier">get_pointer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span>
 
-<span class="comment">// <a class="link" href="reference_wrapper.html#id1503762-bb">constructors</a></span>
-<span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <a class="link" href="reference_wrapper.html#boost.reference_wrapper.ref_id1503765"><span class="identifier">ref</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-<span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&gt;</span> <a class="link" href="reference_wrapper.html#boost.reference_wrapper.cref_id1503795"><span class="identifier">cref</span></a><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+<span class="comment">// <a class="link" href="reference_wrapper.html#idp89460984-bb">constructors</a></span>
+<span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <a class="link" href="reference_wrapper.html#boost.reference_wrapper.ref_idp89461176"><span class="identifier">ref</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+<span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&gt;</span> <a class="link" href="reference_wrapper.html#boost.reference_wrapper.cref_idp35638552"><span class="identifier">cref</span></a><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-<span class="comment">// <a class="link" href="reference_wrapper.html#id1503826-bb">access</a></span>
+<span class="comment">// <a class="link" href="reference_wrapper.html#idp21229736-bb">access</a></span>
 <span class="identifier">unwrap_reference</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">&amp;</span> <a class="link" href="reference_wrapper.html#boost.reference_wrapper.unwrap_ref"><span class="identifier">unwrap_ref</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id3283451"></a><h2>Description</h2>
+<a name="idp203878712"></a><h2>Description</h2>
 <p><code class="computeroutput"><a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a></code>
         is primarily used to "feed" references to function templates
         (algorithms) that take their parameter by value.  It provides
@@ -65,14 +65,17 @@
         the function templates to work on references
         unmodified.</p>
 <div class="refsect2">
-<a name="id3283478"></a><h3>
+<a name="idp203880376"></a><h3>
 <a name="boost.reference_wrapperconstruct-copy-destruct"></a><code class="computeroutput">reference_wrapper</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">explicit</span> <a name="id1397824-bb"></a><span class="identifier">reference_wrapper</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
-<div class="variablelist"><table border="0">
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="idp89455736-bb"></a><span class="identifier">reference_wrapper</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">Effects:</span></p></td>
@@ -90,13 +93,16 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id3283580"></a><h3>
-<a name="id1503706-bb"></a><code class="computeroutput">reference_wrapper</code> access</h3>
+<a name="idp203886408"></a><h3>
+<a name="idp89457592-bb"></a><code class="computeroutput">reference_wrapper</code> access</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id1503709-bb"></a><span class="keyword">operator</span> <span class="identifier">T</span><span class="special">&amp;</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
-<div class="variablelist"><table border="0">
+<pre class="literallayout"><a name="idp89457784-bb"></a><span class="keyword">operator</span> <span class="identifier">T</span><span class="special">&amp;</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
@@ -110,9 +116,12 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">T</span><span class="special">&amp;</span> <a name="id1503726-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
-<div class="variablelist"><table border="0">
+<pre class="literallayout"><span class="identifier">T</span><span class="special">&amp;</span> <a name="idp89458808-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
@@ -126,9 +135,12 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">T</span><span class="special">*</span> <a name="id1503743-bb"></a><span class="identifier">get_pointer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
-<div class="variablelist"><table border="0">
+<pre class="literallayout"><span class="identifier">T</span><span class="special">*</span> <a name="idp89459832-bb"></a><span class="identifier">get_pointer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
@@ -144,13 +156,16 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id3283791"></a><h3>
-<a name="id1503762-bb"></a><code class="computeroutput">reference_wrapper</code> constructors</h3>
+<a name="idp203899032"></a><h3>
+<a name="idp89460984-bb"></a><code class="computeroutput">reference_wrapper</code> constructors</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <a name="boost.reference_wrapper.ref_id1503765"></a><span class="identifier">ref</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
-<div class="variablelist"><table border="0">
+<pre class="literallayout"><span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <a name="boost.reference_wrapper.ref_idp89461176"></a><span class="identifier">ref</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
@@ -164,9 +179,12 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&gt;</span> <a name="boost.reference_wrapper.cref_id1503795"></a><span class="identifier">cref</span><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
-<div class="variablelist"><table border="0">
+<pre class="literallayout"><span class="identifier">reference_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&gt;</span> <a name="boost.reference_wrapper.cref_idp35638552"></a><span class="identifier">cref</span><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
@@ -182,12 +200,15 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id3283995"></a><h3>
-<a name="id1503826-bb"></a><code class="computeroutput">reference_wrapper</code> access</h3>
+<a name="idp203911224"></a><h3>
+<a name="idp21229736-bb"></a><code class="computeroutput">reference_wrapper</code> access</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
 <pre class="literallayout"><span class="identifier">unwrap_reference</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">&amp;</span> <a name="boost.reference_wrapper.unwrap_ref"></a><span class="identifier">unwrap_ref</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>

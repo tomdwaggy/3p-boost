@@ -297,6 +297,9 @@
 				<File
 					RelativePath="..\..\..\..\boost\interprocess\sync\spin\semaphore.hpp">
 				</File>
+				<File
+					RelativePath="..\..\..\..\boost\interprocess\sync\spin\wait.hpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="xsi"
@@ -488,6 +491,12 @@
 				RelativePath="..\..\..\..\boost\interprocess\detail\config_end.hpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\boost\interprocess\detail\config_external_begin.hpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\boost\interprocess\detail\config_external_end.hpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\boost\interprocess\detail\file_locking_helpers.hpp">
 			</File>
 			<File
@@ -519,9 +528,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\boost\interprocess\detail\managed_open_or_create_impl.hpp">
-			</File>
-			<File
-				RelativePath="..\..\..\..\boost\interprocess\detail\math_functions.hpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\boost\interprocess\detail\min_max.hpp">

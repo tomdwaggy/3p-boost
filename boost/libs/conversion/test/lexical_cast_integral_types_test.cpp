@@ -34,6 +34,7 @@
 #include <boost/test/floating_point_comparison.hpp>
 
 #include <boost/type_traits/integral_promotion.hpp>
+#include <boost/type_traits/make_unsigned.hpp>
 #include <string>
 #include <vector>
 #include <memory>
@@ -56,6 +57,8 @@ int const lcast_integral_test_counter=500;
 
 using namespace boost;
 
+
+
 void test_conversion_from_to_short();
 void test_conversion_from_to_ushort();
 void test_conversion_from_to_int();
@@ -68,6 +71,11 @@ void test_conversion_from_to_uintmax_t();
 void test_conversion_from_to_longlong();
 void test_conversion_from_to_ulonglong();
 #endif
+#ifdef BOOST_HAS_INT128
+void test_conversion_from_to_int128();
+void test_conversion_from_to_uint128();
+#endif
+void test_integral_conversions_on_min_max();
 
 
 unit_test::test_suite *init_unit_test_suite(int, char *[])
@@ -87,6 +95,11 @@ unit_test::test_suite *init_unit_test_suite(int, char *[])
     suite->add(BOOST_TEST_CASE(&test_conversion_from_to_longlong));
     suite->add(BOOST_TEST_CASE(&test_conversion_from_to_ulonglong));
 #endif
+#ifdef BOOST_HAS_INT128
+    suite->add(BOOST_TEST_CASE(&test_conversion_from_to_int128));
+    suite->add(BOOST_TEST_CASE(&test_conversion_from_to_uint128));
+#endif
+    suite->add(BOOST_TEST_CASE(&test_integral_conversions_on_min_max));
 
     return suite;
 }
@@ -230,7 +243,7 @@ void test_conversion_from_integral_to_string(CharT)
 
         // Test values around 100, 1000, 10000, ...
         T ten_power = 100;
-        for(int e = 2; e <= limits::digits10; ++e, ten_power *= 10)
+        for(int e = 2; e < limits::digits10; ++e, ten_power *= 10)
         {
             // ten_power + 100 probably never overflows
             for(t = ten_power - 100; t != ten_power + 100; ++t)
@@ -327,7 +340,7 @@ void test_conversion_from_string_to_integral(CharT)
 
         // Test values around 100, 1000, 10000, ...
         T ten_power = 100;
-        for(int e = 2; e <= limits::digits10; ++e, ten_power *= 10)
+        for(int e = 2; e < limits::digits10; ++e, ten_power *= 10)
         {
             // ten_power + 100 probably never overflows
             for(t = ten_power - 100; t != ten_power + 100; ++t)
@@ -370,7 +383,7 @@ struct restore_oldloc
 };
 
 template<class T>
-void test_conversion_from_to_integral()
+void test_conversion_from_to_integral_minimal()
 {
     char const zero = '0';
     signed char const szero = '0';
@@ -386,12 +399,12 @@ void test_conversion_from_to_integral()
     test_conversion_from_integral_to_char<T>(wzero);
     test_conversion_from_char_to_integral<T>(wzero);
 #endif
-#if !defined(BOOST_NO_CHAR16_T) && !defined(BOOST_NO_UNICODE_LITERALS)
+#if !defined(BOOST_NO_CXX11_CHAR16_T) && !defined(BOOST_NO_CXX11_UNICODE_LITERALS) && !defined(_LIBCPP_VERSION)
     char16_t const u16zero = u'0';
     test_conversion_from_integral_to_char<T>(u16zero);
     test_conversion_from_char_to_integral<T>(u16zero);
 #endif
-#if !defined(BOOST_NO_CHAR32_T) && !defined(BOOST_NO_UNICODE_LITERALS)
+#if !defined(BOOST_NO_CXX11_CHAR32_T) && !defined(BOOST_NO_CXX11_UNICODE_LITERALS) && !defined(_LIBCPP_VERSION)
     char32_t const u32zero = u'0';
     test_conversion_from_integral_to_char<T>(u32zero);
     test_conversion_from_char_to_integral<T>(u32zero);
@@ -427,8 +440,8 @@ void test_conversion_from_to_integral()
     // test_conversion_from_to_integral_for_locale
 
     // Overflow test case from David W. Birdsall
-    std::string must_owerflow_str = "160000000000000000000";
-    std::string must_owerflow_negative_str = "-160000000000000000000";
+    std::string must_owerflow_str =             (sizeof(T) < 16 ?  "160000000000000000000" :  "1600000000000000000000000000000000000000");
+    std::string must_owerflow_negative_str =    (sizeof(T) < 16 ? "-160000000000000000000" : "-1600000000000000000000000000000000000000");
     for (int i = 0; i < 15; ++i) {
         BOOST_CHECK_THROW(lexical_cast<T>(must_owerflow_str), bad_lexical_cast);
         BOOST_CHECK_THROW(lexical_cast<T>(must_owerflow_negative_str), bad_lexical_cast);
@@ -436,7 +449,12 @@ void test_conversion_from_to_integral()
         must_owerflow_str += '0';
         must_owerflow_negative_str += '0';
     }
+}
 
+template<class T>
+void test_conversion_from_to_integral()
+{
+    test_conversion_from_to_integral_minimal<T>();
     typedef std::numpunct<char> numpunct;
 
     restore_oldloc guard;
@@ -535,5 +553,75 @@ void test_conversion_from_to_ulonglong()
 #endif
 
 
+#ifdef BOOST_HAS_INT128
+
+template <bool Specialized, class T>
+struct test_if_specialized {
+    static void test() {}
+};
+
+template <class T>
+struct test_if_specialized<true, T> {
+    static void test() {
+        test_conversion_from_to_integral_minimal<T>();
+    }
+};
+
+void test_conversion_from_to_int128()
+{
+    test_if_specialized<
+        std::numeric_limits<boost::int128_type>::is_specialized, 
+        boost::int128_type
+    >::test();
+}
+
+void test_conversion_from_to_uint128()
+{
+    test_if_specialized<
+        std::numeric_limits<boost::int128_type>::is_specialized, 
+        boost::uint128_type
+    >::test();
+}
+#endif
+
+template <typename SignedT>
+void test_integral_conversions_on_min_max_impl()
+{
+    typedef SignedT signed_t;
+    typedef BOOST_DEDUCED_TYPENAME boost::make_unsigned<signed_t>::type unsigned_t;
+    
+    typedef std::numeric_limits<signed_t> s_limits;
+    typedef std::numeric_limits<unsigned_t> uns_limits;
+
+    BOOST_CHECK_EQUAL(lexical_cast<unsigned_t>((uns_limits::max)()), (uns_limits::max)());
+    BOOST_CHECK_EQUAL(lexical_cast<unsigned_t>((uns_limits::min)()), (uns_limits::min)());
+
+    BOOST_CHECK_EQUAL(lexical_cast<signed_t>((s_limits::max)()), (s_limits::max)());
+    BOOST_CHECK_EQUAL(lexical_cast<signed_t>((uns_limits::min)()), static_cast<signed_t>((uns_limits::min)()));
+
+    BOOST_CHECK_EQUAL(lexical_cast<unsigned_t>((s_limits::max)()), static_cast<unsigned_t>((s_limits::max)()));
+    BOOST_CHECK_EQUAL(lexical_cast<unsigned_t>((s_limits::min)()), static_cast<unsigned_t>((s_limits::min)()));
+}
+
+void test_integral_conversions_on_min_max()
+{
+    test_integral_conversions_on_min_max_impl<int>();
+    test_integral_conversions_on_min_max_impl<short>();
+
+#ifdef _MSC_VER
+    test_integral_conversions_on_min_max_impl<long int>();
+
+#if defined(BOOST_HAS_LONG_LONG)
+    test_integral_conversions_on_min_max_impl<boost::long_long_type>();
+#elif defined(BOOST_HAS_MS_INT64)
+    test_integral_conversions_on_min_max_impl<__int64>();
+#endif
+
+#ifdef BOOST_HAS_INT128
+    test_integral_conversions_on_min_max_impl<boost::int128_type>();
+#endif
+#endif
+
+}
 
 

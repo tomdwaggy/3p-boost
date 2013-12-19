@@ -5,7 +5,8 @@
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/math/concepts/real_concept.hpp>
-#include <boost/test/test_exec_monitor.hpp>
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/math/special_functions/math_fwd.hpp>
 #include <boost/array.hpp>
@@ -21,7 +22,6 @@
 template <class Real, class T>
 void do_test_digamma(const T& data, const char* type_name, const char* test_name)
 {
-   typedef typename T::value_type row_type;
    typedef Real                   value_type;
 
    typedef value_type (*pg)(value_type);

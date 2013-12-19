@@ -106,6 +106,13 @@ void test_areal()
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_3",
         case_recursive_boxes_3[0], case_recursive_boxes_3[1],
         17, 0, 159, 56.5); // Area from SQL Server
+
+     test_one<Polygon, MultiPolygon, MultiPolygon>("ggl_list_20120915_h2_a",
+         ggl_list_20120915_h2[0], ggl_list_20120915_h2[1],
+         1, 0, 12, 23.0); // Area from SQL Server
+     test_one<Polygon, MultiPolygon, MultiPolygon>("ggl_list_20120915_h2_b",
+         ggl_list_20120915_h2[0], ggl_list_20120915_h2[2],
+         1, 0, 12, 23.0); // Area from SQL Server
 }
 
 template <typename P>
@@ -133,9 +140,14 @@ int test_main(int, char* [])
 {
     test_all<bg::model::d2::point_xy<double> >();
 
-#ifdef HAVE_TTMATH
+#if ! defined(BOOST_GEOMETRY_TEST_ONLY_ONE_TYPE)
+    test_all<bg::model::d2::point_xy<float> >();
+
+#if defined(HAVE_TTMATH)
     std::cout << "Testing TTMATH" << std::endl;
     test_all<bg::model::d2::point_xy<ttmath_big> >();
+#endif
+
 #endif
 
     return 0;
