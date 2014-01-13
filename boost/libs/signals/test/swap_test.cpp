@@ -1,6 +1,7 @@
 //	https://svn.boost.org/trac/boost/ticket/5521 
 //		claims a linker error for this.
 
+#include <iostream>
 #include <boost/signal.hpp>
 #include <boost/signals/connection.hpp>
 

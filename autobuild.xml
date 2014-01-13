@@ -5,6 +5,10 @@
     <map>
       <key>icu4c</key>
       <map>
+        <key>license</key>
+        <string>ICU, permissive non-copyleft free software license</string>
+        <key>license_file</key>
+        <string>LICENSES/icu.txt</string>
         <key>name</key>
         <string>icu4c</string>
         <key>platforms</key>
@@ -49,6 +53,10 @@
       </map>
       <key>zlib</key>
       <map>
+        <key>license</key>
+        <string>zlib</string>
+        <key>license_file</key>
+        <string>LICENSES/zlib.txt</string>
         <key>name</key>
         <string>zlib</string>
         <key>platforms</key>
@@ -58,9 +66,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>86f045c2a8881309eedb3d4ca960077f</string>
+              <string>5f7b9a5136114a535de922bbc4e6e56c</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib/rev/249037/arch/Darwin/installer/zlib-1.2.6-darwin-20120207.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib-update/rev/284895/arch/Darwin/installer/zlib-1.2.8-darwin-20131213.tar.bz2</string>
             </map>
             <key>name</key>
             <string>darwin</string>
@@ -70,9 +78,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>39797a9e13ece9c05c713b55ee0175f0</string>
+              <string>db22e43c0adb1febaf284be24fc54c2b</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib/rev/249037/arch/Linux/installer/zlib-1.2.6-linux-20120207.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib-update/rev/284895/arch/Linux/installer/zlib-1.2.8-linux-20131213.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux</string>
@@ -82,9 +90,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>81ee608ed385b291e4e7af973ec4b021</string>
+              <string>a18db6844e19a2df32404cba2c7a25af</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib/rev/249037/arch/CYGWIN/installer/zlib-1.2.6-windows-20120207.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib-update/rev/284895/arch/CYGWIN/installer/zlib-1.2.8-windows-20131213.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -208,7 +216,7 @@
       <key>source_directory</key>
       <string>boost</string>
       <key>version</key>
-      <string>1.52.0</string>
+      <string>1.55.0</string>
     </map>
     <key>type</key>
     <string>autobuild</string>
