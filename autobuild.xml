@@ -66,9 +66,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>5f7b9a5136114a535de922bbc4e6e56c</string>
+              <string>3f0a6ce335f390e3e74bf26d29a07070</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib-update/rev/284895/arch/Darwin/installer/zlib-1.2.8-darwin-20131213.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib-update/rev/285355/arch/Darwin/installer/zlib-1.2.8-darwin-20140115.tar.bz2</string>
             </map>
             <key>name</key>
             <string>darwin</string>
@@ -78,9 +78,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>db22e43c0adb1febaf284be24fc54c2b</string>
+              <string>9c8db7295eca1f357d07e0dd27bf8668</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib-update/rev/284895/arch/Linux/installer/zlib-1.2.8-linux-20131213.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib-update/rev/285355/arch/Linux/installer/zlib-1.2.8-linux-20140115.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux</string>
@@ -90,9 +90,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>a18db6844e19a2df32404cba2c7a25af</string>
+              <string>923d08f7a713b1f0f8b855657b074828</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib-update/rev/284895/arch/CYGWIN/installer/zlib-1.2.8-windows-20131213.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-zlib-update/rev/285355/arch/CYGWIN/installer/zlib-1.2.8-windows-20140115.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -124,10 +124,11 @@
               <map>
                 <key>arguments</key>
                 <array>
+                  <string>-c</string>
                   <string>../../build-cmd.sh</string>
                 </array>
                 <key>command</key>
-                <string>sh</string>
+                <string>bash</string>
               </map>
               <key>name</key>
               <string>Release</string>

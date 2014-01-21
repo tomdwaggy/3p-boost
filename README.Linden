@@ -38,6 +38,37 @@
          1.2.8
           inflate 1.2.8 Copyright 1995-2013 Mark Adler 
 
+         Linux (bad):
+
+         $ strings lib/debug/libboost_* | grep 1\\.2\\.
+         1.2.3.4
+         1.2.3.4
+          deflate 1.2.8 Copyright 1995-2013 Jean-loup Gailly and Mark Adler 
+         1.2.8
+          inflate 1.2.8 Copyright 1995-2013 Mark Adler 
+         1.2.8
+         1.2.3.4
+          deflate 1.2.8 Copyright 1995-2013 Jean-loup Gailly and Mark Adler 
+         1.2.8
+          inflate 1.2.8 Copyright 1995-2013 Mark Adler 
+         1.2.8
+
+         Linux (good):
+
+         $ strings lib/debug/libboost_* | grep 1\\.2\\.
+         1.2.8
+         1.2.8
+          deflate 1.2.8 Copyright 1995-2013 Jean-loup Gailly and Mark Adler 
+         1.2.8
+          inflate 1.2.8 Copyright 1995-2013 Mark Adler 
+         1.2.8
+         1.2.8
+          deflate 1.2.8 Copyright 1995-2013 Jean-loup Gailly and Mark Adler 
+         1.2.8
+          inflate 1.2.8 Copyright 1995-2013 Mark Adler 
+         1.2.8
+
+
     [ ]  All DLLs/dylibs/sos built without unwanted references to other
          libraries such as libz.
 
@@ -118,7 +149,7 @@
 
     Many problems building the unit tests on Windows and I eventually
     just gave up with time exhausted.  Revisit when we update the
-    library and/or change linkage and/or fix icu4u.
+    library and/or change linkage and/or fix icu4c.
 
   2.7  Windows Bjam Build
 
@@ -126,6 +157,15 @@
     script on my system.  Various branch target labels weren't
     functional.  Putting an 'echo on' command in the ':Test_Empty'
     block after 'setlocal' magically made everything work (mostly).
+
+  2.8  General Build Issues
+
+    Getting a consistent build against dependent libraries is a
+    challenge.  Be certain to do the consistency checks above.  I
+    don't think all platforms consistently use the ZLIB_* variables
+    available so there is some ineffective configuration in the build
+    script.  Similarly with bootstrapping, icu4c specification might
+    better be handled later, I think.
 
 
 3.  Source Origin
