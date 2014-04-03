@@ -18,10 +18,10 @@ BOOST_BJAM_OPTIONS="address-model=32 architecture=x86 --layout=tagged \
                             --with-context --with-date_time --with-filesystem \
                             --with-iostreams --with-program_options \
                             --with-regex --with-signals --with-system \
-                            --with-thread  -sNO_BZIP2=1"
+                            --with-thread --with-coroutine -sNO_BZIP2=1"
 
 # regex tests disabled due to failure in 1.55.0 (re-enable later) - Bug 9555
-BOOST_TEST_LIBS_COMMON="context program_options signals system thread"
+BOOST_TEST_LIBS_COMMON="context program_options signals system thread coroutine"
 BOOST_TEST_LIBS_LINUX="${BOOST_TEST_LIBS_COMMON} date_time iostreams"
 BOOST_TEST_LIBS_WINDOWS="${BOOST_TEST_LIBS_COMMON} filesystem"
 # No filesystem test for darwin due to Bug 9560 - may have production implications, too
