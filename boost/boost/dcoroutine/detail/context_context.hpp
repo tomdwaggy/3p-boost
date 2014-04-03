@@ -33,7 +33,8 @@
 #include <boost/config.hpp>
 #include <boost/assert.hpp>
 #include <boost/context/fcontext.hpp>
-#include <boost/context/guarded_stack_allocator.hpp>
+#include <boost/coroutine/stack_context.hpp>
+#include <boost/coroutine/stack_allocator.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/dcoroutine/exception.hpp>
 #include <boost/dcoroutine/detail/swap_context.hpp>
@@ -59,7 +60,7 @@ namespace boost { namespace dcoroutines { namespace detail {
      * instantiate your StackAllocator, sharing a single instance between
      * multiple stack_holder_with instances.
      */
-    template <class StackAllocator=boost::context::guarded_stack_allocator>
+    template <class StackAllocator=boost::coroutines::stack_allocator>
     class stack_holder_with: public boost::noncopyable // RAII class
     {
     public:
@@ -67,19 +68,19 @@ namespace boost { namespace dcoroutines { namespace detail {
         typedef StackAllocator allocator;
 
         stack_holder_with(allocator& allocref, std::size_t size=allocator::default_stacksize()):
-            mAllocRef(allocref),
-            mSize(size),
-            mStack(mAllocRef.allocate(mSize))
-        {}
-
+            mAllocRef(allocref)
+        {
+            mAllocRef.allocate(mStack, size);
+        }
+        
         ~stack_holder_with()
         {
-            mAllocRef.deallocate(mStack, mSize);
+            mAllocRef.deallocate(mStack);
         }
 
         // suitable for calling make_fcontext()
-        void* get_stack() const { return mStack; }
-        std::size_t get_size() const { return mSize; }
+        void* get_stack() const { return mStack.sp; }
+        std::size_t get_size() const { return mStack.size; }
 
         // permit consumer to query bound StackAllocator
         allocator& get_allocator() { return mAllocRef; }
@@ -87,8 +88,7 @@ namespace boost { namespace dcoroutines { namespace detail {
 
     protected:
         allocator& mAllocRef;
-        std::size_t mSize;
-        void* mStack;
+        boost::coroutines::stack_context mStack;
     };
 
     /**
@@ -114,7 +114,7 @@ namespace boost { namespace dcoroutines { namespace detail {
      * share its state between the different stacks you want to allocate
      * with it.
      */
-    template <class StackAllocator=boost::context::guarded_stack_allocator>
+    template <class StackAllocator=boost::coroutines::stack_allocator>
     struct stack_holder: public stack_allocator_holder<StackAllocator>,
                          public stack_holder_with<StackAllocator>
     {
@@ -160,7 +160,7 @@ namespace boost { namespace dcoroutines { namespace detail {
      * AND prepares it using make_fcontext(). For this you must pass not
      * only a size but also the target function pointer.
      */
-    template <class StackAllocator=boost::context::guarded_stack_allocator>
+    template <class StackAllocator=boost::coroutines::stack_allocator>
     class fcontext_holder: public stack_holder<StackAllocator>
     {
         typedef stack_holder<StackAllocator> super;
@@ -171,8 +171,8 @@ namespace boost { namespace dcoroutines { namespace detail {
             super(size)
         {
             // Our stack_holder base class already has a stack for us to
-            // use. Pass inherited mStack, mSize to make_fcontext().
-            mContext = boost::context::make_fcontext(super::mStack, super::mSize, fn);
+            // use. Pass inherited mStack members to make_fcontext().
+            mContext = boost::context::make_fcontext(super::mStack.sp, super::mStack.size, fn);
         }
 
         // This is the fcontext_t* you would pass to jump_fcontext()
@@ -187,7 +187,7 @@ namespace boost { namespace dcoroutines { namespace detail {
         }
 
     private:
-        // Since make_fcontext() allocates its fcontext_t on mStack, we
+        // Since make_fcontext() allocates its fcontext_t on mStack.sp, we
         // don't need to do anything special to free mContext; it goes away
         // when ~stack_holder_with() deallocates mStack.
         boost::context::fcontext_t* mContext;

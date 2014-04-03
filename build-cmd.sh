@@ -18,10 +18,10 @@ BOOST_BJAM_OPTIONS="address-model=32 architecture=x86 --layout=tagged \
                             --with-context --with-date_time --with-filesystem \
                             --with-iostreams --with-program_options \
                             --with-regex --with-signals --with-system \
-                            --with-thread  -sNO_BZIP2=1"
+                            --with-thread --with-coroutine -sNO_BZIP2=1"
 
 # regex tests disabled due to failure in 1.55.0 (re-enable later) - Bug 9555
-BOOST_TEST_LIBS_COMMON="context program_options signals system thread"
+BOOST_TEST_LIBS_COMMON="context program_options signals system thread coroutine"
 BOOST_TEST_LIBS_LINUX="${BOOST_TEST_LIBS_COMMON} date_time iostreams"
 BOOST_TEST_LIBS_WINDOWS="${BOOST_TEST_LIBS_COMMON} filesystem"
 # No filesystem test for darwin due to Bug 9560 - may have production implications, too
@@ -49,6 +49,26 @@ stage_release="${stage_lib}"/release
 stage_debug="${stage_lib}"/debug
 mkdir -p "${stage_release}"
 mkdir -p "${stage_debug}"
+
+# Restore all .sos
+restore_sos ()
+{
+    for solib in "${stage}"/packages/lib/debug/libz.so*.disable "${stage}"/packages/lib/release/libz.so*.disable; do
+        if [ -f "$solib" ]; then
+            mv -f "$solib" "${solib%.disable}"
+        fi
+    done
+}
+
+# Restore all .dylibs
+restore_dylibs ()
+{
+    for dylib in "$stage/packages/lib"/{debug,release}/*.dylib.disable; do
+        if [ -f "$dylib" ]; then
+            mv "$dylib" "${dylib%.disable}"
+        fi
+    done
+}
 
 # bjam doesn't support a -sICU_LIBPATH to point to the location
 # of the icu libraries like it does for zlib. Instead, it expects
@@ -126,6 +146,7 @@ case "$AUTOBUILD_PLATFORM" in
         BOOST_CXXFLAGS="-gdwarf-2 -DBOOST_THREAD_DONT_PROVIDE_FUTURE_CONTINUATION -DBOOST_THREAD_DONT_PROVIDE_FUTURE_CTOR_ALLOCATORS -DBOOST_THREAD_DONT_PROVIDE_FUTURE_CONTINUATION -DBOOST_THREAD_DONT_PROVIDE_FUTURE_UNWRAP -DBOOST_THREAD_DONT_PROVIDE_FUTURE_INVALID_AFTER_GET"
 
         # Force zlib static linkage by moving .dylibs out of the way
+        trap restore_dylibs EXIT
         for dylib in "${stage}"/packages/lib/{debug,release}/*.dylib; do
             if [ -f "$dylib" ]; then
                 mv "$dylib" "$dylib".disable
@@ -172,17 +193,11 @@ case "$AUTOBUILD_PLATFORM" in
         fi
 
         mv "${stage_lib}"/*.a "${stage_release}"
-
-        # Restore zlib .dylibs
-        for dylib in "${stage}"/packages/lib/{debug,release}/*.dylib.disable; do
-            if [ -f "$dylib" ]; then
-                mv "$dylib" "${dylib%.disable}"
-            fi
-        done
         ;;
 
     "linux")
         # Force static linkage to libz by moving .sos out of the way
+        trap restore_sos EXIT
         for solib in "${stage}"/packages/lib/debug/libz.so* "${stage}"/packages/lib/release/libz.so*; do
             if [ -f "$solib" ]; then
                 mv -f "$solib" "$solib".disable
@@ -236,13 +251,6 @@ case "$AUTOBUILD_PLATFORM" in
         mv "${stage_lib}"/libboost* "${stage_release}"
 
         "${bjam}" --clean
-
-        # Restore libz .sos
-        for solib in "${stage}"/packages/lib/debug/libz.so*.disable "${stage}"/packages/lib/release/libz.so*.disable; do
-            if [ -f "$solib" ]; then
-                mv -f "$solib" "${solib%.disable}"
-            fi
-        done
         ;;
 esac
     
