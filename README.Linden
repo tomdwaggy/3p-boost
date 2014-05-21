@@ -222,61 +222,41 @@
     * lib/debug/libboost_system-mt-d.a
     * lib/debug/libboost_thread-mt-d.a
 
-    Linux (debug and release, archive and shared):
+    Linux (debug and release, archive only):
     * lib/release/libboost_context-mt.a
-    * lib/release/libboost_context-mt.so
-    * lib/release/libboost_context-mt.so.1.55.0
     * lib/release/libboost_date_time-mt.a
-    * lib/release/libboost_date_time-mt.so
-    * lib/release/libboost_date_time-mt.so.1.55.0
     * lib/release/libboost_filesystem-mt.a
-    * lib/release/libboost_filesystem-mt.so.1.55.0
-    * lib/release/libboost_filesystem-mt.so
     * lib/release/libboost_iostreams-mt.a
-    * lib/release/libboost_iostreams-mt.so
-    * lib/release/libboost_iostreams-mt.so.1.55.0
     * lib/release/libboost_program_options-mt.a
-    * lib/release/libboost_program_options-mt.so
-    * lib/release/libboost_program_options-mt.so.1.55.0
     * lib/release/libboost_regex-mt.a
-    * lib/release/libboost_regex-mt.so
-    * lib/release/libboost_regex-mt.so.1.55.0
     * lib/release/libboost_signals-mt.a
-    * lib/release/libboost_signals-mt.so
-    * lib/release/libboost_signals-mt.so.1.55.0
     * lib/release/libboost_system-mt.a
-    * lib/release/libboost_system-mt.so
-    * lib/release/libboost_system-mt.so.1.55.0
     * lib/release/libboost_thread-mt.a
-    * lib/release/libboost_thread-mt.so
-    * lib/release/libboost_thread-mt.so.1.55.0
     * lib/debug/libboost_context-mt-d.a
-    * lib/debug/libboost_context-mt-d.so
-    * lib/debug/libboost_context-mt-d.so.1.55.0
     * lib/debug/libboost_date_time-mt-d.a
-    * lib/debug/libboost_date_time-mt-d.so
-    * lib/debug/libboost_date_time-mt-d.so.1.55.0
     * lib/debug/libboost_filesystem-mt-d.a
-    * lib/debug/libboost_filesystem-mt-d.so
-    * lib/debug/libboost_filesystem-mt-d.so.1.55.0
     * lib/debug/libboost_iostreams-mt-d.a
-    * lib/debug/libboost_iostreams-mt-d.so
-    * lib/debug/libboost_iostreams-mt-d.so.1.55.0
     * lib/debug/libboost_program_options-mt-d.a
-    * lib/debug/libboost_program_options-mt-d.so
-    * lib/debug/libboost_program_options-mt-d.so.1.55.0
     * lib/debug/libboost_regex-mt-d.a
-    * lib/debug/libboost_regex-mt-d.so
-    * lib/debug/libboost_regex-mt-d.so.1.55.0
     * lib/debug/libboost_system-mt-d.a
-    * lib/debug/libboost_system-mt-d.so
-    * lib/debug/libboost_system-mt-d.so.1.55.0
     * lib/debug/libboost_signals-mt-d.a
-    * lib/debug/libboost_signals-mt-d.so
-    * lib/debug/libboost_signals-mt-d.so.1.55.0
     * lib/debug/libboost_thread-mt-d.a
-    * lib/debug/libboost_thread-mt-d.so
-    * lib/debug/libboost_thread-mt-d.so.1.55.0
+
+
+5.  Consumers/Dependents
+
+    Note: Code using Google mock may need to include its headers
+    before Boost.  Looks like google-mock changes Boost's inclusion
+    behavior.
+
+    Packages dependent on Boost which will need attention
+    (autobuild.xml) after changes.  This is not authoritative, use
+    appropriate build tools to find all dependents.
+
+    * colladadom
+    * google-mock (Not really dependent on Boost, I think.)
+
+    * viewer
 
 
 ===================================================================

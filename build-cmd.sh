@@ -32,7 +32,8 @@ top="$(pwd)"
 cd "$BOOST_SOURCE_DIR"
 bjam="$(pwd)/bjam"
 stage="$(pwd)/stage"
-[ -f "$stage"/packages/include/zlib/zlib.h ] || fail "You haven't installed packages yet."
+
+[ -f "$stage"/packages/include/zlib/zlib.h ] || fail "You haven't installed the zlib package yet."
                                                      
 if [ "$OSTYPE" = "cygwin" ] ; then
     export AUTOBUILD="$(cygpath -u $AUTOBUILD)"
@@ -258,6 +259,8 @@ mkdir -p "${stage}"/include
 cp -a boost "${stage}"/include/
 mkdir -p "${stage}"/LICENSES
 cp -a LICENSE_1_0.txt "${stage}"/LICENSES/boost.txt
+mkdir -p "${stage}"/docs/boost/
+cp -a "$top"/README.Linden "${stage}"/docs/boost/
 
 cd "$top"
 
