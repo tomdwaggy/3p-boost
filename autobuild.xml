@@ -49,6 +49,18 @@
             <key>name</key>
             <string>windows</string>
           </map>
+          <key>windows64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>687ca65036ccaaae114ade08382d7137</string>
+              <key>url</key>
+              <string>https://bitbucket.org/alchemyviewer/publiclibs-vs12/downloads/icu4c-53.1-windows64-vs12-20140709.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>windows64</string>
+          </map>
         </map>
       </map>
       <key>zlib</key>
@@ -96,6 +108,18 @@
             </map>
             <key>name</key>
             <string>windows</string>
+          </map>
+          <key>windows64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>7459ddf61c40764e0a58ffd84722bf99</string>
+              <key>url</key>
+              <string>https://bitbucket.org/alchemyviewer/publiclibs-vs12/downloads/zlib-1.2.8-windows64-vs12-20140709.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>windows64</string>
           </map>
         </map>
       </map>
@@ -211,6 +235,29 @@
           </array>
           <key>name</key>
           <string>windows</string>
+        </map>
+        <key>windows64</key>
+        <map>
+          <key>configurations</key>
+          <map>
+            <key>Release</key>
+            <map>
+              <key>build</key>
+              <map>
+              </map>
+              <key>default</key>
+              <boolean>true</boolean>
+              <key>name</key>
+              <string>Release</string>
+            </map>
+          </map>
+          <key>manifest</key>
+          <array>
+            <string>lib/release/*.lib</string>
+            <string>lib/debug/*.lib</string>
+          </array>
+          <key>name</key>
+          <string>windows64</string>
         </map>
       </map>
       <key>source_directory</key>

@@ -14,7 +14,7 @@ if [ -z "$AUTOBUILD" ] ; then
 fi
 
 
-BOOST_BJAM_OPTIONS="address-model=32 architecture=x86 --layout=tagged \
+BOOST_BJAM_OPTIONS="--layout=tagged \
                             --with-context --with-date_time --with-filesystem \
                             --with-iostreams --with-program_options \
                             --with-regex --with-signals --with-system \
@@ -100,6 +100,64 @@ case "$AUTOBUILD_PLATFORM" in
             include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
             cxxflags=-Zc:wchar_t- \
+            address-model=32 architecture=x86 \
+			$BOOST_BJAM_OPTIONS"
+
+        DEBUG_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sZLIB_LIBRARY_PATH=$ZLIB_DEBUG_PATH -sZLIB_NAME=zlibd"
+        "${bjam}" link=static variant=debug \
+            --prefix="${stage}" --libdir="${stage_debug}" $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
+
+        # Windows unit tests seem confused more than usual.  So they're
+        # disabled for now but should be tried with every update.
+
+        # conditionally run unit tests
+        # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+        #     for blib in $BOOST_TEST_LIBS_WINDOWS; do
+        #         cd libs/"$blib"/test
+        #             "${bjam}" link=static variant=debug \
+        #                 --prefix="${stage}" --libdir="${stage_debug}" \
+        #                 $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
+        #         cd ../../..
+        #     done
+        # fi
+
+        RELEASE_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH -sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH -sZLIB_NAME=zlib"
+        "${bjam}" link=static variant=release \
+            --prefix="${stage}" --libdir="${stage_release}" $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
+
+        # conditionally run unit tests
+        # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+        #     for blib in $BOOST_TEST_LIBS_WINDOWS; do
+        #         cd libs/"$blib"/test
+        #             "${bjam}" link=static variant=release \
+        #                 --prefix="${stage}" --libdir="${stage_debug}" \
+        #                 $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
+        #         cd ../../..
+        #     done
+        # fi
+
+        # Move the debug libs first, then the leftover release libs
+        mv "${stage_lib}"/*-gd.lib "${stage_debug}"
+        mv "${stage_lib}"/*.lib "${stage_release}"
+        ;;
+
+     "windows64")
+        INCLUDE_PATH=$(cygpath -m "${stage}"/packages/include)
+        ZLIB_RELEASE_PATH=$(cygpath -m "${stage}"/packages/lib/release)
+        ZLIB_DEBUG_PATH=$(cygpath -m "${stage}"/packages/lib/debug)
+        ICU_PATH=$(cygpath -m "${stage}"/packages)
+
+        # Odd things go wrong with the .bat files:  branch targets
+        # not recognized, file tests incorrect.  Inexplicable but
+        # dropping 'echo on' into the .bat files seems to help.
+        cmd.exe /C bootstrap.bat vc12
+
+        # Windows build of viewer expects /Zc:wchar_t-, have to match that
+        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j2 \
+            include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
+            -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
+            cxxflags=-Zc:wchar_t- \
+            address-model=64 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
 
         DEBUG_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sZLIB_LIBRARY_PATH=$ZLIB_DEBUG_PATH -sZLIB_NAME=zlibd"
