@@ -60,7 +60,7 @@ namespace boost { namespace dcoroutines { namespace detail {
   template<typename Tuple>
   void wait_n(const Tuple& t, int n) {
     BOOST_STATIC_ASSERT(boost::tuples::length<Tuple>::value);
-    wait_gateway::wait(t.get<0>(), n);
+    wait_gateway::wait(t.template get<0>(), n);
   }
 
   /*

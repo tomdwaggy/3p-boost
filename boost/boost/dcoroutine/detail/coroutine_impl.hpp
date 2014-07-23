@@ -270,7 +270,7 @@ namespace boost { namespace dcoroutines { namespace detail {
   typename 
   coroutine_impl<CoroutineType, ContextImpl>::pointer
   coroutine_impl<CoroutineType, ContextImpl>::
-  create(Functor f, std::ptrdiff_t stack_size = default_stack_size) {
+  create(Functor f, std::ptrdiff_t stack_size) {
     return new coroutine_impl_wrapper<Functor, CoroutineType, ContextImpl>
       (f, stack_size);      
   }
