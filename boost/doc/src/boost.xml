@@ -2,7 +2,7 @@
 <!DOCTYPE boostbook PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN"
   "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd">
 <boostbook id="boost" xmlns:xi="http://www.w3.org/2001/XInclude"
-           last-revision="$Date: 2013-10-08 14:01:18 -0700 (Tue, 08 Oct 2013) $">
+           last-revision="$Date$">
   <title>The Boost C++ Libraries BoostBook Documentation Subset</title>
 
   <preface id="about">
@@ -39,6 +39,8 @@
     <title>The Boost C++ Libraries (BoostBook Subset)</title>
 
     <xi:include href="accumulators.xml"/>
+
+    <xi:include href="align.xml"/>
 
     <xi:include href="../../libs/any/doc/any.xml"/>
     <xi:include href="../../libs/array/doc/array.xml"/>
@@ -686,6 +688,7 @@
    </library>
     
    <xi:include href="type_erasure.xml"/>
+   <xi:include href="type_index.xml"/>
 
    <library name="Type Traits" dirname="type_traits" html-only="1">
      <libraryinfo>
@@ -758,7 +761,7 @@
     <xi:include href="../../tools/boostbook/doc/boostbook.xml"/>
     <xi:include href="quickbook.xml"/>
     <xi:include href="jam_docs.xml"/>
-    <xi:include href="../../tools/build/v2/doc/src/userman.xml"/>
+    <xi:include href="../../tools/build/doc/src/userman.xml"/>
   </part>
 </boostbook>
 
