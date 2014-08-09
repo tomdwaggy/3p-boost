@@ -14,7 +14,7 @@ if [ -z "$AUTOBUILD" ] ; then
 fi
 
 
-BOOST_BJAM_OPTIONS="--layout=tagged \
+BOOST_BJAM_OPTIONS="--layout=tagged --with-atomic \
                             --with-context --with-date_time --with-filesystem \
                             --with-iostreams --with-program_options \
                             --with-regex --with-signals --with-system \
@@ -96,7 +96,7 @@ case "$AUTOBUILD_PLATFORM" in
         cmd.exe /C bootstrap.bat vc12
 
         # Windows build of viewer expects /Zc:wchar_t-, have to match that
-        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j2 \
+        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j6 \
             include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
             cxxflags=-Zc:wchar_t- \
@@ -153,7 +153,7 @@ case "$AUTOBUILD_PLATFORM" in
         cmd.exe /C bootstrap.bat vc12
 
         # Windows build of viewer expects /Zc:wchar_t-, have to match that
-        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j2 \
+        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j6 \
             include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
             cxxflags=-Zc:wchar_t- \

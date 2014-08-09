@@ -263,7 +263,7 @@
       <key>source_directory</key>
       <string>boost</string>
       <key>version</key>
-      <string>1.55.0</string>
+      <string>1.56.0</string>
     </map>
     <key>type</key>
     <string>autobuild</string>
