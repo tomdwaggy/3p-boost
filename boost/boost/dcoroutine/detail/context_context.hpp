@@ -175,12 +175,12 @@ namespace boost { namespace dcoroutines { namespace detail {
             mContext = boost::context::make_fcontext(super::mStack.sp, super::mStack.size, fn);
         }
 
-        // This is the fcontext_t* you would pass to jump_fcontext()
-        boost::context::fcontext_t* get_fcontext() const { return mContext; }
+        // This is the fcontext_t you would pass to jump_fcontext()
+        boost::context::fcontext_t get_fcontext() const { return mContext; }
 
         // or you can use this convenience method to jump to this fcontext
         inline
-        intptr_t jump_from(boost::context::fcontext_t* ofc, intptr_t p=NULL)
+        intptr_t jump_from(boost::context::fcontext_t ofc, intptr_t p=NULL)
         {
             return boost::context::jump_fcontext(ofc, mContext, p,
                                                  boost_context_preserve_fpu<void>::value());
@@ -190,7 +190,7 @@ namespace boost { namespace dcoroutines { namespace detail {
         // Since make_fcontext() allocates its fcontext_t on mStack.sp, we
         // don't need to do anything special to free mContext; it goes away
         // when ~stack_holder_with() deallocates mStack.
-        boost::context::fcontext_t* mContext;
+        boost::context::fcontext_t mContext;
     };
 
     /*
@@ -227,8 +227,8 @@ namespace boost { namespace dcoroutines { namespace detail {
         virtual intptr_t get_arg() const { return 0; }
 
     protected:
-        // Get a non-NULL fcontext_t*
-        boost::context::fcontext_t* get_fcontext()
+        // Get a non-NULL fcontext_t
+        boost::context::fcontext_t get_fcontext()
         {
             if (! m_ctx)
             {
@@ -244,7 +244,7 @@ namespace boost { namespace dcoroutines { namespace detail {
 
         // m_ctx is what we pass to jump_fcontext(). It's usually set by
         // our subclass using make_fcontext().
-        boost::context::fcontext_t* m_ctx;
+        boost::context::fcontext_t m_ctx;
         // make_fcontext() isn't called for the initial stack on any given
         // thread. This is an instance we can use with that initial stack.
         // This ContextImplBase must be Copyable; see
