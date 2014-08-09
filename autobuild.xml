@@ -5,6 +5,10 @@
     <map>
       <key>icu4c</key>
       <map>
+        <key>copyright</key>
+        <string>Copyright (c) 1995-2011 International Business Machines Corporation and others &lt;http://source.icu-project.org&gt;</string>
+        <key>description</key>
+        <string>ICU is a mature, widely used set of C/C++ and Java libraries providing Unicode and Globalization support for software applications. ICU is widely portable and gives applications the same results on all platforms and between C/C++ and Java software.</string>
         <key>license</key>
         <string>ICU, permissive non-copyleft free software license</string>
         <key>license_file</key>
@@ -18,9 +22,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>bcc0482ffd58edf50a9d26253555d278</string>
+              <string>6ec9e4952c9eb6d24bd7a277cc46bca6</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3p-icu4c/rev/268323/arch/Darwin/installer/icu4c-48.1-darwin-20121218.tar.bz2</string>
+              <string>http://bitbucket.org/alchemyviewer/publiclibs-darwin/downloads/icu4c-53.1-darwin-201407231136.tar.bz2</string>
             </map>
             <key>name</key>
             <string>darwin</string>
@@ -62,9 +66,15 @@
             <string>windows64</string>
           </map>
         </map>
+        <key>version</key>
+        <string>53.1</string>
       </map>
       <key>zlib</key>
       <map>
+        <key>copyright</key>
+        <string>Copyright (C) 1995-2013 Jean-loup Gailly and Mark Adler</string>
+        <key>description</key>
+        <string>Zlib Data Compression Library</string>
         <key>license</key>
         <string>zlib</string>
         <key>license_file</key>
@@ -78,9 +88,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>6658071e3b54b1dd5f5279227aff402a</string>
+              <string>42e0fb92dd26bdd7700460ba87848668</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/3pl_3p-zlib-update/rev/290556/arch/Darwin/installer/zlib-1.2.8-darwin-20140602.tar.bz2</string>
+              <string>http://bitbucket.org/alchemyviewer/publiclibs-darwin/downloads/zlib-1.2.8-darwin-201407231142.tar.bz2</string>
             </map>
             <key>name</key>
             <string>darwin</string>
@@ -122,6 +132,8 @@
             <string>windows64</string>
           </map>
         </map>
+        <key>version</key>
+        <string>1.2.8</string>
       </map>
     </map>
     <key>package_description</key>
