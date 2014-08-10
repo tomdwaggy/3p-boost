@@ -202,8 +202,7 @@ namespace boost { namespace dcoroutines { namespace detail {
      */
     class context_context_impl_base {
     public:
-        context_context_impl_base():
-            m_ctx(NULL)
+        context_context_impl_base()
         {}
         virtual ~context_context_impl_base() {}
 
@@ -219,7 +218,7 @@ namespace boost { namespace dcoroutines { namespace detail {
                      default_hint) {
             // Not knowing the caller's intent, we leave the default
             // preserve_fpu=true parameter.
-			boost::context::jump_fcontext(from.get_fcontext(), to.m_ctx, to.get_arg());
+			boost::context::jump_fcontext(&from.m_ctx, to.m_ctx, to.get_arg());
         }
 
         // delegate to subclass the problem of supplying an appropriate
@@ -227,31 +226,9 @@ namespace boost { namespace dcoroutines { namespace detail {
         virtual intptr_t get_arg() const { return 0; }
 
     protected:
-        // Get a non-NULL fcontext_t
-		boost::context::fcontext_t* get_fcontext()
-        {
-            if (! m_ctx)
-            {
-                // m_ctx might be NULL if the subclass hasn't yet called
-                // make_fcontext(). In that case we're running on the current
-                // thread's initial stack, so in that case make an instance
-                // that will automatically be freed on destruction.
-                m_initstack_ctx.reset(new boost::context::fcontext_t);
-                m_ctx = m_initstack_ctx.get();
-            }
-            return m_ctx;
-        }
-
         // m_ctx is what we pass to jump_fcontext(). It's usually set by
         // our subclass using make_fcontext().
-		boost::context::fcontext_t* m_ctx;
-        // make_fcontext() isn't called for the initial stack on any given
-        // thread. This is an instance we can use with that initial stack.
-        // This ContextImplBase must be Copyable; see
-        // default_context_impl.hpp. But since the same text also notes that
-        // only one copy can actually be used, we have no objection to sharing
-        // multiple pointers to a single heap fcontext_t instance.
-        boost::shared_ptr<boost::context::fcontext_t> m_initstack_ctx;
+		boost::context::fcontext_t m_ctx;
     };
 
     /**
