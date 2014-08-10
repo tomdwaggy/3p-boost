@@ -182,7 +182,7 @@ namespace boost { namespace dcoroutines { namespace detail {
         inline
         intptr_t jump_from(boost::context::fcontext_t ofc, intptr_t p=NULL)
         {
-            return boost::context::jump_fcontext(ofc, mContext, p,
+            return boost::context::jump_fcontext(&ofc, mContext, p,
                                                  boost_context_preserve_fpu<void>::value());
         }
 
@@ -219,7 +219,7 @@ namespace boost { namespace dcoroutines { namespace detail {
                      default_hint) {
             // Not knowing the caller's intent, we leave the default
             // preserve_fpu=true parameter.
-            boost::context::jump_fcontext(from.get_fcontext(), to.m_ctx, to.get_arg()); 
+			boost::context::jump_fcontext(from.get_fcontext(), to.m_ctx, to.get_arg());
         }
 
         // delegate to subclass the problem of supplying an appropriate
@@ -228,7 +228,7 @@ namespace boost { namespace dcoroutines { namespace detail {
 
     protected:
         // Get a non-NULL fcontext_t
-        boost::context::fcontext_t get_fcontext()
+		boost::context::fcontext_t* get_fcontext()
         {
             if (! m_ctx)
             {
@@ -244,7 +244,7 @@ namespace boost { namespace dcoroutines { namespace detail {
 
         // m_ctx is what we pass to jump_fcontext(). It's usually set by
         // our subclass using make_fcontext().
-        boost::context::fcontext_t m_ctx;
+		boost::context::fcontext_t* m_ctx;
         // make_fcontext() isn't called for the initial stack on any given
         // thread. This is an instance we can use with that initial stack.
         // This ContextImplBase must be Copyable; see
