@@ -41,6 +41,18 @@
             <key>name</key>
             <string>linux</string>
           </map>
+          <key>linux64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>fdad33834ebcc3b7d9472e372b62cc7a</string>
+              <key>url</key>
+              <string>https://bitbucket.org/alchemyviewer/publiclibs-linux/downloads/icu4c-53.1-linux64-20140827.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>linux64</string>
+          </map>
           <key>windows</key>
           <map>
             <key>archive</key>
@@ -106,6 +118,18 @@
             </map>
             <key>name</key>
             <string>linux</string>
+          </map>
+          <key>linux64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>5f9dbf0a041ca62657ddb920d94348ff</string>
+              <key>url</key>
+              <string>https://bitbucket.org/alchemyviewer/publiclibs-linux/downloads/zlib-1.2.8-linux64-20140826.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>linux64</string>
           </map>
           <key>windows</key>
           <map>
@@ -224,6 +248,29 @@
           </array>
           <key>name</key>
           <string>linux</string>
+        </map>
+        <key>linux64</key>
+        <map>
+          <key>configurations</key>
+          <map>
+            <key>Release</key>
+            <map>
+              <key>build</key>
+              <map>
+              </map>
+              <key>default</key>
+              <boolean>true</boolean>
+              <key>name</key>
+              <string>Release</string>
+            </map>
+          </map>
+          <key>manifest</key>
+          <array>
+            <string>lib/release/*.a</string>
+            <string>lib/debug/*.a</string>
+          </array>
+          <key>name</key>
+          <string>linux64</string>
         </map>
         <key>windows</key>
         <map>

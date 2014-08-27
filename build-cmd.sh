@@ -269,9 +269,11 @@ case "$AUTOBUILD_PLATFORM" in
             
         ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages/
 
-        DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc-4.6 include=$stage/packages/include/zlib/ \
+        DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-std=c++11 \
+             include=$stage/packages/include/zlib/ \
             -sZLIB_LIBPATH=$stage/packages/lib/debug \
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
+            address-model=32 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
         "${bjam}" variant=debug --reconfigure \
             --prefix="${stage}" --libdir="${stage}"/lib/debug \
@@ -292,9 +294,72 @@ case "$AUTOBUILD_PLATFORM" in
 
         "${bjam}" --clean
 
-        RELEASE_BOOST_BJAM_OPTIONS="toolset=gcc-4.6 include=$stage/packages/include/zlib/ \
+        RELEASE_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-std=c++11 \
+            include=$stage/packages/include/zlib/ \
             -sZLIB_LIBPATH=$stage/packages/lib/release \
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
+            address-model=32 architecture=x86 \
+            $BOOST_BJAM_OPTIONS"
+        "${bjam}" variant=release --reconfigure \
+            --prefix="${stage}" --libdir="${stage}"/lib/release \
+            $RELEASE_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
+
+        # conditionally run unit tests
+        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+            for blib in $BOOST_TEST_LIBS_LINUX; do
+                cd libs/"${blib}"/test
+                    "${bjam}" variant=release -a -q \
+                        --prefix="${stage}" --libdir="${stage}"/lib/release \
+                        $RELEASE_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM
+                cd ../../..
+            done
+        fi
+
+        mv "${stage_lib}"/libboost* "${stage_release}"
+
+        "${bjam}" --clean
+        ;;
+    "linux64")
+        # Force static linkage to libz by moving .sos out of the way
+        trap restore_sos EXIT
+        for solib in "${stage}"/packages/lib/debug/libz.so* "${stage}"/packages/lib/release/libz.so*; do
+            if [ -f "$solib" ]; then
+                mv -f "$solib" "$solib".disable
+            fi
+        done
+            
+        ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages/
+
+        DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-std=c++11 \
+             include=$stage/packages/include/zlib/ \
+            -sZLIB_LIBPATH=$stage/packages/lib/debug \
+            -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
+            address-model=64 architecture=x86 \
+            $BOOST_BJAM_OPTIONS"
+        "${bjam}" variant=debug --reconfigure \
+            --prefix="${stage}" --libdir="${stage}"/lib/debug \
+            $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
+
+        # conditionally run unit tests
+#        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+#            for blib in $BOOST_TEST_LIBS_LINUX; do
+#                cd libs/"${blib}"/test
+#                    "${bjam}" variant=debug -a -q \
+#                        --prefix="${stage}" --libdir="${stage}"/lib/debug \
+#                        $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM
+#                cd ../../..
+#            done
+#        fi
+
+        mv "${stage_lib}"/libboost* "${stage_debug}"
+
+        "${bjam}" --clean
+
+        RELEASE_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-std=c++11 \
+            include=$stage/packages/include/zlib/ \
+            -sZLIB_LIBPATH=$stage/packages/lib/release \
+            -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
+            address-model=64 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
         "${bjam}" variant=release --reconfigure \
             --prefix="${stage}" --libdir="${stage}"/lib/release \
