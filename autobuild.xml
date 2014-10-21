@@ -58,9 +58,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>a88c50656b26c2fc42b940872fd9d57a</string>
+              <string>d714c48ed061260cc90278e44cad5282</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-vs12/downloads/icu4c-53.1-windows-vs12-20140705.tar.bz2</string>
+              <string>https://bitbucket.org/alchemyviewer/publiclibs-vs12/downloads/icu4c-54.1-windows-20141016.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -70,9 +70,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>687ca65036ccaaae114ade08382d7137</string>
+              <string>e843109461bf4092e2c43eb626814953</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-vs12/downloads/icu4c-53.1-windows64-vs12-20140709.tar.bz2</string>
+              <string>https://bitbucket.org/alchemyviewer/publiclibs-vs12/downloads/icu4c-54.1-windows64-20141016.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
