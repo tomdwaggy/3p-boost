@@ -19,6 +19,7 @@
 #include <boost/container/vector.hpp>
 #include <boost/intrusive/detail/mpl.hpp>
 #include <boost/intrusive/pointer_traits.hpp>
+#include <boost/core/no_exceptions_support.hpp>
 
 template < typename T >
 class bounded_pointer;
@@ -38,7 +39,7 @@ class bounded_pointer
    typedef void (bounded_pointer::*unspecified_bool_type)() const;
 
    public:
-   typedef typename boost::remove_const< T >::type mut_val_t;
+   typedef typename boost::intrusive::detail::remove_const< T >::type mut_val_t;
    typedef const mut_val_t const_val_t;
 
    typedef bounded_reference<T>  reference;
@@ -140,7 +141,7 @@ template < typename T >
 class bounded_reference
 {
    public:
-   typedef typename boost::remove_const< T >::type mut_val_t;
+   typedef typename boost::intrusive::detail::remove_const< T >::type mut_val_t;
    typedef const mut_val_t const_val_t;
    typedef bounded_pointer< T > pointer;
    static const unsigned char max_offset = pointer::max_offset;
@@ -211,7 +212,7 @@ class bounded_allocator
    pointer allocate(size_t n)
    {
       assert(inited());
-      assert(n == 1);
+      assert(n == 1);(void)n;
       pointer p;
       unsigned char i;
       for (i = 0; i < max_offset && m_in_use[i]; ++i);
@@ -224,7 +225,7 @@ class bounded_allocator
    void deallocate(pointer p, size_t n)
    {
       assert(inited());
-      assert(n == 1);
+      assert(n == 1);(void)n;
       assert(m_in_use[p.m_offset]);
       m_in_use[p.m_offset] = false;
    }

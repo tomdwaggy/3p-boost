@@ -11,6 +11,10 @@
 #ifndef BOOST_INTERPROCESS_WINDOWS_SHARED_MEMORY_HPP
 #define BOOST_INTERPROCESS_WINDOWS_SHARED_MEMORY_HPP
 
+#if defined(_MSC_VER)
+#  pragma once
+#endif
+
 #include <boost/interprocess/detail/config_begin.hpp>
 #include <boost/interprocess/detail/workaround.hpp>
 #include <boost/detail/workaround.hpp>
@@ -50,10 +54,10 @@ namespace interprocess {
 //!can't communicate between them.
 class windows_shared_memory
 {
-   /// @cond
+   #if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
    //Non-copyable and non-assignable
    BOOST_MOVABLE_BUT_NOT_COPYABLE(windows_shared_memory)
-   /// @endcond
+   #endif   //#ifndef BOOST_INTERPROCESS_DOXYGEN_INVOKED
 
    public:
    //!Default constructor.
@@ -116,7 +120,7 @@ class windows_shared_memory
    //!size of the "size" passed in the constructor.
    offset_t get_size() const;
 
-   /// @cond
+   #if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
    private:
 
    //!Closes a previously opened file mapping. Never throws.
@@ -128,10 +132,10 @@ class windows_shared_memory
    void *         m_handle;
    mode_t         m_mode;
    std::string    m_name;
-   /// @endcond
+   #endif   //#ifndef BOOST_INTERPROCESS_DOXYGEN_INVOKED
 };
 
-/// @cond
+#if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
 
 inline windows_shared_memory::windows_shared_memory()
    :  m_handle(0)
@@ -233,7 +237,7 @@ inline void windows_shared_memory::priv_close()
    }
 }
 
-///@endcond
+#endif   //#ifndef BOOST_INTERPROCESS_DOXYGEN_INVOKED
 
 }  //namespace interprocess {
 }  //namespace boost {

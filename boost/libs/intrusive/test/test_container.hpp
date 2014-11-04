@@ -15,7 +15,8 @@
 
 #include <boost/detail/lightweight_test.hpp>
 #include <boost/intrusive/detail/mpl.hpp>
-#include <boost/move/move.hpp>
+#include <boost/intrusive/detail/simple_disposers.hpp>
+#include <boost/move/utility_core.hpp>
 
 namespace boost {
 namespace intrusive {
@@ -73,6 +74,7 @@ void test_container( Container & c )
       BOOST_TEST( it == itend );
       BOOST_TEST( c.size() == i );
    }
+   static_cast<const Container&>(c).check();
 }
 
 

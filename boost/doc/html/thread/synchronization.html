@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter&#160;32.&#160;Thread 4.3.0">
+<link rel="up" href="../thread.html" title="Chapter&#160;30.&#160;Thread 4.4.0">
 <link rel="prev" href="ScopedThreads.html" title="Scoped Threads">
 <link rel="next" href="thread_local_storage.html" title="Thread Local Storage">
 </head>
@@ -9369,14 +9369,14 @@
 <li class="listitem">
               Even if there could be a strong value in having a default executor,
               that can be used when detailed control is unnecessary, the authors
-              don't know how to implement it in a portable a robust way.
+              don't know how to implement it in a portable and robust way.
             </li>
 <li class="listitem">
               The library provides Executors based on static and dynamic polymorphism.
               The static polymorphism interface is intended to be used on contexts
               that need to have the best performances. The dynamic polymorphism interface
               has the advantage to been able to change the executor a function is
-              suing without making it a template and it possible to pass executors
+              using without making it a template and is possible to pass executors
               across a binary interface. For some applications, the cost of an additional
               virtual dispatch could be almost certainly negligible compared to the
               other operations involved.
@@ -9398,7 +9398,7 @@
 <p>
           One important question is just what a closure is. This library has a very
           simple answer: a closure is a <code class="computeroutput"><span class="identifier">Callable</span></code>
-          with no parameters and returning `voidv.
+          with no parameters and returning <code class="computeroutput"><span class="keyword">void</span></code>.
         </p>
 <p>
           N3785 choose the more specific <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">()&gt;</span></code> as it provides only dynamic polymorphism
@@ -9422,7 +9422,7 @@
           We share all the argument they give related to the <code class="computeroutput"><span class="keyword">void</span><span class="special">()</span></code> interface of the work unit. A work unit
           is a closure that takes no arguments and returns no value. This is indeed
           a limitation on user code, but combined with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">async</span></code>
-          taking executors as parameters the user has all what is needs.
+          taking executors as parameters the user has all what she needs.
         </p>
 <p>
           The third one is related to performance. They assert that "any mechanism
@@ -9464,8 +9464,10 @@
           on the executor constructor.
         </p>
 <p>
-          For executors that don't instantiate any thread an that would use the current
-          thread this function shall be called only for the thread calling the <code class="computeroutput"><span class="identifier">at_thread_entry</span></code> member function.
+          For executors that don't instantiate any thread and that would use the
+          current thread this function shall be called only for the thread calling
+          the <code class="computeroutput"><span class="identifier">at_thread_entry</span></code> member
+          function.
         </p>
 <h6>
 <a name="thread.synchronization.executors.rationale.h3"></a>
@@ -9559,8 +9561,12 @@
           <code class="computeroutput"><span class="identifier">executor</span></code></a></span></dt>
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.executors.ref.executor_adaptor">Template
           Class <code class="computeroutput"><span class="identifier">executor_adaptor</span></code></a></span></dt>
-<dt><span class="section"><a href="synchronization.html#thread.synchronization.executors.ref.scheduled_executor">Template
-          Class <code class="computeroutput"><span class="identifier">serial_executor</span></code></a></span></dt>
+<dt><span class="section"><a href="synchronization.html#thread.synchronization.executors.ref.generic_executor_ref">Class
+          <code class="computeroutput"><span class="identifier">generic_executor_ref</span></code></a></span></dt>
+<dt><span class="section"><a href="synchronization.html#thread.synchronization.executors.ref.serial_executor">Class
+          <code class="computeroutput"><span class="identifier">serial_executor</span></code></a></span></dt>
+<dt><span class="section"><a href="synchronization.html#thread.synchronization.executors.ref.inline_executor">Class
+          <code class="computeroutput"><span class="identifier">inline_executor</span></code></a></span></dt>
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.executors.ref.basic_thread_pool">Class
           <code class="computeroutput"><span class="identifier">basic_thread_pool</span></code></a></span></dt>
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.executors.ref.loop_executor">Class
@@ -9592,15 +9598,6 @@
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                <code class="computeroutput"><span class="identifier">E</span><span class="special">::</span><span class="identifier">work</span></code>
-              </li>
-<li class="listitem">
-                <code class="computeroutput"><span class="identifier">e</span><span class="special">.</span><span class="identifier">submit</span><span class="special">(</span><span class="identifier">lw</span><span class="special">);</span></code>
-              </li>
-<li class="listitem">
-                <code class="computeroutput"><span class="identifier">e</span><span class="special">.</span><span class="identifier">submit</span><span class="special">(</span><span class="identifier">rw</span><span class="special">);</span></code>
-              </li>
-<li class="listitem">
                 <code class="computeroutput"><span class="identifier">e</span><span class="special">.</span><span class="identifier">submit</span><span class="special">(</span><span class="identifier">lc</span><span class="special">);</span></code>
               </li>
 <li class="listitem">
@@ -9629,14 +9626,6 @@
                 of type <code class="computeroutput"><span class="identifier">E</span></code>,
               </li>
 <li class="listitem">
-                <code class="computeroutput"><span class="identifier">lw</span></code> denotes a lvalue
-                referece of type <code class="computeroutput"><span class="identifier">E</span><span class="special">::</span><span class="identifier">work</span></code>,
-              </li>
-<li class="listitem">
-                <code class="computeroutput"><span class="identifier">rc</span></code> denotes a rvalue
-                referece of type <code class="computeroutput"><span class="identifier">E</span><span class="special">::</span><span class="identifier">work</span></code>
-              </li>
-<li class="listitem">
                 <code class="computeroutput"><span class="identifier">lc</span></code> denotes a lvalue
                 referece of type <code class="computeroutput"><span class="identifier">Closure</span></code>,
               </li>
@@ -9649,74 +9638,6 @@
                 of type <code class="computeroutput"><span class="identifier">Predicate</span></code>
               </li>
 </ul></div>
-<div class="section">
-<div class="titlepage"><div><div><h6 class="title">
-<a name="thread.synchronization.executors.ref.concept_executor.submitlw"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.concept_executor.submitlw" title="e.submit(lw);"><code class="computeroutput"><span class="identifier">e</span><span class="special">.</span><span class="identifier">submit</span><span class="special">(</span><span class="identifier">lw</span><span class="special">);</span></code></a>
-</h6></div></div></div>
-<div class="variablelist">
-<p class="title"><b></b></p>
-<dl class="variablelist">
-<dt><span class="term">Effects:</span></dt>
-<dd><p>
-                    The specified closure will be scheduled for execution at some
-                    point in the future. If invoked closure throws an exception the
-                    executor will call std::terminate, as is the case with threads.
-                  </p></dd>
-<dt><span class="term">Synchronization:</span></dt>
-<dd><p>
-                    completion of closure on a particular thread happens before destruction
-                    of thread's thread local variables.
-                  </p></dd>
-<dt><span class="term">Return type:</span></dt>
-<dd><p>
-                    <code class="computeroutput"><span class="keyword">void</span></code>.
-                  </p></dd>
-<dt><span class="term">Throws:</span></dt>
-<dd><p>
-                    sync_queue_is_closed if the thread pool is closed. Whatever exception
-                    that can be throw while storing the closure.
-                  </p></dd>
-<dt><span class="term">Exception safety:</span></dt>
-<dd><p>
-                    If an exception is thrown then the executor state is unmodified.
-                  </p></dd>
-</dl>
-</div>
-</div>
-<div class="section">
-<div class="titlepage"><div><div><h6 class="title">
-<a name="thread.synchronization.executors.ref.concept_executor.submitrw"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.concept_executor.submitrw" title="e.submit(rw);"><code class="computeroutput"><span class="identifier">e</span><span class="special">.</span><span class="identifier">submit</span><span class="special">(</span><span class="identifier">rw</span><span class="special">);</span></code></a>
-</h6></div></div></div>
-<div class="variablelist">
-<p class="title"><b></b></p>
-<dl class="variablelist">
-<dt><span class="term">Effects:</span></dt>
-<dd><p>
-                    The specified closure will be scheduled for execution at some
-                    point in the future. If invoked closure throws an exception the
-                    executor will call std::terminate, as is the case with threads.
-                  </p></dd>
-<dt><span class="term">Synchronization:</span></dt>
-<dd><p>
-                    completion of closure on a particular thread happens before destruction
-                    of thread's thread local variables.
-                  </p></dd>
-<dt><span class="term">Return type:</span></dt>
-<dd><p>
-                    <code class="computeroutput"><span class="keyword">void</span></code>.
-                  </p></dd>
-<dt><span class="term">Throws:</span></dt>
-<dd><p>
-                    sync_queue_is_closed if the thread pool is closed. Whatever exception
-                    that can be throw while storing the closure.
-                  </p></dd>
-<dt><span class="term">Exception safety:</span></dt>
-<dd><p>
-                    If an exception is thrown then the executor state is unmodified.
-                  </p></dd>
-</dl>
-</div>
-</div>
 <div class="section">
 <div class="titlepage"><div><div><h6 class="title">
 <a name="thread.synchronization.executors.ref.concept_executor.submitlc"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.concept_executor.submitlc" title="e.submit(lc);"><code class="computeroutput"><span class="identifier">e</span><span class="special">.</span><span class="identifier">submit</span><span class="special">(</span><span class="identifier">lc</span><span class="special">);</span></code></a>
@@ -9820,7 +9741,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h6 class="title">
-<a name="thread.synchronization.executors.ref.concept_executor.close0"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.concept_executor.close0" title="b = e.close();"><code class="computeroutput"><span class="identifier">b</span> <span class="special">=</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">close</span><span class="special">();</span></code></a>
+<a name="thread.synchronization.executors.ref.concept_executor.closed"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.concept_executor.closed" title="b = e.closed();"><code class="computeroutput"><span class="identifier">b</span> <span class="special">=</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">closed</span><span class="special">();</span></code></a>
 </h6></div></div></div>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -9831,11 +9752,12 @@
                   </p></dd>
 <dt><span class="term">Return:</span></dt>
 <dd><p>
-                    <code class="computeroutput"><span class="keyword">void</span></code>.
+                    whether the pool is closed for submissions.
                   </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
-                    whether the pool is closed for submissions.
+                    Whatever exception that can be throw while ensuring the thread
+                    safety.
                   </p></dd>
 </dl>
 </div>
@@ -9873,7 +9795,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h6 class="title">
-<a name="thread.synchronization.executors.ref.concept_executor.try_executing_one0"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.concept_executor.try_executing_one0" title="e.reschedule_until(p);"><code class="computeroutput"><span class="identifier">e</span><span class="special">.</span><span class="identifier">reschedule_until</span><span class="special">(</span><span class="identifier">p</span><span class="special">);</span></code></a>
+<a name="thread.synchronization.executors.ref.concept_executor.reschedule_until"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.concept_executor.reschedule_until" title="e.reschedule_until(p);"><code class="computeroutput"><span class="identifier">e</span><span class="special">.</span><span class="identifier">reschedule_until</span><span class="special">(</span><span class="identifier">p</span><span class="special">);</span></code></a>
 </h6></div></div></div>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -9948,6 +9870,7 @@
     <span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="identifier">closed</span><span class="special">()</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
 
     <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">submit</span><span class="special">(</span><span class="identifier">work</span><span class="special">&amp;&amp;</span> <span class="identifier">closure</span><span class="special">)</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+    <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">submit</span><span class="special">(</span><span class="identifier">work</span><span class="special">&amp;</span> <span class="identifier">closure</span><span class="special">)</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Closure</span><span class="special">&gt;</span>
     <span class="keyword">void</span> <span class="identifier">submit</span><span class="special">(</span><span class="identifier">Closure</span><span class="special">&amp;&amp;</span> <span class="identifier">closure</span><span class="special">);</span>
 
@@ -10030,6 +9953,7 @@
     <span class="keyword">bool</span> <span class="identifier">closed</span><span class="special">();</span>
 
     <span class="keyword">void</span> <span class="identifier">submit</span><span class="special">(</span><span class="identifier">work</span><span class="special">&amp;&amp;</span> <span class="identifier">closure</span><span class="special">);</span>
+    <span class="keyword">void</span> <span class="identifier">submit</span><span class="special">(</span><span class="identifier">work</span><span class="special">&amp;</span> <span class="identifier">closure</span><span class="special">);</span>
 
     <span class="keyword">bool</span> <span class="identifier">try_executing_one</span><span class="special">();</span>
 
@@ -10064,7 +9988,7 @@
 <a name="thread.synchronization.executors.ref.executor_adaptor.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.executor_adaptor.destructor" title="Destructor ~executor_adaptor()">Destructor
             <code class="computeroutput"><span class="special">~</span><span class="identifier">executor_adaptor</span><span class="special">()</span></code></a>
 </h6></div></div></div>
-<pre class="programlisting"><span class="keyword">virtual</span> <span class="special">~</span> <span class="identifier">executor_adaptor</span><span class="special">();</span>
+<pre class="programlisting"><span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">executor_adaptor</span><span class="special">();</span>
 </pre>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -10105,8 +10029,41 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
-<a name="thread.synchronization.executors.ref.scheduled_executor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.scheduled_executor" title="Template Class serial_executor">Template
-          Class <code class="computeroutput"><span class="identifier">serial_executor</span></code></a>
+<a name="thread.synchronization.executors.ref.generic_executor_ref"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.generic_executor_ref" title="Class generic_executor_ref">Class
+          <code class="computeroutput"><span class="identifier">generic_executor_ref</span></code></a>
+</h5></div></div></div>
+<p>
+            Executor abstract base class.
+          </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">thread</span><span class="special">/</span><span class="identifier">generic_executor_ref</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">class</span> <span class="identifier">generic_executor_ref</span>
+  <span class="special">{</span>
+  <span class="keyword">public</span><span class="special">:</span>
+    <span class="identifier">generic_executor_ref</span><span class="special">(</span><span class="identifier">generic_executor_ref</span> <span class="keyword">const</span><span class="special">&amp;);</span>
+    <span class="identifier">generic_executor_ref</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">generic_executor_ref</span> <span class="keyword">const</span><span class="special">&amp;);</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Executor</span><span class="special">&gt;</span>
+    <span class="identifier">executor</span><span class="special">(</span><span class="identifier">Executor</span><span class="special">&amp;</span> <span class="identifier">ex</span><span class="special">);</span>
+    <span class="identifier">generic_executor_ref</span><span class="special">()</span> <span class="special">{};</span>
+
+    <span class="keyword">void</span> <span class="identifier">close</span><span class="special">()</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+    <span class="keyword">bool</span> <span class="identifier">closed</span><span class="special">()</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Closure</span><span class="special">&gt;</span>
+    <span class="keyword">void</span> <span class="identifier">submit</span><span class="special">(</span><span class="identifier">Closure</span><span class="special">&amp;&amp;</span> <span class="identifier">closure</span><span class="special">);</span>
+
+    <span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="identifier">try_executing_one</span><span class="special">()</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Pred</span><span class="special">&gt;</span>
+    <span class="keyword">bool</span> <span class="identifier">reschedule_until</span><span class="special">(</span><span class="identifier">Pred</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">pred</span><span class="special">);</span>
+  <span class="special">};</span>
+<span class="special">}</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="thread.synchronization.executors.ref.serial_executor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.serial_executor" title="Class serial_executor">Class
+          <code class="computeroutput"><span class="identifier">serial_executor</span></code></a>
 </h5></div></div></div>
 <p>
             A serial executor ensuring that there are no two work units that executes
@@ -10114,24 +10071,20 @@
           </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">thread</span><span class="special">/</span><span class="identifier">serial_executor</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
-  <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Executor</span><span class="special">&gt;</span>
   <span class="keyword">class</span> <span class="identifier">serial_executor</span>
   <span class="special">{</span>
-  <span class="identifier">Executor</span><span class="special">&amp;</span> <span class="identifier">ex</span><span class="special">;</span>
   <span class="keyword">public</span><span class="special">:</span>
-    <span class="keyword">typedef</span>  <span class="identifier">executors</span><span class="special">::</span><span class="identifier">work</span> <span class="identifier">work</span><span class="special">;</span>
-
     <span class="identifier">serial_executor</span><span class="special">(</span><span class="identifier">serial_executor</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
     <span class="identifier">serial_executor</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">serial_executor</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
 
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Executor</span><span class="special">&gt;</span>
     <span class="identifier">serial_executor</span><span class="special">(</span><span class="identifier">Executor</span><span class="special">&amp;</span> <span class="identifier">ex</span><span class="special">);</span>
 
-    <span class="identifier">Executor</span><span class="special">&amp;</span> <span class="identifier">underlying_executor</span><span class="special">();</span>
+    <span class="identifier">generic_executor_ref</span> <span class="identifier">underlying_executor</span><span class="special">();</span>
 
     <span class="keyword">void</span> <span class="identifier">close</span><span class="special">();</span>
     <span class="keyword">bool</span> <span class="identifier">closed</span><span class="special">();</span>
 
-    <span class="keyword">void</span> <span class="identifier">submit</span><span class="special">(</span><span class="identifier">work</span><span class="special">&amp;&amp;</span> <span class="identifier">closure</span><span class="special">);</span>
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Closure</span><span class="special">&gt;</span>
     <span class="keyword">void</span> <span class="identifier">submit</span><span class="special">(</span><span class="identifier">Closure</span><span class="special">&amp;&amp;</span> <span class="identifier">closure</span><span class="special">);</span>
 
@@ -10144,11 +10097,11 @@
 </pre>
 <div class="section">
 <div class="titlepage"><div><div><h6 class="title">
-<a name="thread.synchronization.executors.ref.scheduled_executor.constructor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.scheduled_executor.constructor" title="Constructor serial_executor(Executor&amp;, chrono::duration&lt;Rep, Period&gt;)">Constructor
-            <code class="computeroutput"><span class="identifier">serial_executor</span><span class="special">(</span><span class="identifier">Executor</span><span class="special">&amp;,</span>
-            <span class="identifier">chrono</span><span class="special">::</span><span class="identifier">duration</span><span class="special">&lt;</span><span class="identifier">Rep</span><span class="special">,</span> <span class="identifier">Period</span><span class="special">&gt;)</span></code></a>
+<a name="thread.synchronization.executors.ref.serial_executor.constructor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.serial_executor.constructor" title="Constructor serial_executor(Executor&amp;)">Constructor
+            <code class="computeroutput"><span class="identifier">serial_executor</span><span class="special">(</span><span class="identifier">Executor</span><span class="special">&amp;)</span></code></a>
 </h6></div></div></div>
-<pre class="programlisting"><span class="identifier">serial_executor</span><span class="special">(</span><span class="identifier">Executor</span><span class="special">&amp;</span> <span class="identifier">ex</span><span class="special">);</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Executor</span><span class="special">&gt;</span>
+<span class="identifier">serial_executor</span><span class="special">(</span><span class="identifier">Executor</span><span class="special">&amp;</span> <span class="identifier">ex</span><span class="special">);</span>
 </pre>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -10166,7 +10119,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h6 class="title">
-<a name="thread.synchronization.executors.ref.scheduled_executor.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.scheduled_executor.destructor" title="Destructor ~serial_executor()">Destructor
+<a name="thread.synchronization.executors.ref.serial_executor.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.serial_executor.destructor" title="Destructor ~serial_executor()">Destructor
             <code class="computeroutput"><span class="special">~</span><span class="identifier">serial_executor</span><span class="special">()</span></code></a>
 </h6></div></div></div>
 <pre class="programlisting"><span class="special">~</span><span class="identifier">serial_executor</span><span class="special">();</span>
@@ -10188,10 +10141,10 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h6 class="title">
-<a name="thread.synchronization.executors.ref.scheduled_executor.underlying_executor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.scheduled_executor.underlying_executor" title="Function member underlying_executor()">Function
+<a name="thread.synchronization.executors.ref.serial_executor.underlying_executor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.serial_executor.underlying_executor" title="Function member underlying_executor()">Function
             member <code class="computeroutput"><span class="identifier">underlying_executor</span><span class="special">()</span></code></a>
 </h6></div></div></div>
-<pre class="programlisting"><span class="identifier">Executor</span><span class="special">&amp;</span> <span class="identifier">underlying_executor</span><span class="special">();</span>
+<pre class="programlisting"><span class="identifier">generic_executor_ref</span> <span class="identifier">underlying_executor</span><span class="special">();</span>
 </pre>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -10210,6 +10163,82 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
+<a name="thread.synchronization.executors.ref.inline_executor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.inline_executor" title="Class inline_executor">Class
+          <code class="computeroutput"><span class="identifier">inline_executor</span></code></a>
+</h5></div></div></div>
+<p>
+            A serial executor ensuring that there are no two work units that executes
+            concurrently.
+          </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">thread</span><span class="special">/</span><span class="identifier">inline_executor</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">class</span> <span class="identifier">inline_executor</span>
+  <span class="special">{</span>
+  <span class="keyword">public</span><span class="special">:</span>
+    <span class="identifier">inline_executor</span><span class="special">(</span><span class="identifier">inline_executor</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
+    <span class="identifier">inline_executor</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">inline_executor</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
+
+    <span class="identifier">inline_executor</span><span class="special">();</span>
+
+    <span class="keyword">void</span> <span class="identifier">close</span><span class="special">();</span>
+    <span class="keyword">bool</span> <span class="identifier">closed</span><span class="special">();</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Closure</span><span class="special">&gt;</span>
+    <span class="keyword">void</span> <span class="identifier">submit</span><span class="special">(</span><span class="identifier">Closure</span><span class="special">&amp;&amp;</span> <span class="identifier">closure</span><span class="special">);</span>
+
+    <span class="keyword">bool</span> <span class="identifier">try_executing_one</span><span class="special">();</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Pred</span><span class="special">&gt;</span>
+    <span class="keyword">bool</span> <span class="identifier">reschedule_until</span><span class="special">(</span><span class="identifier">Pred</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">pred</span><span class="special">);</span>
+
+  <span class="special">};</span>
+<span class="special">}</span>
+</pre>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="thread.synchronization.executors.ref.inline_executor.constructor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.inline_executor.constructor" title="Constructor inline_executor()">Constructor
+            <code class="computeroutput"><span class="identifier">inline_executor</span><span class="special">()</span></code></a>
+</h6></div></div></div>
+<pre class="programlisting"><span class="identifier">inline_executor</span><span class="special">();</span>
+</pre>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl class="variablelist">
+<dt><span class="term">Effects:</span></dt>
+<dd><p>
+                    Constructs a inline_executor.
+                  </p></dd>
+<dt><span class="term">Throws:</span></dt>
+<dd><p>
+                    Nothing.
+                  </p></dd>
+</dl>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="thread.synchronization.executors.ref.inline_executor.destructor"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.inline_executor.destructor" title="Destructor ~inline_executor()">Destructor
+            <code class="computeroutput"><span class="special">~</span><span class="identifier">inline_executor</span><span class="special">()</span></code></a>
+</h6></div></div></div>
+<pre class="programlisting"><span class="special">~</span><span class="identifier">inline_executor</span><span class="special">();</span>
+</pre>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl class="variablelist">
+<dt><span class="term">Effects:</span></dt>
+<dd><p>
+                    Destroys the inline_executor.
+                  </p></dd>
+<dt><span class="term">Synchronization:</span></dt>
+<dd><p>
+                    The completion of all the closures happen before the completion
+                    of the executor destructor.
+                  </p></dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.executors.ref.basic_thread_pool"></a><a class="link" href="synchronization.html#thread.synchronization.executors.ref.basic_thread_pool" title="Class basic_thread_pool">Class
           <code class="computeroutput"><span class="identifier">basic_thread_pool</span></code></a>
 </h5></div></div></div>
@@ -10221,7 +10250,6 @@
   <span class="keyword">class</span> <span class="identifier">basic_thread_pool</span>
   <span class="special">{</span>
   <span class="keyword">public</span><span class="special">:</span>
-    <span class="keyword">typedef</span>  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">work</span> <span class="identifier">work</span><span class="special">;</span>
 
     <span class="identifier">basic_thread_pool</span><span class="special">(</span><span class="identifier">basic_thread_pool</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
     <span class="identifier">basic_thread_pool</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">basic_thread_pool</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
@@ -10301,7 +10329,6 @@
   <span class="keyword">class</span> <span class="identifier">loop_executor</span>
   <span class="special">{</span>
   <span class="keyword">public</span><span class="special">:</span>
-    <span class="keyword">typedef</span>  <span class="identifier">thread_detail</span><span class="special">::</span><span class="identifier">work</span> <span class="identifier">work</span><span class="special">;</span>
 
     <span class="identifier">loop_executor</span><span class="special">(</span><span class="identifier">loop_executor</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
     <span class="identifier">loop_executor</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">loop_executor</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
@@ -10358,7 +10385,7 @@
 <dl class="variablelist">
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-                    Destroys the thread pool.
+                    Destroys the executor.
                   </p></dd>
 <dt><span class="term">Synchronization:</span></dt>
 <dd><p>
@@ -10985,6 +11012,12 @@
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.futures.reference.wait_for_all">Non-member
           function <code class="computeroutput"><span class="identifier">wait_for_all</span><span class="special">()</span></code>
           - EXTENSION</a></span></dt>
+<dt><span class="section"><a href="synchronization.html#thread.synchronization.futures.reference.when_all">Non-member
+          function <code class="computeroutput"><span class="identifier">when_all</span><span class="special">()</span></code>
+          - EXTENSION</a></span></dt>
+<dt><span class="section"><a href="synchronization.html#thread.synchronization.futures.reference.when_any">Non-member
+          function <code class="computeroutput"><span class="identifier">when_any</span><span class="special">()</span></code>
+          - EXTENSION</a></span></dt>
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.futures.reference.make_ready_future">Non-member
           function <code class="computeroutput"><span class="identifier">make_ready_future</span><span class="special">()</span></code> EXTENSION</a></span></dt>
 <dt><span class="section"><a href="synchronization.html#thread.synchronization.futures.reference.make_exceptional">Non-member
@@ -11065,47 +11098,54 @@
   <span class="keyword">struct</span> <span class="identifier">uses_allocator</span><span class="special">&lt;</span><span class="identifier">packaged_task</span> <span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;,</span> <span class="identifier">Alloc</span><span class="special">&gt;;</span>
 
   <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">F</span><span class="special">&gt;</span>
-  <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">()&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-  <span class="identifier">async</span><span class="special">(</span><span class="identifier">F</span> <span class="identifier">f</span><span class="special">);</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">()&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+    <span class="identifier">async</span><span class="special">(</span><span class="identifier">F</span> <span class="identifier">f</span><span class="special">);</span>
   <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">F</span><span class="special">&gt;</span>
-  <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">()&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-  <span class="identifier">async</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span> <span class="identifier">f</span><span class="special">);</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">()&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+    <span class="identifier">async</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span> <span class="identifier">f</span><span class="special">);</span>
 
   <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
-  <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-  <span class="identifier">async</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+    <span class="identifier">async</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
   <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
-  <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-  <span class="identifier">async</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+    <span class="identifier">async</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
   <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Executor</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
-  <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-  <span class="identifier">async</span><span class="special">(</span><span class="identifier">Executor</span> <span class="special">&amp;</span><span class="identifier">ex</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+    <span class="identifier">async</span><span class="special">(</span><span class="identifier">Executor</span> <span class="special">&amp;</span><span class="identifier">ex</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
 
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
-  <span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span><span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+    <span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span><span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span><span class="keyword">typename</span><span class="special">...</span> <span class="identifier">FS</span><span class="special">&gt;</span>
-  <span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">Fs</span><span class="special">&amp;...</span> <span class="identifier">fs</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+    <span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">Fs</span><span class="special">&amp;...</span> <span class="identifier">fs</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
-  <span class="identifier">Iterator</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span><span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+    <span class="identifier">Iterator</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span><span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span><span class="keyword">typename</span><span class="special">...</span> <span class="identifier">Fs</span><span class="special">&gt;</span>
-  <span class="keyword">unsigned</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">Fs</span><span class="special">&amp;...</span> <span class="identifier">fs</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+    <span class="keyword">unsigned</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">Fs</span><span class="special">&amp;...</span> <span class="identifier">fs</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+
+  <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">InputIterator</span><span class="special">&gt;</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">InputIterator</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;&gt;</span>
+    <span class="identifier">when_all</span><span class="special">(</span><span class="identifier">InputIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InputIterator</span> <span class="identifier">last</span><span class="special">);</span>
+  <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span><span class="special">...</span> <span class="identifier">T</span><span class="special">&gt;</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">decay_t</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;...&gt;</span> <span class="identifier">when_all</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;...</span> <span class="identifier">futures</span><span class="special">);</span>
+  <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">InputIterator</span><span class="special">&gt;</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">InputIterator</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;&gt;</span>
+    <span class="identifier">when_any</span><span class="special">(</span><span class="identifier">InputIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InputIterator</span> <span class="identifier">last</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span><span class="special">...</span> <span class="identifier">T</span><span class="special">&gt;</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">decay_t</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;...&gt;</span> <span class="identifier">when_any</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;...</span> <span class="identifier">futures</span><span class="special">);</span>
 
   <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
-  <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span> <span class="identifier">make_future</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">);</span>  <span class="comment">// DEPRECATED</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span> <span class="identifier">make_future</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">);</span>  <span class="comment">// DEPRECATED</span>
   <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span> <span class="identifier">make_future</span><span class="special">();</span>  <span class="comment">// DEPRECATED</span>
 
   <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
-  <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span> <span class="identifier">make_ready_future</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">);</span>  <span class="comment">// EXTENSION</span>
+    <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span> <span class="identifier">make_ready_future</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">);</span>  <span class="comment">// EXTENSION</span>
   <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span> <span class="identifier">make_ready_future</span><span class="special">();</span>  <span class="comment">// EXTENSION</span>
-  <span class="comment">//template &lt;typename T&gt;</span>
-  <span class="comment">//future&lt;T&gt; make_ready_future(exception_ptr ex);  // DEPRECATED</span>
-  <span class="comment">//template &lt;typename T, typename E&gt;</span>
-  <span class="comment">//future&lt;T&gt; make_ready_future(E ex);  // DEPRECATED</span>
 
   <span class="identifier">exceptional_ptr</span> <span class="identifier">make_exceptional</span><span class="special">(</span><span class="identifier">exception_ptr</span> <span class="identifier">ex</span><span class="special">);</span>  <span class="comment">// EXTENSION</span>
   <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">E</span><span class="special">&gt;</span>
-  <span class="identifier">exceptional_ptr</span> <span class="identifier">make_exceptional</span><span class="special">(</span><span class="identifier">E</span> <span class="identifier">ex</span><span class="special">);</span>  <span class="comment">// EXTENSION</span>
+    <span class="identifier">exceptional_ptr</span> <span class="identifier">make_exceptional</span><span class="special">(</span><span class="identifier">E</span> <span class="identifier">ex</span><span class="special">);</span>  <span class="comment">// EXTENSION</span>
   <span class="identifier">exceptional_ptr</span> <span class="identifier">make_exceptional</span><span class="special">();</span>  <span class="comment">// EXTENSION</span>
 
 
@@ -11380,13 +11420,13 @@
   <span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span> <span class="identifier">share</span><span class="special">();</span>
 
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
-   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
   <span class="identifier">then</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">S</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
-   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-  <span class="identifier">then</span><span class="special">(</span><span class="identifier">S</span><span class="special">&amp;</span> <span class="identifier">scheduler</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION NOT_YET_IMPLEMENTED</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+  <span class="identifier">then</span><span class="special">(</span><span class="identifier">S</span><span class="special">&amp;</span> <span class="identifier">scheduler</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
-   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
   <span class="identifier">then</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 
   <span class="identifier">see</span> <span class="identifier">below</span> <span class="identifier">unwrap</span><span class="special">();</span>  <span class="comment">// EXTENSION</span>
@@ -12119,6 +12159,11 @@
                     is associated with a shared state, <code class="computeroutput"><span class="keyword">false</span></code>
                     otherwise.
                   </p></dd>
+<dt><span class="term">Remarks:</span></dt>
+<dd><p>
+                    The result of this function is not stable and that the future
+                    could become invalid even if the function returned true or vice-versa.
+                  </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
                     Nothing.
@@ -12143,6 +12188,12 @@
                     is associated with a shared state and that result is ready for
                     retrieval, <code class="computeroutput"><span class="keyword">false</span></code>
                     otherwise.
+                  </p></dd>
+<dt><span class="term">Remarks:</span></dt>
+<dd><p>
+                    The result of this function is not stable and that the future
+                    could become not ready even if the function returned true or
+                    vice-versa.
                   </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
@@ -12169,6 +12220,11 @@
                     and the result is a stored value, <code class="computeroutput"><span class="keyword">false</span></code>
                     otherwise.
                   </p></dd>
+<dt><span class="term">Remarks:</span></dt>
+<dd><p>
+                    The result of this function is not stable and the future could
+                    lost its value even if the function returned true or vice-versa.
+                  </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
                     Nothing.
@@ -12192,6 +12248,11 @@
                     is associated with a shared state, that result is ready for retrieval,
                     and the result is a stored exception, <code class="computeroutput"><span class="keyword">false</span></code>
                     otherwise.
+                  </p></dd>
+<dt><span class="term">Remarks:</span></dt>
+<dd><p>
+                    The result of this function is not stable and the future could
+                    lost its exception even if the function returned true or vice-versa.
                   </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
@@ -12222,6 +12283,11 @@
 <dd><p>
                     a exception_ptr, storring or not an exception.
                   </p></dd>
+<dt><span class="term">Remarks:</span></dt>
+<dd><p>
+                    The result of this function is not stable and the future could
+                    lost its exception even if the function returned a valid <code class="computeroutput"><span class="identifier">exception_ptr</span></code> or vice-versa.
+                  </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
                     Whatever <code class="computeroutput"><span class="identifier">mutex</span><span class="special">::</span><span class="identifier">lock</span><span class="special">()/</span><span class="identifier">mutex</span><span class="special">::</span><span class="identifier">unlock</span><span class="special">()</span></code> can throw.
@@ -12251,6 +12317,10 @@
                     is not associated with a shared state. <a class="link" href="synchronization.html#thread.synchronization.futures.reference.future_state" title="Enumeration state"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">future_state</span><span class="special">::</span><span class="identifier">ready</span></code></a> if the shared
                     state associated with <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> is ready for retrieval,
                     <a class="link" href="synchronization.html#thread.synchronization.futures.reference.future_state" title="Enumeration state"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">future_state</span><span class="special">::</span><span class="identifier">waiting</span></code></a> otherwise.
+                  </p></dd>
+<dt><span class="term">Remarks:</span></dt>
+<dd><p>
+                    The result of this function is not stable.
                   </p></dd>
 <dt><span class="term">Throws:</span></dt>
 <dd><p>
@@ -12288,13 +12358,13 @@
             - EXTENSION</a>
 </h6></div></div></div>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+ <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
 <span class="identifier">then</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">S</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-<span class="identifier">then</span><span class="special">(</span><span class="identifier">S</span><span class="special">&amp;</span> <span class="identifier">scheduler</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION NOT_YET_IMPLEMENTED</span>
+ <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+<span class="identifier">then</span><span class="special">(</span><span class="identifier">S</span><span class="special">&amp;</span> <span class="identifier">scheduler</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+ <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
 <span class="identifier">then</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 </pre>
 <div class="warning"><table border="0" summary="Warning">
@@ -12334,6 +12404,11 @@
 <dt><span class="term">Effects:</span></dt>
 <dd>
 <p>
+                    All the functions create a shared state that is associated with
+                    the returned future object. The further behavior of the functions
+                    is as follows.
+                  </p>
+<p>
                     - The continuation is called when the object's shared state is
                     ready (has a value or exception stored).
                   </p>
@@ -12346,11 +12421,18 @@
                     inherits the parent's launch policy or scheduler.
                   </p>
 <p>
-                    - If the parent was created with <code class="computeroutput"><span class="identifier">promise</span><span class="special">&lt;&lt;</span></code> or with a <code class="computeroutput"><span class="identifier">packaged_task</span><span class="special">&lt;&gt;</span></code>
+                    - Any value returned from the continuation is stored as the result
+                    in the shared state of the resulting <code class="computeroutput"><span class="identifier">future</span></code>.
+                    Any exception propagated from the execution of the continuation
+                    is stored as the exceptional result in the shared state of the
+                    resulting <code class="computeroutput"><span class="identifier">future</span></code>.
+                  </p>
+<p>
+                    - If the parent was created with <code class="computeroutput"><span class="identifier">promise</span><span class="special">&lt;&gt;</span></code> or with a <code class="computeroutput"><span class="identifier">packaged_task</span><span class="special">&lt;&gt;</span></code>
                     (has no associated launch policy), the continuation behaves the
                     same as the third overload with a policy argument of <code class="computeroutput"><span class="identifier">launch</span><span class="special">::</span><span class="identifier">async</span> <span class="special">|</span>
                     <span class="identifier">launch</span><span class="special">::</span><span class="identifier">deferred</span></code> and the same argument
-                    for func.
+                    for <code class="computeroutput"><span class="identifier">func</span></code>.
                   </p>
 <p>
                     - If the parent has a policy of <code class="computeroutput"><span class="identifier">launch</span><span class="special">::</span><span class="identifier">deferred</span></code>
@@ -12365,6 +12447,18 @@
                     An object of type <code class="computeroutput"> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">)&gt;</span></code>
                     that refers to the shared state created by the continuation.
                   </p></dd>
+<dt><span class="term">Notes:</span></dt>
+<dd>
+<p>
+                    - Note that nested futures are not implicitly unwrapped yet.
+                    This could be subject to change in future versions.
+                  </p>
+<p>
+                    - The returned futures behave as the ones returned from boost::async,
+                    the destructor of the future object returned from then will block.
+                    This could be subject to change in future versions.
+                  </p>
+</dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd>
 <p>
@@ -12375,7 +12469,8 @@
 <p>
                     - <code class="computeroutput"><span class="identifier">valid</span><span class="special">()</span>
                     <span class="special">==</span> <span class="keyword">false</span></code>
-                    on original future object immediately after it returns.
+                    on original future; <code class="computeroutput"><span class="identifier">valid</span><span class="special">()</span> <span class="special">==</span>
+                    <span class="keyword">true</span></code> on the <code class="computeroutput"><span class="identifier">future</span></code> returned from then.
                   </p>
 </dd>
 </dl>
@@ -12420,23 +12515,27 @@
 <dt><span class="term">Notes:</span></dt>
 <dd><p>
                     Removes the outermost future and returns a future with the associated
-                    state been a proxy of inner future.
+                    state been a proxy of the outer future.
                   </p></dd>
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
                     - Returns a future that becomes ready when the shared state of
-                    the inner future is ready.
+                    the outer and inner future is ready. The validity of the future
+                    returned from <code class="computeroutput"><span class="identifier">get</span><span class="special">()</span></code> applied on the outer future
+                    cannot be established a priori. If it is not valid, this future
+                    is forced to be valid and becomes ready with an exception of
+                    type <code class="computeroutput"><span class="identifier">future_error</span></code>,
+                    with an error code of <code class="computeroutput"><span class="identifier">future_errc</span><span class="special">::</span><span class="identifier">broken_promise</span></code>.
                   </p></dd>
 <dt><span class="term">Returns:</span></dt>
 <dd><p>
                     An object of type future with the associated state been a proxy
-                    of inner future.
+                    of outer future.
                   </p></dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd><p>
                     - The returned future has <code class="computeroutput"><span class="identifier">valid</span><span class="special">()</span> <span class="special">==</span>
-                    <span class="keyword">true</span></code> regardless of the
-                    validity of the inner future.
+                    <span class="keyword">true</span></code>.
                   </p></dd>
 </dl>
 </div>
@@ -12468,14 +12567,14 @@
 
   <span class="comment">// factories</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
-   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-  <span class="identifier">then</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+  <span class="identifier">then</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span> <span class="comment">// EXTENSION</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">S</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
-   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-  <span class="identifier">then</span><span class="special">(</span><span class="identifier">S</span><span class="special">&amp;</span> <span class="identifier">scheduler</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION NOT_YET_IMPLEMENTED</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+  <span class="identifier">then</span><span class="special">(</span><span class="identifier">S</span><span class="special">&amp;</span> <span class="identifier">scheduler</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span> <span class="comment">// EXTENSION</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
-   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-  <span class="identifier">then</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+  <span class="identifier">then</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span> <span class="comment">// EXTENSION</span>
 
   <span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">&amp;</span> <span class="identifier">other</span><span class="special">);</span>
 
@@ -13055,14 +13154,14 @@
             EXTENSION</a>
 </h6></div></div></div>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-<span class="identifier">then</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+ <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+<span class="identifier">then</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span> <span class="comment">// EXTENSION</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">S</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-<span class="identifier">then</span><span class="special">(</span><span class="identifier">S</span><span class="special">&amp;</span> <span class="identifier">scheduler</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION NOT_YET_IMPLEMENTED</span>
+ <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+<span class="identifier">then</span><span class="special">(</span><span class="identifier">S</span><span class="special">&amp;</span> <span class="identifier">scheduler</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span> <span class="comment">// EXTENSION</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">&amp;)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-<span class="identifier">then</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+ <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+<span class="identifier">then</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">func</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span> <span class="comment">// EXTENSION</span>
 </pre>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
@@ -13133,6 +13232,18 @@
                     An object of type <code class="computeroutput"> <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">shared_future</span><span class="special">)&gt;</span></code> that refers to the shared
                     state created by the continuation.
                   </p></dd>
+<dt><span class="term">Notes:</span></dt>
+<dd>
+<p>
+                    - Note that nested futures are not implicitly unwrapped yet.
+                    This could be subject to change in future versions.
+                  </p>
+<p>
+                    - The returned futures behave as the ones returned from boost::async,
+                    the destructor of the future object returned from then will block.
+                    This could be subject to change in future versions.
+                  </p>
+</dd>
 <dt><span class="term">Postconditions:</span></dt>
 <dd>
 <p>
@@ -13141,8 +13252,12 @@
                   </p>
 <p>
                     - <code class="computeroutput"><span class="identifier">valid</span><span class="special">()</span>
-                    <span class="special">==</span> <span class="keyword">false</span></code>
-                    on original future object immediately after it returns.
+                    <span class="special">==</span> <span class="keyword">true</span></code>
+                    on original <code class="computeroutput"><span class="identifier">shared_future</span></code>;
+                    <code class="computeroutput"><span class="identifier">valid</span><span class="special">()</span>
+                    <span class="special">==</span> <span class="keyword">true</span></code>
+                    on the <code class="computeroutput"><span class="identifier">future</span></code>
+                    returned from then.
                   </p>
 </dd>
 </dl>
@@ -13989,31 +14104,20 @@
             potentially in a new thread and provides the result of the function in
             a future object with which it shares a shared state.
           </p>
-<div class="warning"><table border="0" summary="Warning">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
-<th align="left">Warning</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-              <code class="computeroutput"><span class="identifier">async</span><span class="special">(</span><span class="identifier">launch</span><span class="special">::</span><span class="identifier">deferred</span><span class="special">,</span>
-              <span class="identifier">F</span><span class="special">)</span></code>
-              is NOT YET IMPLEMENTED!
-            </p></td></tr>
-</table></div>
 <h6>
 <a name="thread.synchronization.futures.reference.async.h0"></a>
             <span class="phrase"><a name="thread.synchronization.futures.reference.async.non_variadic_variant"></a></span><a class="link" href="synchronization.html#thread.synchronization.futures.reference.async.non_variadic_variant">Non-Variadic
             variant</a>
           </h6>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">F</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">()&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-<span class="identifier">async</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">);</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">()&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+  <span class="identifier">async</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">F</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">()&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-<span class="identifier">async</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">);</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">()&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+  <span class="identifier">async</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Executor</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">F</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-<span class="identifier">async</span><span class="special">(</span><span class="identifier">Executor</span> <span class="special">&amp;</span><span class="identifier">ex</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+  <span class="identifier">async</span><span class="special">(</span><span class="identifier">Executor</span> <span class="special">&amp;</span><span class="identifier">ex</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
 </pre>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -14039,8 +14143,8 @@
                   and the same arguments for <code class="computeroutput"><span class="identifier">F</span></code>.
                 </p>
 <p>
-                  The second function creates a shared state that is associated with
-                  the returned future object.
+                  The second and third functions create a shared state that is associated
+                  with the returned future object.
                 </p>
 <p>
                   The further behavior of the second function depends on the policy
@@ -14079,7 +14183,16 @@
                   policy when no more concurrency can be effectively exploited.)
                 </p>
 <p>
-                  - if no valid launch policy is provided the behaviour is undefined.
+                  - if no valid launch policy is provided the behavior is undefined.
+                </p>
+<p>
+                  The further behavior of the third function is as follows:
+                </p>
+<p>
+                  - The Executor::submit() function is given a function&lt;void ()&gt;
+                  which calls `INVOKE (DECAY_COPY (std::forward&lt;F&gt;(f)), DECAY_COPY
+                  (std::forward&lt;Args&gt;(args))...). The implementation of the
+                  executor is decided by the programmer.
                 </p>
 </dd>
 <dt><span class="term">Returns:</span></dt>
@@ -14133,10 +14246,13 @@
                   - if policy is <code class="computeroutput"><span class="identifier">launch</span><span class="special">::</span><span class="identifier">async</span></code>
                   and the system is unable to start a new thread.
                 </p></dd>
-<dt><span class="term">Remarks:</span></dt>
+<dt><span class="term">Remarks::</span></dt>
 <dd><p>
                   The first signature shall not participate in overload resolution
-                  if decay&lt;F&gt;::type is boost::launch.
+                  if <code class="computeroutput"><span class="identifier">decay_t</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;</span>
+                  <span class="identifier">is</span> </code>boost:: launch<code class="computeroutput">
+                  <span class="keyword">or</span> </code>boost::is_executor&lt;F&gt;<code class="computeroutput">
+                  <span class="identifier">is</span> </code>true_type`.
                 </p></dd>
 </dl>
 </div>
@@ -14146,14 +14262,14 @@
             variant</a>
           </h6>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-<span class="identifier">async</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+  <span class="identifier">async</span><span class="special">(</span><span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-<span class="identifier">async</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+  <span class="identifier">async</span><span class="special">(</span><span class="identifier">launch</span> <span class="identifier">policy</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Executor</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
- <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
-<span class="identifier">async</span><span class="special">(</span><span class="identifier">Executor</span> <span class="special">&amp;</span><span class="identifier">ex</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
+   <a class="link" href="synchronization.html#thread.synchronization.futures.reference.unique_future" title="future class template"><code class="computeroutput"><span class="identifier">future</span></code></a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">...)&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+  <span class="identifier">async</span><span class="special">(</span><span class="identifier">Executor</span> <span class="special">&amp;</span><span class="identifier">ex</span><span class="special">,</span> <span class="identifier">F</span><span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
 </pre>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
@@ -14312,19 +14428,19 @@
           - EXTENSION</a>
 </h5></div></div></div>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
-<span class="identifier">Iterator</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span><span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="identifier">Iterator</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span><span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">&gt;</span>
-<span class="keyword">unsigned</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="keyword">unsigned</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F3</span><span class="special">&gt;</span>
-<span class="keyword">unsigned</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="keyword">unsigned</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F3</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F4</span><span class="special">&gt;</span>
-<span class="keyword">unsigned</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">,</span><span class="identifier">F4</span><span class="special">&amp;</span> <span class="identifier">f4</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="keyword">unsigned</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">,</span><span class="identifier">F4</span><span class="special">&amp;</span> <span class="identifier">f4</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F3</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F4</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F5</span><span class="special">&gt;</span>
-<span class="keyword">unsigned</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">,</span><span class="identifier">F4</span><span class="special">&amp;</span> <span class="identifier">f4</span><span class="special">,</span><span class="identifier">F5</span><span class="special">&amp;</span> <span class="identifier">f5</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="keyword">unsigned</span> <span class="identifier">wait_for_any</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">,</span><span class="identifier">F4</span><span class="special">&amp;</span> <span class="identifier">f4</span><span class="special">,</span><span class="identifier">F5</span><span class="special">&amp;</span> <span class="identifier">f5</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 </pre>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -14371,19 +14487,19 @@
           - EXTENSION</a>
 </h5></div></div></div>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
-<span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span><span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span><span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">&gt;</span>
-<span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F3</span><span class="special">&gt;</span>
-<span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F3</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F4</span><span class="special">&gt;</span>
-<span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">,</span><span class="identifier">F4</span><span class="special">&amp;</span> <span class="identifier">f4</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">,</span><span class="identifier">F4</span><span class="special">&amp;</span> <span class="identifier">f4</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F3</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F4</span><span class="special">,</span><span class="keyword">typename</span> <span class="identifier">F5</span><span class="special">&gt;</span>
-<span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">,</span><span class="identifier">F4</span><span class="special">&amp;</span> <span class="identifier">f4</span><span class="special">,</span><span class="identifier">F5</span><span class="special">&amp;</span> <span class="identifier">f5</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
+  <span class="keyword">void</span> <span class="identifier">wait_for_all</span><span class="special">(</span><span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span><span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span><span class="identifier">F3</span><span class="special">&amp;</span> <span class="identifier">f3</span><span class="special">,</span><span class="identifier">F4</span><span class="special">&amp;</span> <span class="identifier">f4</span><span class="special">,</span><span class="identifier">F5</span><span class="special">&amp;</span> <span class="identifier">f5</span><span class="special">);</span> <span class="comment">// EXTENSION</span>
 </pre>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -14413,16 +14529,265 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
+<a name="thread.synchronization.futures.reference.when_all"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.when_all" title="Non-member function when_all() - EXTENSION">Non-member
+          function <code class="computeroutput"><span class="identifier">when_all</span><span class="special">()</span></code>
+          - EXTENSION</a>
+</h5></div></div></div>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">InputIterator</span><span class="special">&gt;</span>
+  <span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">InputIterator</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;&gt;</span>
+  <span class="identifier">when_all</span><span class="special">(</span><span class="identifier">InputIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InputIterator</span> <span class="identifier">last</span><span class="special">);</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span><span class="special">...</span> <span class="identifier">FutTypes</span><span class="special">&gt;</span>
+  <span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">decay_t</span><span class="special">&lt;</span><span class="identifier">FutTypes</span><span class="special">&gt;...&gt;</span> <span class="identifier">when_all</span><span class="special">(</span><span class="identifier">FutTypes</span><span class="special">&amp;&amp;...</span> <span class="identifier">futures</span><span class="special">);</span>
+</pre>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl class="variablelist">
+<dt><span class="term">Requires:</span></dt>
+<dd><p>
+                  - For the first overload, <code class="computeroutput"><span class="identifier">InputIterator</span></code>'s
+                  value type shall be convertible to <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code> or <code class="computeroutput"><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code>. All <code class="computeroutput"><span class="identifier">R</span></code>
+                  types must be the same. If any of the <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code> or <code class="computeroutput"><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code> objects are in invalid state
+                  (i.e. <code class="computeroutput"><span class="identifier">valid</span><span class="special">()</span>
+                  <span class="special">==</span> <span class="keyword">false</span></code>),
+                  the behavior is undefined. - For the second overload, <code class="computeroutput"><span class="identifier">FutTypes</span></code> is of type <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code>
+                  or <code class="computeroutput"><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code>. The effect of calling <code class="computeroutput"><span class="identifier">when_all</span></code> on a <code class="computeroutput"><span class="identifier">future</span></code>
+                  or a <code class="computeroutput"><span class="identifier">shared_future</span></code>
+                  object for which <code class="computeroutput"><span class="identifier">valid</span><span class="special">()</span> <span class="special">==</span>
+                  <span class="keyword">false</span></code> is undefined.
+                </p></dd>
+<dt><span class="term">Notes:</span></dt>
+<dd>
+<p>
+                  - There are two variations of <code class="computeroutput"><span class="identifier">when_all</span></code>.
+                  The first version takes a pair of <code class="computeroutput"><span class="identifier">InputIterators</span></code>.
+                  The second takes any arbitrary number of <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R0</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R1</span><span class="special">&gt;</span></code> objects, where <code class="computeroutput"><span class="identifier">R0</span></code> and <code class="computeroutput"><span class="identifier">R1</span></code>
+                  need not be the same type.
+                </p>
+<p>
+                  - Calling the first signature of <code class="computeroutput"><span class="identifier">when_all</span></code>
+                  where <code class="computeroutput"><span class="identifier">InputIterator</span></code>
+                  first equals last, returns a future with an empty <code class="computeroutput"><span class="identifier">vector</span></code> that is immediately ready.
+                </p>
+<p>
+                  - Calling the second signature of <code class="computeroutput"><span class="identifier">when_all</span></code>
+                  with no arguments returns a future&lt;tuple&lt;&gt;&gt; that is
+                  immediately ready.
+                </p>
+</dd>
+<dt><span class="term">Effects:</span></dt>
+<dd>
+<p>
+                  - If any of the futures supplied to a call to <code class="computeroutput"><span class="identifier">when_all</span></code>
+                  refer to deferred tasks that have not started execution, those
+                  tasks are executed before the call to <code class="computeroutput"><span class="identifier">when_all</span></code>
+                  returns. Once all such tasks have been executed, the call to <code class="computeroutput"><span class="identifier">when_all</span></code> returns immediately.
+                </p>
+<p>
+                  - The call to <code class="computeroutput"><span class="identifier">when_all</span></code>
+                  does not wait for non-deferred tasks, or deferred tasks that have
+                  already started executing elsewhere, to complete before returning.
+                </p>
+<p>
+                  - Once all the <code class="computeroutput"><span class="identifier">future</span></code>s/<code class="computeroutput"><span class="identifier">shared_future</span></code>s supplied to the
+                  call to <code class="computeroutput"><span class="identifier">when_all</span></code>
+                  are ready, the <code class="computeroutput"><span class="identifier">future</span></code>s/<code class="computeroutput"><span class="identifier">shared_future</span></code>s are moved/copied
+                  into the associated state of the future returned from the call
+                  to <code class="computeroutput"><span class="identifier">when_all</span></code>, preserving
+                  the order of the futures supplied to <code class="computeroutput"><span class="identifier">when_all</span></code>.
+                </p>
+<p>
+                  - The collection is then stored as the result in a newly created
+                  shared state.
+                </p>
+<p>
+                  - A new future object that refers to the shared state is created.
+                  The exact type of the future is further described below.
+                </p>
+<p>
+                  - The <code class="computeroutput"><span class="identifier">future</span></code> returned
+                  by <code class="computeroutput"><span class="identifier">when_all</span></code> will
+                  not throw an exception when calling <code class="computeroutput"><span class="identifier">wait</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">get</span><span class="special">()</span></code>, but the futures held in the
+                  output collection may.
+                </p>
+</dd>
+<dt><span class="term">Returns:</span></dt>
+<dd>
+<p>
+                  - <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">tuple</span><span class="special">&lt;&gt;&gt;</span></code>
+                  if <code class="computeroutput"><span class="identifier">when_all</span></code> is
+                  called with zero arguments.
+                </p>
+<p>
+                  - <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;&gt;&gt;</span></code>
+                  if the input cardinality is unknown at compile and the iterator
+                  pair yields <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code>. The order of the futures in
+                  the output vector will be the same as given by the input iterator.
+                </p>
+<p>
+                  - <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;&gt;&gt;</span></code>
+                  if the input cardinality is unknown at compile time and the iterator
+                  pair yields <code class="computeroutput"><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code>. The order of the futures in
+                  the output vector will be the same as given by the input iterator.
+                </p>
+<p>
+                  - <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">decay_t</span><span class="special">&lt;</span><span class="identifier">FutTypes</span><span class="special">&gt;...&gt;&gt;</span></code>
+                  if inputs are fixed in number.
+                </p>
+</dd>
+<dt><span class="term">Postconditions:</span></dt>
+<dd>
+<p>
+                  - All input futures valid() == false.
+                </p>
+<p>
+                  - All input shared future valid() == true.
+                </p>
+<p>
+                  - valid() == true.
+                </p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="thread.synchronization.futures.reference.when_any"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.when_any" title="Non-member function when_any() - EXTENSION">Non-member
+          function <code class="computeroutput"><span class="identifier">when_any</span><span class="special">()</span></code>
+          - EXTENSION</a>
+</h5></div></div></div>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">InputIterator</span><span class="special">&gt;</span>
+  <span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">InputIterator</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;&gt;</span>
+  <span class="identifier">when_any</span><span class="special">(</span><span class="identifier">InputIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InputIterator</span> <span class="identifier">last</span><span class="special">);</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span><span class="special">...</span> <span class="identifier">FutTypes</span><span class="special">&gt;</span>
+  <span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">decay_t</span><span class="special">&lt;</span><span class="identifier">FutTypes</span><span class="special">&gt;...&gt;</span>
+  <span class="identifier">when_any</span><span class="special">(</span><span class="identifier">FutTypes</span><span class="special">&amp;&amp;...</span> <span class="identifier">futures</span><span class="special">);</span>
+</pre>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl class="variablelist">
+<dt><span class="term">Requires:</span></dt>
+<dd><p>
+                  - For the first overload, <code class="computeroutput"><span class="identifier">InputIterator</span></code>'s
+                  value type shall be convertible to <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code> or <code class="computeroutput"><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code>. All <code class="computeroutput"><span class="identifier">R</span></code>
+                  types must be the same. If any of the <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code> or <code class="computeroutput"><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code> objects are in invalid state
+                  (i.e. <code class="computeroutput"><span class="identifier">valid</span><span class="special">()</span>
+                  <span class="special">==</span> <span class="keyword">false</span></code>),
+                  the behavior is undefined. - For the second overload, <code class="computeroutput"><span class="identifier">FutTypes</span></code> is of type <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code>
+                  or <code class="computeroutput"><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code>. The effect of calling <code class="computeroutput"><span class="identifier">when_any</span></code> on a <code class="computeroutput"><span class="identifier">future</span></code>
+                  or a <code class="computeroutput"><span class="identifier">shared_future</span></code>
+                  object for which <code class="computeroutput"><span class="identifier">valid</span><span class="special">()</span> <span class="special">==</span>
+                  <span class="keyword">false</span> <span class="identifier">is</span>
+                  <span class="identifier">undefined</span></code>.
+                </p></dd>
+<dt><span class="term">Notes:</span></dt>
+<dd>
+<p>
+                  - There are two variations of <code class="computeroutput"><span class="identifier">when_any</span>
+                  </code>. The first version takes a pair of <code class="computeroutput"><span class="identifier">InputIterators</span></code>.
+                  The second takes any arbitrary number of <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R0</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R1</span><span class="special">&gt;</span></code> objects, where <code class="computeroutput"><span class="identifier">R0</span></code> and <code class="computeroutput"><span class="identifier">R1</span></code>
+                  need not be the same type.
+                </p>
+<p>
+                  - Calling the first signature of <code class="computeroutput"><span class="identifier">when_any</span>
+                  </code> where <code class="computeroutput"><span class="identifier">InputIterator</span></code>
+                  first equals last, returns a future with an empty <code class="computeroutput"><span class="identifier">vector</span></code> that is immediately ready.
+                </p>
+<p>
+                  - Calling the second signature of <code class="computeroutput"><span class="identifier">when_any</span></code>
+                  with no arguments returns a future&lt;tuple&lt;&gt;&gt; that is
+                  immediately ready.
+                </p>
+</dd>
+<dt><span class="term">Effects:</span></dt>
+<dd>
+<p>
+                  - Each of the futures supplied to <code class="computeroutput"><span class="identifier">when_any</span></code>
+                  is checked in the order supplied. If a given future is ready, then
+                  no further futures are checked, and the call to <code class="computeroutput"><span class="identifier">when_any</span></code>
+                  returns immediately. If a given future refers to a deferred task
+                  that has not yet started execution, then no further futures are
+                  checked, that task is executed, and the call to <code class="computeroutput"><span class="identifier">when_any</span></code>
+                  then returns immediately.
+                </p>
+<p>
+                  - The call to <code class="computeroutput"><span class="identifier">when_any</span></code>
+                  does not wait for non-deferred tasks, or deferred tasks that have
+                  already started executing elsewhere, to complete before returning.
+                </p>
+<p>
+                  - Once at least one of the futures supplied to the call to <code class="computeroutput"><span class="identifier">when_any</span></code> are ready, the futures
+                  are moved into the associated state of the future returned from
+                  the call to <code class="computeroutput"><span class="identifier">when_any</span></code>,
+                  preserving the order of the futures supplied to <code class="computeroutput"><span class="identifier">when_any</span></code>.
+                  That future is then ready.
+                </p>
+<p>
+                  - The collection is then stored as the result in a newly created
+                  shared state.
+                </p>
+<p>
+                  - A new future object that refers to the shared state is created.
+                  The exact type of the future is further described below.
+                </p>
+<p>
+                  - The future returned by <code class="computeroutput"><span class="identifier">when_any</span></code>
+                  will not throw an exception when calling <code class="computeroutput"><span class="identifier">wait</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">get</span><span class="special">()</span></code>, but the futures held in the
+                  output collection may.
+                </p>
+</dd>
+<dt><span class="term">Returns:</span></dt>
+<dd>
+<p>
+                  - <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">tuple</span><span class="special">&lt;&gt;&gt;</span></code>
+                  if <code class="computeroutput"><span class="identifier">when_any</span> </code> is
+                  called with zero arguments.
+                </p>
+<p>
+                  - <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;&gt;&gt;</span></code>
+                  if the input cardinality is unknown at compile and the iterator
+                  pair yields <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code>. The order of the futures in
+                  the output vector will be the same as given by the input iterator.
+                </p>
+<p>
+                  - <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;&gt;&gt;</span></code>
+                  if the input cardinality is unknown at compile time and the iterator
+                  pair yields <code class="computeroutput"><span class="identifier">shared_future</span><span class="special">&lt;</span><span class="identifier">R</span><span class="special">&gt;</span></code>. The order of the futures in
+                  the output vector will be the same as given by the input iterator.
+                </p>
+<p>
+                  - <code class="computeroutput"><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">decat_t</span><span class="special">&lt;</span><span class="identifier">FutTypes</span><span class="special">&gt;...&gt;&gt;</span></code>
+                  if inputs are fixed in number.
+                </p>
+</dd>
+<dt><span class="term">Postconditions:</span></dt>
+<dd>
+<p>
+                  - All input futures valid() == false.
+                </p>
+<p>
+                  - All input shared_futures valid() == true.
+                </p>
+<p>
+                  - valid() == true.
+                </p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
 <a name="thread.synchronization.futures.reference.make_ready_future"></a><a class="link" href="synchronization.html#thread.synchronization.futures.reference.make_ready_future" title="Non-member function make_ready_future() EXTENSION">Non-member
           function <code class="computeroutput"><span class="identifier">make_ready_future</span><span class="special">()</span></code> EXTENSION</a>
 </h5></div></div></div>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
-<span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span> <span class="identifier">make_ready_future</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">);</span>  <span class="comment">// EXTENSION</span>
+  <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span> <span class="identifier">make_ready_future</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">);</span>  <span class="comment">// EXTENSION</span>
 <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span> <span class="identifier">make_ready_future</span><span class="special">();</span>  <span class="comment">// EXTENSION</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
-<span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">make_ready_future</span><span class="special">(</span><span class="identifier">exception_ptr</span> <span class="identifier">ex</span><span class="special">);</span>  <span class="comment">// DEPRECATED</span>
+  <span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">make_ready_future</span><span class="special">(</span><span class="identifier">exception_ptr</span> <span class="identifier">ex</span><span class="special">);</span>  <span class="comment">// DEPRECATED</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">E</span><span class="special">&gt;</span>
-<span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">make_ready_future</span><span class="special">(</span><span class="identifier">E</span> <span class="identifier">ex</span><span class="special">);</span>  <span class="comment">// DEPRECATED</span>
+  <span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">make_ready_future</span><span class="special">(</span><span class="identifier">E</span> <span class="identifier">ex</span><span class="special">);</span>  <span class="comment">// DEPRECATED</span>
 </pre>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -14478,7 +14843,7 @@
 </h5></div></div></div>
 <pre class="programlisting"><span class="identifier">exceptional_ptr</span> <span class="identifier">make_exceptional</span><span class="special">(</span><span class="identifier">exception_ptr</span> <span class="identifier">ex</span><span class="special">);</span>  <span class="comment">// EXTENSION</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">E</span><span class="special">&gt;</span>
-<span class="identifier">exceptional_ptr</span> <span class="identifier">make_exceptional</span><span class="special">(</span><span class="identifier">E</span> <span class="identifier">ex</span><span class="special">);</span>  <span class="comment">// EXTENSION</span>
+  <span class="identifier">exceptional_ptr</span> <span class="identifier">make_exceptional</span><span class="special">(</span><span class="identifier">E</span> <span class="identifier">ex</span><span class="special">);</span>  <span class="comment">// EXTENSION</span>
 <span class="identifier">exceptional_ptr</span> <span class="identifier">make_exceptional</span><span class="special">();</span>  <span class="comment">// EXTENSION</span>
 </pre>
 <div class="variablelist">
@@ -14506,7 +14871,7 @@
           DEPRECATED</a>
 </h5></div></div></div>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
-<span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span> <span class="identifier">make_future</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">);</span>  <span class="comment">// DEPRECATED</span>
+  <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span> <span class="identifier">make_future</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">);</span>  <span class="comment">// DEPRECATED</span>
 <span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span> <span class="identifier">make_future</span><span class="special">();</span>  <span class="comment">// DEPRECATED</span>
 </pre>
 <div class="variablelist">
@@ -14549,7 +14914,7 @@
           function <code class="computeroutput"><span class="identifier">make_shared_future</span><span class="special">()</span></code> DEPRECATED</a>
 </h5></div></div></div>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
-<span class="identifier">shared_future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span> <span class="identifier">make_shared_future</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">);</span>  <span class="comment">// DEPRECATED</span>
+  <span class="identifier">shared_future</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span> <span class="identifier">make_shared_future</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">);</span>  <span class="comment">// DEPRECATED</span>
 <span class="identifier">shared_future</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span> <span class="identifier">make_shared_future</span><span class="special">();</span>  <span class="comment">// DEPRECATED</span>
 </pre>
 <div class="variablelist">

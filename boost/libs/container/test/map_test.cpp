@@ -12,6 +12,7 @@
 #include <boost/container/allocator.hpp>
 #include <boost/container/node_allocator.hpp>
 #include <boost/container/adaptive_pool.hpp>
+#include <utility>
 
 #include "print_container.hpp"
 #include "movable_int.hpp"
@@ -194,6 +195,11 @@ class recursive_map
 
    int id_;
    map<recursive_map, recursive_map> map_;
+   map<recursive_map, recursive_map>::iterator it_;
+   map<recursive_map, recursive_map>::const_iterator cit_;
+   map<recursive_map, recursive_map>::reverse_iterator rit_;
+   map<recursive_map, recursive_map>::const_reverse_iterator crit_;
+   
    friend bool operator< (const recursive_map &a, const recursive_map &b)
    {  return a.id_ < b.id_;   }
 };
@@ -206,6 +212,11 @@ class recursive_multimap
 
    int id_;
    multimap<recursive_multimap, recursive_multimap> multimap_;
+   multimap<recursive_multimap, recursive_multimap>::iterator it_;
+   multimap<recursive_multimap, recursive_multimap>::const_iterator cit_;
+   multimap<recursive_multimap, recursive_multimap>::reverse_iterator rit_;
+   multimap<recursive_multimap, recursive_multimap>::const_reverse_iterator crit_;
+   
    friend bool operator< (const recursive_multimap &a, const recursive_multimap &b)
    {  return a.id_ < b.id_;   }
 };
@@ -345,6 +356,38 @@ int test_map_variants()
    return 0;
 }
 
+template<typename MapType>
+bool test_support_for_initialization_list_for()
+{
+#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
+   const std::initializer_list<std::pair<const int, int>> il
+      = {std::make_pair(1, 2), std::make_pair(3, 4)};
+   const MapType expected(il.begin(), il.end());
+   {
+      const MapType sil = il;
+      if (sil != expected)
+         return false;
+
+      const MapType sil_ordered(ordered_unique_range, il);
+      if(sil_ordered != expected)
+         return false;
+
+      MapType sil_assign = {std::make_pair(99, 100)};
+      sil_assign = il;
+      if(sil_assign != expected)
+         return false;
+   }
+   {
+      MapType sil;
+      sil.insert(il);
+      if(sil != expected)
+         return false;
+   }
+   return true;
+#endif
+   return true;
+}
+
 int main ()
 {
    //Recursive container instantiation
@@ -419,6 +462,12 @@ int main ()
    //    Allocator propagation testing
    ////////////////////////////////////
    if(!boost::container::test::test_propagate_allocator<map_propagate_test_wrapper>())
+      return 1;
+
+   if(!test_support_for_initialization_list_for<map<int, int> >())
+      return 1;
+
+   if(!test_support_for_initialization_list_for<multimap<int, int> >())
       return 1;
 
    ////////////////////////////////////

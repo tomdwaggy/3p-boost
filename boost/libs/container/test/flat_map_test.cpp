@@ -150,6 +150,10 @@ class recursive_flat_map
 
    int id_;
    flat_map<recursive_flat_map, recursive_flat_map> map_;
+   flat_map<recursive_flat_map, recursive_flat_map>::iterator it_;
+   flat_map<recursive_flat_map, recursive_flat_map>::const_iterator cit_;
+   flat_map<recursive_flat_map, recursive_flat_map>::reverse_iterator rit_;
+   flat_map<recursive_flat_map, recursive_flat_map>::const_reverse_iterator crit_;
 
    friend bool operator< (const recursive_flat_map &a, const recursive_flat_map &b)
    {  return a.id_ < b.id_;   }
@@ -170,7 +174,12 @@ public:
       return *this;
    }
    int id_;
-   flat_map<recursive_flat_multimap, recursive_flat_multimap> map_;
+   flat_multimap<recursive_flat_multimap, recursive_flat_multimap> map_;
+   flat_multimap<recursive_flat_multimap, recursive_flat_multimap>::iterator it_;
+   flat_multimap<recursive_flat_multimap, recursive_flat_multimap>::const_iterator cit_;
+   flat_multimap<recursive_flat_multimap, recursive_flat_multimap>::reverse_iterator rit_;
+   flat_multimap<recursive_flat_multimap, recursive_flat_multimap>::const_reverse_iterator crit_;
+   
    friend bool operator< (const recursive_flat_multimap &a, const recursive_flat_multimap &b)
    {  return a.id_ < b.id_;   }
 };
@@ -238,24 +247,24 @@ bool flat_tree_ordered_insertion_test()
       }
       //Construction insertion
       flat_multimap<int, int> fmmap(ordered_range, int_mmap.begin(), int_mmap.end());
-      if(!CheckEqualContainers(&int_mmap, &fmmap))
+      if(!CheckEqualContainers(int_mmap, fmmap))
          return false;
       //Insertion when empty
       fmmap.clear();
       fmmap.insert(ordered_range, int_mmap.begin(), int_mmap.end());
-      if(!CheckEqualContainers(&int_mmap, &fmmap))
+      if(!CheckEqualContainers(int_mmap, fmmap))
          return false;
       //Re-insertion
       fmmap.insert(ordered_range, int_mmap.begin(), int_mmap.end());
       std::multimap<int, int> int_mmap2(int_mmap);
       int_mmap2.insert(int_mmap.begin(), int_mmap.end());
-      if(!CheckEqualContainers(&int_mmap2, &fmmap))
+      if(!CheckEqualContainers(int_mmap2, fmmap))
          return false;
       //Re-re-insertion
       fmmap.insert(ordered_range, int_mmap2.begin(), int_mmap2.end());
       std::multimap<int, int> int_mmap4(int_mmap2);
       int_mmap4.insert(int_mmap2.begin(), int_mmap2.end());
-      if(!CheckEqualContainers(&int_mmap4, &fmmap))
+      if(!CheckEqualContainers(int_mmap4, fmmap))
          return false;
       //Re-re-insertion of even
       std::multimap<int, int> int_even_mmap;
@@ -264,7 +273,7 @@ bool flat_tree_ordered_insertion_test()
       }
       fmmap.insert(ordered_range, int_even_mmap.begin(), int_even_mmap.end());
       int_mmap4.insert(int_even_mmap.begin(), int_even_mmap.end());
-      if(!CheckEqualContainers(&int_mmap4, &fmmap))
+      if(!CheckEqualContainers(int_mmap4, fmmap))
          return false;
    }
 
@@ -276,24 +285,24 @@ bool flat_tree_ordered_insertion_test()
       }
       //Construction insertion
       flat_map<int, int> fmap(ordered_unique_range, int_map.begin(), int_map.end());
-      if(!CheckEqualContainers(&int_map, &fmap))
+      if(!CheckEqualContainers(int_map, fmap))
          return false;
       //Insertion when empty
       fmap.clear();
       fmap.insert(ordered_unique_range, int_map.begin(), int_map.end());
-      if(!CheckEqualContainers(&int_map, &fmap))
+      if(!CheckEqualContainers(int_map, fmap))
          return false;
       //Re-insertion
       fmap.insert(ordered_unique_range, int_map.begin(), int_map.end());
       std::map<int, int> int_map2(int_map);
       int_map2.insert(int_map.begin(), int_map.end());
-      if(!CheckEqualContainers(&int_map2, &fmap))
+      if(!CheckEqualContainers(int_map2, fmap))
          return false;
       //Re-re-insertion
       fmap.insert(ordered_unique_range, int_map2.begin(), int_map2.end());
       std::map<int, int> int_map4(int_map2);
       int_map4.insert(int_map2.begin(), int_map2.end());
-      if(!CheckEqualContainers(&int_map4, &fmap))
+      if(!CheckEqualContainers(int_map4, fmap))
          return false;
       //Re-re-insertion of even
       std::map<int, int> int_even_map;
@@ -302,7 +311,7 @@ bool flat_tree_ordered_insertion_test()
       }
       fmap.insert(ordered_unique_range, int_even_map.begin(), int_even_map.end());
       int_map4.insert(int_even_map.begin(), int_even_map.end());
-      if(!CheckEqualContainers(&int_map4, &fmap))
+      if(!CheckEqualContainers(int_map4, fmap))
          return false;
    }
 
@@ -389,6 +398,38 @@ int test_map_variants()
    return 0;
 }
 
+template<typename FlatMapType>
+bool test_support_for_initialization_list_for()
+{
+#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
+   const std::initializer_list<std::pair<int, int>> il
+      = {std::make_pair(1, 2), std::make_pair(3, 4)};
+
+   const FlatMapType expected(il.begin(), il.end());
+   {
+      const FlatMapType sil = il;
+      if (sil != expected)
+         return false;
+
+      const FlatMapType sil_ordered(ordered_unique_range, il);
+      if(sil_ordered != expected)
+         return false;
+
+      FlatMapType sil_assign = {std::make_pair(99, 100)};
+      sil_assign = il;
+      if(sil_assign != expected)
+         return false;
+   }
+   {
+      FlatMapType sil;
+      sil.insert(il);
+      if(sil != expected)
+         return false;
+   }
+   return true;
+#endif
+   return true;
+}
 
 int main()
 {
@@ -435,6 +476,12 @@ int main()
       std::cerr << "test_map_variants< adaptive_pool<void> > failed" << std::endl;
       return 1;
    }
+
+   if(!test_support_for_initialization_list_for<flat_map<int, int> >())
+      return 1;
+
+   if(!test_support_for_initialization_list_for<flat_multimap<int, int> >())
+      return 1;
 
    ////////////////////////////////////
    //    Emplace testing

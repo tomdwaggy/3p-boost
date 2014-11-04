@@ -7,10 +7,8 @@
 // See http://www.boost.org/libs/container for documentation.
 //
 //////////////////////////////////////////////////////////////////////////////
-#include <boost/container/detail/config_begin.hpp>
-#include <algorithm>
+
 #include <memory>
-#include <vector>
 #include <iostream>
 #include <functional>
 
@@ -19,7 +17,7 @@
 #include <boost/container/node_allocator.hpp>
 #include <boost/container/adaptive_pool.hpp>
 
-#include <boost/move/utility.hpp>
+#include <boost/move/utility_core.hpp>
 #include "check_equal_containers.hpp"
 #include "movable_int.hpp"
 #include "expand_bwd_test_allocator.hpp"
@@ -81,27 +79,15 @@ int test_expand_bwd()
       int_allocator_type;
    typedef vector<int, int_allocator_type>
       int_vector;
-
    if(!test::test_all_expand_bwd<int_vector>())
       return 1;
 
-   //Now user defined wrapped int
-   typedef test::expand_bwd_test_allocator<test::int_holder>
-      int_holder_allocator_type;
-   typedef vector<test::int_holder, int_holder_allocator_type>
-      int_holder_vector;
-
-   if(!test::test_all_expand_bwd<int_holder_vector>())
-      return 1;
-
-   //Now user defined bigger wrapped int
-   typedef test::expand_bwd_test_allocator<test::triple_int_holder>
-      triple_int_holder_allocator_type;
-
-   typedef vector<test::triple_int_holder, triple_int_holder_allocator_type>
-      triple_int_holder_vector;
-
-   if(!test::test_all_expand_bwd<triple_int_holder_vector>())
+   //Now user defined copyable int
+   typedef test::expand_bwd_test_allocator<test::copyable_int>
+      copyable_int_allocator_type;
+   typedef vector<test::copyable_int, copyable_int_allocator_type>
+      copyable_int_vector;
+   if(!test::test_all_expand_bwd<copyable_int_vector>())
       return 1;
 
    return 0;
@@ -112,6 +98,10 @@ class recursive_vector
    public:
    int id_;
    vector<recursive_vector> vector_;
+   vector<recursive_vector>::iterator it_;
+   vector<recursive_vector>::const_iterator cit_;
+   vector<recursive_vector>::reverse_iterator rit_;
+   vector<recursive_vector>::const_reverse_iterator crit_;
 };
 
 void recursive_vector_test()//Test for recursive types
@@ -168,7 +158,7 @@ int main()
          positions[i] = 0u;
       }
       for(std::size_t i = 0, max = vector_int2.size(); i != max; ++i){
-         vector_int2[i] = i;
+         vector_int2[i] = (int)i;
       }
 
       vector_int.insert(vector_int.begin(), 999);
@@ -251,7 +241,14 @@ int main()
       return 1;
    }
 
+   ////////////////////////////////////
+   //    Initializer lists testing
+   ////////////////////////////////////
+   if(!boost::container::test::test_vector_methods_with_initializer_list_as_argument_for<
+       boost::container::vector<int>
+   >()) {
+      return 1;
+   }
    return 0;
 
 }
-#include <boost/container/detail/config_end.hpp>

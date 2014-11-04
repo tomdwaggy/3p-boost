@@ -210,6 +210,9 @@
 					RelativePath="..\..\..\..\boost\container\detail\hash_table.hpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\boost\container\detail\iterator_traits.hpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\boost\container\detail\iterators.hpp">
 				</File>
 				<File
@@ -249,7 +252,13 @@
 					RelativePath="..\..\..\..\boost\container\detail\preprocessor.hpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\boost\container\detail\reverse_iterator.hpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\boost\container\detail\singleton.hpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\boost\container\detail\std_fwd.hpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\boost\container\detail\transform_iterator.hpp">
@@ -365,9 +374,6 @@
 			</File>
 			<File
 				RelativePath="..\..\test\util.hpp">
-			</File>
-			<File
-				RelativePath="..\..\test\vector_test.hpp">
 			</File>
 		</Filter>
 		<Filter

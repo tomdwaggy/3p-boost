@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 //
-// (C) Copyright Ion Gaztanaga 2007-2013
+// (C) Copyright Ion Gaztanaga 2007-2014
 //
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -12,12 +12,16 @@
 #ifndef BOOST_INTRUSIVE_SG_SET_HPP
 #define BOOST_INTRUSIVE_SG_SET_HPP
 
+#if defined(_MSC_VER)
+#  pragma once
+#endif
+
 #include <boost/intrusive/detail/config_begin.hpp>
 #include <boost/intrusive/intrusive_fwd.hpp>
 #include <boost/intrusive/detail/mpl.hpp>
 #include <boost/intrusive/sgtree.hpp>
-#include <iterator>
-#include <boost/move/move.hpp>
+#include <boost/static_assert.hpp>
+#include <boost/move/utility_core.hpp>
 
 namespace boost {
 namespace intrusive {

@@ -12,8 +12,7 @@
 #include <boost/container/detail/utilities.hpp>
 #include <cstddef>
 #include <boost/container/detail/mpl.hpp>
-#include <boost/move/utility.hpp>
-#include <boost/type_traits/integral_constant.hpp>
+#include <boost/move/utility_core.hpp>
 #include <memory>
 
 using namespace boost::container;
@@ -115,7 +114,7 @@ enum ConstructionTypeEnum
 {
    ConstructiblePrefix,
    ConstructibleSuffix,
-   NotUsesAllocator,
+   NotUsesAllocator
 };
 
 //This base class provices types for

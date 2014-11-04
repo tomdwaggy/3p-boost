@@ -10,6 +10,10 @@
 #ifndef BOOST_INTERPROCESS_NULL_INDEX_HPP
 #define BOOST_INTERPROCESS_NULL_INDEX_HPP
 
+#if defined(_MSC_VER)
+#  pragma once
+#endif
+
 #include <boost/interprocess/detail/config_begin.hpp>
 #include <boost/interprocess/detail/workaround.hpp>
 
@@ -28,10 +32,10 @@ namespace interprocess {
 template <class MapConfig>
 class null_index
 {
-   /// @cond
+   #if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
    typedef typename MapConfig::
       segment_manager_base    segment_manager_base;
-   /// @endcond
+   #endif   //#ifndef BOOST_INTERPROCESS_DOXYGEN_INVOKED
 
    public:
    typedef int * iterator;

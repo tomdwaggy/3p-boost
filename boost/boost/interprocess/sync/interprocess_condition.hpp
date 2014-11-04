@@ -15,7 +15,7 @@
 #  pragma once
 #endif
 
-/// @cond
+#if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
 
 #include <boost/interprocess/detail/config_begin.hpp>
 #include <boost/interprocess/detail/workaround.hpp>
@@ -39,15 +39,19 @@
    #define BOOST_INTERPROCESS_USE_GENERIC_EMULATION
 #endif
 
-/// @endcond
+#endif   //#ifndef BOOST_INTERPROCESS_DOXYGEN_INVOKED
 
 //!\file
 //!Describes process-shared variables interprocess_condition class
 
 namespace boost {
 
+#if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
+
 namespace posix_time
 {  class ptime;   }
+
+#endif   //#if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
 
 namespace interprocess {
 
@@ -62,12 +66,12 @@ class named_condition;
 //!functions.
 class interprocess_condition
 {
-   /// @cond
+   #if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
    //Non-copyable
    interprocess_condition(const interprocess_condition &);
    interprocess_condition &operator=(const interprocess_condition &);
    friend class named_condition;
-   /// @endcond
+   #endif   //#ifndef BOOST_INTERPROCESS_DOXYGEN_INVOKED
 
    public:
    //!Constructs a interprocess_condition. On error throws interprocess_exception.
@@ -130,7 +134,7 @@ class interprocess_condition
       return m_condition.timed_wait(internal_lock, abs_time, pred);
    }
 
-   /// @cond
+   #if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
 
    private:
    #if defined (BOOST_INTERPROCESS_USE_GENERIC_EMULATION)
@@ -145,7 +149,7 @@ class interprocess_condition
    #else
       #error "Unknown platform for interprocess_mutex"
    #endif
-   /// @endcond
+   #endif   //#ifndef BOOST_INTERPROCESS_DOXYGEN_INVOKED
 };
 
 }  //namespace interprocess
