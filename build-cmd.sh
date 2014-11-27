@@ -327,7 +327,8 @@ case "$AUTOBUILD_PLATFORM" in
                 mv -f "$solib" "$solib".disable
             fi
         done
-            
+
+        cp -a ${stage}/packages/lib/debug/*icu* ${stage}/packages/lib
         ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages/
 
         DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-std=c++11 \
@@ -336,7 +337,7 @@ case "$AUTOBUILD_PLATFORM" in
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
             address-model=64 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
-        "${bjam}" variant=debug --reconfigure \
+        "${bjam}" link=static variant=debug --reconfigure \
             --prefix="${stage}" --libdir="${stage}"/lib/debug \
             $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
@@ -353,6 +354,9 @@ case "$AUTOBUILD_PLATFORM" in
 
         mv "${stage_lib}"/libboost* "${stage_debug}"
 
+        rm -f ${stage}/packages/lib/*.a
+        cp -a ${stage}/packages/lib/release/*icu* ${stage}/packages/lib
+
         "${bjam}" --clean
 
         RELEASE_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-std=c++11 \
@@ -361,7 +365,7 @@ case "$AUTOBUILD_PLATFORM" in
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
             address-model=64 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
-        "${bjam}" variant=release --reconfigure \
+        "${bjam}" link=static variant=release --reconfigure \
             --prefix="${stage}" --libdir="${stage}"/lib/release \
             $RELEASE_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
