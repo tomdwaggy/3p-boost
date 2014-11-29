@@ -21,12 +21,10 @@ BOOST_BJAM_OPTIONS="--layout=tagged --with-atomic \
                             --with-thread --with-coroutine --with-wave \
                             -sNO_BZIP2=1"
 
-# regex tests disabled due to failure in 1.55.0 (re-enable later) - Bug 9555
-BOOST_TEST_LIBS_COMMON="context program_options signals system thread coroutine"
+BOOST_TEST_LIBS_COMMON="context program_options signals system thread coroutine regex"
 BOOST_TEST_LIBS_LINUX="${BOOST_TEST_LIBS_COMMON} date_time iostreams"
 BOOST_TEST_LIBS_WINDOWS="${BOOST_TEST_LIBS_COMMON} filesystem"
-# No filesystem test for darwin due to Bug 9560 - may have production implications, too
-BOOST_TEST_LIBS_DARWIN="${BOOST_TEST_LIBS_COMMON} date_time iostreams"
+BOOST_TEST_LIBS_DARWIN="${BOOST_TEST_LIBS_COMMON} date_time iostreams filesystem"
 BOOST_BUILD_SPAM="-d2 -d+4"             # -d0 is quiet, "-d2 -d+4" allows compilation to be examined
 
 top="$(pwd)"
@@ -203,7 +201,7 @@ case "$AUTOBUILD_PLATFORM" in
         # boost::future appears broken on 32-bit Mac (see boost bug 9558).
         # Disable the class in the unit test runs and *don't use it* in 
         # production until it's known to be good.
-        BOOST_CXXFLAGS="-gdwarf-2 -std=c++0x -stdlib=libc++ -DBOOST_THREAD_DONT_PROVIDE_FUTURE_CONTINUATION -DBOOST_THREAD_DONT_PROVIDE_FUTURE_CTOR_ALLOCATORS -DBOOST_THREAD_DONT_PROVIDE_FUTURE_CONTINUATION -DBOOST_THREAD_DONT_PROVIDE_FUTURE_UNWRAP -DBOOST_THREAD_DONT_PROVIDE_FUTURE_INVALID_AFTER_GET"
+        BOOST_CXXFLAGS="-gdwarf-2 -std=c++0x -stdlib=libc++"
         BOOST_LDFLAGS="-stdlib=libc++"
 
         # Force zlib static linkage by moving .dylibs out of the way
@@ -213,8 +211,9 @@ case "$AUTOBUILD_PLATFORM" in
                 mv "$dylib" "$dylib".disable
             fi
         done
-            
+
         stage_lib="${stage}"/lib
+        cp -a "${stage}"/packages/lib/debug/libicu* "${stage}"/packages/lib
         ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages
 
         DEBUG_BJAM_OPTIONS="include=\"${stage}\"/packages/include include=\"${stage}\"/packages/include/zlib/ \
@@ -226,17 +225,18 @@ case "$AUTOBUILD_PLATFORM" in
         "${bjam}" toolset=darwin variant=debug $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS" linkflags="$BOOST_LDFLAGS" stage
 
         # conditionally run unit tests
-#        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-#            for blib in $BOOST_TEST_LIBS_DARWIN; do
-#                cd libs/"${blib}"/test
-#                    "${bjam}" toolset=darwin variant=debug -a -q \
-#                        $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS"
-#                cd ../../..
-#            done
-#        fi
+        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+            for blib in $BOOST_TEST_LIBS_DARWIN; do
+                cd libs/"${blib}"/test
+                    "${bjam}" toolset=darwin variant=debug link=static  -a -q \
+                        $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS"
+                cd ../../..
+            done
+        fi
 
         mv "${stage_lib}"/*.a "${stage_debug}"
 
+        cp -a "${stage}"/packages/lib/release/libicu* "${stage}"/packages/lib
         RELEASE_BJAM_OPTIONS="include=\"${stage}\"/packages/include include=\"${stage}\"/packages/include/zlib/ \
             -sZLIB_LIBPATH=\"${stage}\"/packages/lib/release \
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
@@ -246,14 +246,14 @@ case "$AUTOBUILD_PLATFORM" in
         "${bjam}" toolset=darwin variant=release $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS" linkflags="$BOOST_LDFLAGS" stage
         
         # conditionally run unit tests
-#        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-#            for blib in $BOOST_TEST_LIBS_DARWIN; do
-#                cd libs/"${blib}"/test
-#                    "${bjam}" toolset=darwin variant=release -a -q \
-#                        $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS"
-#                cd ../../..
-#            done
-#        fi
+        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+            for blib in $BOOST_TEST_LIBS_DARWIN; do
+                cd libs/"${blib}"/test
+                    "${bjam}" toolset=darwin variant=release link=static  -a -q \
+                        $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS"
+                cd ../../..
+            done
+        fi
 
         mv "${stage_lib}"/*.a "${stage_release}"
         ;;

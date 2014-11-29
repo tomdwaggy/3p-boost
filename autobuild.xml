@@ -22,9 +22,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>3040ff26252c05472e057f65c573a595</string>
+              <string>1490ee2e0841b48e052d94ccde829b6b</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-darwin/downloads/icu4c-54.1-darwin-201410161435.tar.bz2</string>
+              <string>https://bitbucket.org/alchemyviewer/publiclibs-darwin/downloads/icu4c-54.1-darwin-201411281226.tar.bz2</string>
             </map>
             <key>name</key>
             <string>darwin</string>
