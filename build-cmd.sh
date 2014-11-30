@@ -331,7 +331,7 @@ case "$AUTOBUILD_PLATFORM" in
         cp -a ${stage}/packages/lib/debug/*icu* ${stage}/packages/lib
         ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages/
 
-        DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-std=c++11 \
+        DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-fPIC cxxflags=-std=c++11 \
              include=$stage/packages/include/zlib/ \
             -sZLIB_LIBPATH=$stage/packages/lib/debug \
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
@@ -359,7 +359,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         "${bjam}" --clean
 
-        RELEASE_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-std=c++11 \
+        RELEASE_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-fPIC cxxflags=-std=c++11 \
             include=$stage/packages/include/zlib/ \
             -sZLIB_LIBPATH=$stage/packages/lib/release \
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
