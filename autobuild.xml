@@ -46,9 +46,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>a48b0db61face944216be4feb92ff5ca</string>
+              <string>2ac556e0b6a66f784a916b2992d625e5</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-linux/downloads/icu4c-54.1-linux64-20141127.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/linux/lib/icu4c-54.1-linux64-20141209.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -124,9 +124,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>34f49ffedc5ee34ceb1f10767d9f69b5</string>
+              <string>23967544a78df78fcf3a69a30fee33a8</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-linux/downloads/zlib-1.2.8-linux64-20141125.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/linux/lib/zlib-1.2.8-linux64-20141209.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux64</string>
