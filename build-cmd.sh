@@ -14,6 +14,7 @@ if [ -z "$AUTOBUILD" ] ; then
 fi
 
 
+BOOST_VERSION="1.57.0"
 BOOST_BJAM_OPTIONS="--layout=tagged --with-atomic \
                             --with-context --with-date_time --with-filesystem \
                             --with-iostreams --with-program_options \
@@ -33,7 +34,9 @@ bjam="$(pwd)/bjam"
 stage="$(pwd)/stage"
 
 [ -f "$stage"/packages/include/zlib/zlib.h ] || fail "You haven't installed the zlib package yet."
-                                                     
+
+echo "${BOOST_VERSION}" > "${stage}/VERSION.txt"
+                                               
 if [ "$OSTYPE" = "cygwin" ] ; then
     export AUTOBUILD="$(cygpath -u $AUTOBUILD)"
     # Bjam doesn't know about cygwin paths, so convert them!
@@ -112,11 +115,11 @@ case "$AUTOBUILD_PLATFORM" in
         # conditionally run unit tests
         # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
         #     for blib in $BOOST_TEST_LIBS_WINDOWS; do
-        #         cd libs/"$blib"/test
+        #         pushd libs/"$blib"/test
         #             "${bjam}" link=static variant=debug \
         #                 --prefix="${stage}" --libdir="${stage_debug}" \
         #                 $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
-        #         cd ../../..
+        #         popd
         #     done
         # fi
 
@@ -127,11 +130,11 @@ case "$AUTOBUILD_PLATFORM" in
         # conditionally run unit tests
         # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
         #     for blib in $BOOST_TEST_LIBS_WINDOWS; do
-        #         cd libs/"$blib"/test
+        #         pushd libs/"$blib"/test
         #             "${bjam}" link=static variant=release \
         #                 --prefix="${stage}" --libdir="${stage_debug}" \
         #                 $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
-        #         cd ../../..
+        #         popd
         #     done
         # fi
 
@@ -141,6 +144,12 @@ case "$AUTOBUILD_PLATFORM" in
         ;;
 
      "windows64")
+        mkdir -p "$stage/packages/bin64"
+        mkdir -p "$stage/packages/lib64"
+        cp -a $stage/packages/lib/debug/*d.lib $stage/packages/lib64/
+        cp -a $stage/packages/lib/debug/*d.dll $stage/packages/bin64/
+        cp -a $stage/packages/lib/release/*.lib $stage/packages/lib64/
+        cp -a $stage/packages/lib/release/*.dll $stage/packages/bin64/
         INCLUDE_PATH=$(cygpath -m "${stage}"/packages/include)
         ZLIB_RELEASE_PATH=$(cygpath -m "${stage}"/packages/lib/release)
         ZLIB_DEBUG_PATH=$(cygpath -m "${stage}"/packages/lib/debug)
@@ -169,11 +178,11 @@ case "$AUTOBUILD_PLATFORM" in
         # conditionally run unit tests
         # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
         #     for blib in $BOOST_TEST_LIBS_WINDOWS; do
-        #         cd libs/"$blib"/test
+        #         pushd libs/"$blib"/test
         #             "${bjam}" link=static variant=debug \
         #                 --prefix="${stage}" --libdir="${stage_debug}" \
         #                 $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
-        #         cd ../../..
+        #         popd
         #     done
         # fi
 
@@ -184,11 +193,11 @@ case "$AUTOBUILD_PLATFORM" in
         # conditionally run unit tests
         # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
         #     for blib in $BOOST_TEST_LIBS_WINDOWS; do
-        #         cd libs/"$blib"/test
+        #         pushd libs/"$blib"/test
         #             "${bjam}" link=static variant=release \
         #                 --prefix="${stage}" --libdir="${stage_debug}" \
         #                 $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
-        #         cd ../../..
+        #         popd
         #     done
         # fi
 
@@ -227,10 +236,10 @@ case "$AUTOBUILD_PLATFORM" in
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in $BOOST_TEST_LIBS_DARWIN; do
-                cd libs/"${blib}"/test
+                pushd libs/"${blib}"/test
                     "${bjam}" toolset=darwin variant=debug link=static  -a -q \
                         $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS"
-                cd ../../..
+                popd
             done
         fi
 
@@ -248,10 +257,10 @@ case "$AUTOBUILD_PLATFORM" in
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in $BOOST_TEST_LIBS_DARWIN; do
-                cd libs/"${blib}"/test
+                pushd libs/"${blib}"/test
                     "${bjam}" toolset=darwin variant=release link=static  -a -q \
                         $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS"
-                cd ../../..
+                popd
             done
         fi
 
@@ -282,11 +291,11 @@ case "$AUTOBUILD_PLATFORM" in
         # conditionally run unit tests
 #        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
 #            for blib in $BOOST_TEST_LIBS_LINUX; do
-#                cd libs/"${blib}"/test
+#                pushd libs/"${blib}"/test
 #                    "${bjam}" variant=debug -a -q \
 #                        --prefix="${stage}" --libdir="${stage}"/lib/debug \
 #                        $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM
-#                cd ../../..
+#                popd
 #            done
 #        fi
 
@@ -307,11 +316,11 @@ case "$AUTOBUILD_PLATFORM" in
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in $BOOST_TEST_LIBS_LINUX; do
-                cd libs/"${blib}"/test
+                pushd libs/"${blib}"/test
                     "${bjam}" variant=release -a -q \
                         --prefix="${stage}" --libdir="${stage}"/lib/release \
                         $RELEASE_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM
-                cd ../../..
+                popd
             done
         fi
 
@@ -344,11 +353,11 @@ case "$AUTOBUILD_PLATFORM" in
         # conditionally run unit tests
 #        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
 #            for blib in $BOOST_TEST_LIBS_LINUX; do
-#                cd libs/"${blib}"/test
+#                pushd libs/"${blib}"/test
 #                    "${bjam}" variant=debug -a -q \
 #                        --prefix="${stage}" --libdir="${stage}"/lib/debug \
 #                        $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM
-#                cd ../../..
+#                popd
 #            done
 #        fi
 
@@ -372,11 +381,11 @@ case "$AUTOBUILD_PLATFORM" in
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in $BOOST_TEST_LIBS_LINUX; do
-                cd libs/"${blib}"/test
+                pushd libs/"${blib}"/test
                     "${bjam}" variant=release -a -q \
                         --prefix="${stage}" --libdir="${stage}"/lib/release \
                         $RELEASE_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM
-                cd ../../..
+                popd
             done
         fi
 

@@ -6,7 +6,7 @@
       <key>icu4c</key>
       <map>
         <key>copyright</key>
-        <string>Copyright (c) 1995-2011 International Business Machines Corporation and others &lt;http://source.icu-project.org&gt;</string>
+        <string>Copyright (c) 1995-2014 International Business Machines Corporation and others</string>
         <key>description</key>
         <string>ICU is a mature, widely used set of C/C++ and Java libraries providing Unicode and Globalization support for software applications. ICU is widely portable and gives applications the same results on all platforms and between C/C++ and Java software.</string>
         <key>license</key>
@@ -70,9 +70,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>329b40877e90cab505479207bc01b4a9</string>
+              <string>fbacbe18d878b582bbb9de1d74e48911</string>
+              <key>hash_algorithm</key>
+              <string>md5</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-vs12/downloads/icu4c-54.1-windows64-20141016.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/windows/lib/icu4c-54.1-windows64-201412311513.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -148,9 +150,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>7459ddf61c40764e0a58ffd84722bf99</string>
+              <string>743624c39df49bd5595d80a1c94bbf5e</string>
+              <key>hash_algorithm</key>
+              <string>md5</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-vs12/downloads/zlib-1.2.8-windows64-vs12-20140709.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/windows/lib/zlib-1.2.8-windows64-201412310032.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -162,6 +166,8 @@
     </map>
     <key>package_description</key>
     <map>
+      <key>copyright</key>
+      <string>(see individual source files)</string>
       <key>description</key>
       <string>Boost C++ Libraries</string>
       <key>license</key>
@@ -319,14 +325,12 @@
           <string>windows64</string>
         </map>
       </map>
-      <key>source_directory</key>
-      <string>boost</string>
-      <key>version</key>
-      <string>1.57.0</string>
+      <key>version_file</key>
+      <string>VERSION.txt</string>
     </map>
     <key>type</key>
     <string>autobuild</string>
     <key>version</key>
-    <string>1.2</string>
+    <string>1.3</string>
   </map>
 </llsd>
