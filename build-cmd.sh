@@ -97,11 +97,9 @@ case "$AUTOBUILD_PLATFORM" in
         # dropping 'echo on' into the .bat files seems to help.
         cmd.exe /C bootstrap.bat vc12
 
-        # Windows build of viewer expects /Zc:wchar_t-, have to match that
         WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j6 \
             include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
-            cxxflags=-Zc:wchar_t- \
             address-model=32 architecture=x86 \
 			$BOOST_BJAM_OPTIONS"
 
@@ -160,11 +158,9 @@ case "$AUTOBUILD_PLATFORM" in
         # dropping 'echo on' into the .bat files seems to help.
         cmd.exe /C bootstrap.bat vc12
 
-        # Windows build of viewer expects /Zc:wchar_t-, have to match that
         WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j6 \
             include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
-            cxxflags=-Zc:wchar_t- \
             address-model=64 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
 
