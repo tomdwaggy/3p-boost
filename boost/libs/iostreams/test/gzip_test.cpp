@@ -26,7 +26,20 @@ using namespace boost::iostreams::test;
 namespace io = boost::iostreams;
 using boost::unit_test::test_suite;     
 
-struct gzip_alloc : std::allocator<char> { };
+template <class T>
+struct gzip_alloc : public std::allocator<T>
+{
+    gzip_alloc() {}
+
+    template <class U>
+    gzip_alloc(gzip_alloc<U> const &) {}
+
+    template <class U>
+    struct rebind
+    {
+        typedef gzip_alloc<U> other;
+    };
+};
 
 void compression_test()
 {
@@ -54,8 +67,8 @@ void compression_test()
 
     // Test compression and decompression with custom allocator
     BOOST_CHECK(
-        test_filter_pair( basic_gzip_compressor<gzip_alloc>(), 
-                          basic_gzip_decompressor<gzip_alloc>(), 
+        test_filter_pair( basic_gzip_compressor<gzip_alloc<char> >(), 
+                          basic_gzip_decompressor<gzip_alloc<char> >(), 
                           std::string(data.begin(), data.end()) )
     );
 }
