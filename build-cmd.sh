@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd "$(dirname "$0")"
+top="$(pwd)"
 
 # turn on verbose debugging output for parabuild logs.
 set -x
@@ -8,24 +9,44 @@ set -x
 set -e
 
 BOOST_SOURCE_DIR="boost"
+BOOST_VERSION="1.57.0"
 
 if [ -z "$AUTOBUILD" ] ; then 
     fail
 fi
 
+# Libraries on which we depend - please keep alphabetized for maintenance
+BOOST_LIBS=(atomic context coroutine date_time filesystem iostreams program_options \
+            regex signals system thread wave)
 
-BOOST_VERSION="1.57.0"
-BOOST_BJAM_OPTIONS="--layout=tagged --with-atomic \
-                            --with-context --with-date_time --with-filesystem \
-                            --with-iostreams --with-program_options \
-                            --with-regex --with-signals --with-system \
-                            --with-thread --with-coroutine --with-wave \
-                            -sNO_BZIP2=1"
+BOOST_BJAM_OPTIONS="--layout=tagged -sNO_BZIP2=1 ${BOOST_LIBS[*]/#/--with-}"
 
-BOOST_TEST_LIBS_COMMON="context program_options signals system thread coroutine regex"
-BOOST_TEST_LIBS_LINUX="${BOOST_TEST_LIBS_COMMON} date_time iostreams"
-BOOST_TEST_LIBS_WINDOWS="${BOOST_TEST_LIBS_COMMON} filesystem"
-BOOST_TEST_LIBS_DARWIN="${BOOST_TEST_LIBS_COMMON} date_time iostreams filesystem"
+# Optionally use this function in a platform build to SUPPRESS running unit
+# tests on one or more specific libraries: sadly, it happens that some
+# libraries we care about might fail their unit tests on a particular platform
+# for a particular Boost release.
+# Usage: suppress_tests date_time regex
+function suppress_tests {
+  set +x
+  for lib
+  do for ((i=0; i<${#BOOST_LIBS[@]}; ++i))
+     do if [[ "${BOOST_LIBS[$i]}" == "$lib" ]]
+        then unset BOOST_LIBS[$i]
+             # From -x trace output, it appears that the above 'unset' command
+             # doesn't immediately close the gaps in the BOOST_LIBS array. In
+             # fact it seems that although the count ${#BOOST_LIBS[@]} is
+             # decremented, there's a hole at [$i], and subsequent elements
+             # remain at their original subscripts. Reset the array: remove
+             # any such holes.
+             BOOST_LIBS=("${BOOST_LIBS[@]}")
+             break
+        fi
+     done
+  done
+  echo "BOOST_LIBS=${BOOST_LIBS[*]}"
+  set -x
+}
+
 BOOST_BUILD_SPAM="-d2 -d+4"             # -d0 is quiet, "-d2 -d+4" allows compilation to be examined
 
 top="$(pwd)"
@@ -36,7 +57,7 @@ stage="$(pwd)/stage"
 [ -f "$stage"/packages/include/zlib/zlib.h ] || fail "You haven't installed the zlib package yet."
 
 echo "${BOOST_VERSION}" > "${stage}/VERSION.txt"
-                                               
+
 if [ "$OSTYPE" = "cygwin" ] ; then
     export AUTOBUILD="$(cygpath -u $AUTOBUILD)"
     # Bjam doesn't know about cygwin paths, so convert them!
@@ -87,60 +108,65 @@ restore_dylibs ()
 case "$AUTOBUILD_PLATFORM" in
 
     "windows")
-        INCLUDE_PATH=$(cygpath -m "${stage}"/packages/include)
-        ZLIB_RELEASE_PATH=$(cygpath -m "${stage}"/packages/lib/release)
-        ZLIB_DEBUG_PATH=$(cygpath -m "${stage}"/packages/lib/debug)
-        ICU_PATH=$(cygpath -m "${stage}"/packages)
+        INCLUDE_PATH="$(cygpath -m "${stage}"/packages/include)"
+        ZLIB_RELEASE_PATH="$(cygpath -m "${stage}"/packages/lib/release)"
+        ZLIB_DEBUG_PATH="$(cygpath -m "${stage}"/packages/lib/debug)"
+        ICU_PATH="$(cygpath -m "${stage}"/packages)"
 
         # Odd things go wrong with the .bat files:  branch targets
         # not recognized, file tests incorrect.  Inexplicable but
         # dropping 'echo on' into the .bat files seems to help.
         cmd.exe /C bootstrap.bat vc12
 
-        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j6 \
+        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j8 \
+            --abbreviate-paths \
             include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
             address-model=32 architecture=x86 \
-			$BOOST_BJAM_OPTIONS"
+            $BOOST_BJAM_OPTIONS"
 
-        DEBUG_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sZLIB_LIBRARY_PATH=$ZLIB_DEBUG_PATH -sZLIB_NAME=zlibd"
-        "${bjam}" link=static variant=debug \
+        DEBUG_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sZLIB_LIBRARY_PATH=$ZLIB_DEBUG_PATH -sZLIB_NAME=zlibd -sZLIB_BINARY=zlib"
+        "${bjam}" link=static variant=debug --abbreviate-paths \
             --prefix="${stage}" --libdir="${stage_debug}" $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
-        # Windows unit tests seem confused more than usual.  So they're
-        # disabled for now but should be tried with every update.
+
+        suppress_tests regex thread wave
 
         # conditionally run unit tests
-        # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-        #     for blib in $BOOST_TEST_LIBS_WINDOWS; do
-        #         pushd libs/"$blib"/test
-        #             "${bjam}" link=static variant=debug \
-        #                 --prefix="${stage}" --libdir="${stage_debug}" \
-        #                 $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
-        #         popd
-        #     done
-        # fi
+        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+            for blib in "${BOOST_LIBS[@]}"; do
+                pushd libs/"$blib"/test
+                    # link=static
+                    "${bjam}" variant=debug --hash \
+                        --prefix="${stage}" --libdir="${stage_debug}" \
+                        $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
+                popd
+            done
+        fi
 
-        RELEASE_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH -sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH -sZLIB_NAME=zlib"
-        "${bjam}" link=static variant=release \
+        # Move the debug libs first then clean to avoid tainting release build
+        mv "${stage_lib}"/*-gd.lib "${stage_debug}"
+        "${bjam}" --clean
+
+        RELEASE_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH -sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH -sZLIB_NAME=zlib -sZLIB_BINARY=zlib"
+        "${bjam}" link=static variant=release --abbreviate-paths \
             --prefix="${stage}" --libdir="${stage_release}" $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
         # conditionally run unit tests
-        # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-        #     for blib in $BOOST_TEST_LIBS_WINDOWS; do
-        #         pushd libs/"$blib"/test
-        #             "${bjam}" link=static variant=release \
-        #                 --prefix="${stage}" --libdir="${stage_debug}" \
-        #                 $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
-        #         popd
-        #     done
-        # fi
+        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+            for blib in "${BOOST_LIBS[@]}"; do
+                pushd libs/"$blib"/test
+                    # link=static
+                    "${bjam}" variant=release --hash \
+                        --prefix="${stage}" --libdir="${stage_release}" \
+                        $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
+                popd
+            done
+        fi
 
-        # Move the debug libs first, then the leftover release libs
-        mv "${stage_lib}"/*-gd.lib "${stage_debug}"
+        # Move release libs
         mv "${stage_lib}"/*.lib "${stage_release}"
-        ;;
-
+     ;;
      "windows64")
         mkdir -p "$stage/packages/bin64"
         mkdir -p "$stage/packages/lib64"
@@ -148,60 +174,64 @@ case "$AUTOBUILD_PLATFORM" in
         cp -a $stage/packages/lib/debug/*d.dll $stage/packages/bin64/
         cp -a $stage/packages/lib/release/*.lib $stage/packages/lib64/
         cp -a $stage/packages/lib/release/*.dll $stage/packages/bin64/
-        INCLUDE_PATH=$(cygpath -m "${stage}"/packages/include)
-        ZLIB_RELEASE_PATH=$(cygpath -m "${stage}"/packages/lib/release)
-        ZLIB_DEBUG_PATH=$(cygpath -m "${stage}"/packages/lib/debug)
-        ICU_PATH=$(cygpath -m "${stage}"/packages)
+        INCLUDE_PATH="$(cygpath -m "${stage}"/packages/include)"
+        ZLIB_RELEASE_PATH="$(cygpath -m "${stage}"/packages/lib/release)"
+        ZLIB_DEBUG_PATH="$(cygpath -m "${stage}"/packages/lib/debug)"
+        ICU_PATH="$(cygpath -m "${stage}"/packages)"
 
         # Odd things go wrong with the .bat files:  branch targets
         # not recognized, file tests incorrect.  Inexplicable but
         # dropping 'echo on' into the .bat files seems to help.
         cmd.exe /C bootstrap.bat vc12
 
-        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j6 \
+        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j8 \
             include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
             address-model=64 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
 
-        DEBUG_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sZLIB_LIBRARY_PATH=$ZLIB_DEBUG_PATH -sZLIB_NAME=zlibd"
-        "${bjam}" link=static variant=debug \
+        DEBUG_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sZLIB_LIBRARY_PATH=$ZLIB_DEBUG_PATH -sZLIB_NAME=zlibd -sZLIB_BINARY=zlibd"
+        "${bjam}" link=static variant=debug --abbreviate-paths \
             --prefix="${stage}" --libdir="${stage_debug}" $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
-        # Windows unit tests seem confused more than usual.  So they're
-        # disabled for now but should be tried with every update.
+        suppress_tests regex thread wave
 
         # conditionally run unit tests
-        # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-        #     for blib in $BOOST_TEST_LIBS_WINDOWS; do
-        #         pushd libs/"$blib"/test
-        #             "${bjam}" link=static variant=debug \
-        #                 --prefix="${stage}" --libdir="${stage_debug}" \
-        #                 $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
-        #         popd
-        #     done
-        # fi
+        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+            for blib in "${BOOST_LIBS[@]}"; do
+                pushd libs/"$blib"/test
+                    # link=static 
+                    "${bjam}" variant=debug --hash \
+                        --prefix="${stage}" --libdir="${stage_debug}" \
+                        $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
+                popd
+            done
+        fi
 
-        RELEASE_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH -sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH -sZLIB_NAME=zlib"
-        "${bjam}" link=static variant=release \
+        # Move the debug libs first then clean to avoid tainting release build
+        mv "${stage_lib}"/*-gd.lib "${stage_debug}"
+        "${bjam}" --clean-all
+        rm bin.v2/project-cache.jam
+		
+        RELEASE_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH -sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH -sZLIB_NAME=zlib -sZLIB_BINARY=zlib"
+        "${bjam}" link=static variant=release --abbreviate-paths \
             --prefix="${stage}" --libdir="${stage_release}" $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
         # conditionally run unit tests
-        # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-        #     for blib in $BOOST_TEST_LIBS_WINDOWS; do
-        #         pushd libs/"$blib"/test
-        #             "${bjam}" link=static variant=release \
-        #                 --prefix="${stage}" --libdir="${stage_debug}" \
-        #                 $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
-        #         popd
-        #     done
-        # fi
+        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+            for blib in "${BOOST_LIBS[@]}"; do
+                pushd libs/"$blib"/test
+                    # link=static 
+                    "${bjam}" variant=release --hash \
+                        --prefix="${stage}" --libdir="${stage_release}" \
+                        $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
+                popd
+            done
+        fi
 
-        # Move the debug libs first, then the leftover release libs
-        mv "${stage_lib}"/*-gd.lib "${stage_debug}"
+        # Move release libs
         mv "${stage_lib}"/*.lib "${stage_release}"
-        ;;
-
+     ;;
     "darwin")
         # boost::future appears broken on 32-bit Mac (see boost bug 9558).
         # Disable the class in the unit test runs and *don't use it* in 
@@ -224,14 +254,14 @@ case "$AUTOBUILD_PLATFORM" in
         DEBUG_BJAM_OPTIONS="include=\"${stage}\"/packages/include include=\"${stage}\"/packages/include/zlib/ \
             -sZLIB_LIBPATH=\"${stage}\"/packages/lib/debug \
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
-			address-model=32_64 architecture=x86 \
+            address-model=32_64 architecture=x86 \
             ${BOOST_BJAM_OPTIONS}"
 
         "${bjam}" toolset=darwin variant=debug $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS" linkflags="$BOOST_LDFLAGS" stage
 
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-            for blib in $BOOST_TEST_LIBS_DARWIN; do
+            for blib in "${BOOST_LIBS[@]}"; do
                 pushd libs/"${blib}"/test
                     "${bjam}" toolset=darwin variant=debug link=static  -a -q \
                         $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS"
@@ -252,7 +282,7 @@ case "$AUTOBUILD_PLATFORM" in
         
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-            for blib in $BOOST_TEST_LIBS_DARWIN; do
+            for blib in "${BOOST_LIBS[@]}"; do
                 pushd libs/"${blib}"/test
                     "${bjam}" toolset=darwin variant=release link=static  -a -q \
                         $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS"
@@ -261,8 +291,7 @@ case "$AUTOBUILD_PLATFORM" in
         fi
 
         mv "${stage_lib}"/*.a "${stage_release}"
-        ;;
-
+     ;;
     "linux")
         # Force static linkage to libz by moving .sos out of the way
         trap restore_sos EXIT
@@ -285,15 +314,15 @@ case "$AUTOBUILD_PLATFORM" in
             $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
         # conditionally run unit tests
-#        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-#            for blib in $BOOST_TEST_LIBS_LINUX; do
-#                pushd libs/"${blib}"/test
-#                    "${bjam}" variant=debug -a -q \
-#                        --prefix="${stage}" --libdir="${stage}"/lib/debug \
-#                        $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM
-#                popd
-#            done
-#        fi
+        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+            for blib in "${BOOST_LIBS[@]}"; do
+                pushd libs/"${blib}"/test
+                    "${bjam}" variant=debug -a -q \
+                        --prefix="${stage}" --libdir="${stage}"/lib/debug \
+                        $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM
+                popd
+            done
+        fi
 
         mv "${stage_lib}"/libboost* "${stage_debug}"
 
@@ -311,7 +340,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-            for blib in $BOOST_TEST_LIBS_LINUX; do
+            for blib in "${BOOST_LIBS[@]}"; do
                 pushd libs/"${blib}"/test
                     "${bjam}" variant=release -a -q \
                         --prefix="${stage}" --libdir="${stage}"/lib/release \
@@ -323,7 +352,7 @@ case "$AUTOBUILD_PLATFORM" in
         mv "${stage_lib}"/libboost* "${stage_release}"
 
         "${bjam}" --clean
-        ;;
+    ;;
     "linux64")
         # Force static linkage to libz by moving .sos out of the way
         trap restore_sos EXIT
@@ -347,15 +376,15 @@ case "$AUTOBUILD_PLATFORM" in
             $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
         # conditionally run unit tests
-#        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-#            for blib in $BOOST_TEST_LIBS_LINUX; do
-#                pushd libs/"${blib}"/test
-#                    "${bjam}" variant=debug -a -q \
-#                        --prefix="${stage}" --libdir="${stage}"/lib/debug \
-#                        $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM
-#                popd
-#            done
-#        fi
+        if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+            for blib in "${BOOST_LIBS[@]}"; do
+                pushd libs/"${blib}"/test
+                    "${bjam}" variant=debug -a -q \
+                        --prefix="${stage}" --libdir="${stage}"/lib/debug \
+                        $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM
+                popd
+            done
+        fi
 
         mv "${stage_lib}"/libboost* "${stage_debug}"
 
@@ -376,7 +405,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-            for blib in $BOOST_TEST_LIBS_LINUX; do
+            for blib in "${BOOST_LIBS[@]}"; do
                 pushd libs/"${blib}"/test
                     "${bjam}" variant=release -a -q \
                         --prefix="${stage}" --libdir="${stage}"/lib/release \
