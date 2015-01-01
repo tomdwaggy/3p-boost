@@ -70,11 +70,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>fbacbe18d878b582bbb9de1d74e48911</string>
+              <string>217941d61b763bbed4c8db88c861c870</string>
               <key>hash_algorithm</key>
               <string>md5</string>
               <key>url</key>
-              <string>http://depot.alchemyviewer.org/pub/windows/lib/icu4c-54.1-windows64-201412311513.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/windows/lib/icu4c-54.1-windows64-201501010244.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -150,11 +150,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>743624c39df49bd5595d80a1c94bbf5e</string>
+              <string>5b42d6cba346aa0a9fd5055b5eff2cb7</string>
               <key>hash_algorithm</key>
               <string>md5</string>
               <key>url</key>
-              <string>http://depot.alchemyviewer.org/pub/windows/lib/zlib-1.2.8-windows64-201412310032.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/windows/lib/zlib-1.2.8-windows64-201501010307.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
