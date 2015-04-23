@@ -9,7 +9,7 @@ set -x
 set -e
 
 BOOST_SOURCE_DIR="boost"
-BOOST_VERSION="1.57.0"
+BOOST_VERSION="1.58.0"
 
 if [ -z "$AUTOBUILD" ] ; then 
     fail
