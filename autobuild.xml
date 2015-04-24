@@ -22,9 +22,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>1490ee2e0841b48e052d94ccde829b6b</string>
+              <string>30b6f7fd928a2f5803ca82446875048c</string>
+              <key>hash_algorithm</key>
+              <string>md5</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-darwin/downloads/icu4c-54.1-darwin-201411281226.tar.bz2</string>
+              <string>https://bitbucket.org/alchemyviewer/publiclibs-darwin/downloads/icu4c-55.1-darwin-201504232003.tar.bz2</string>
             </map>
             <key>name</key>
             <string>darwin</string>
@@ -104,9 +106,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>42e0fb92dd26bdd7700460ba87848668</string>
+              <string>cbee0492c983eebf68fc4f813fc26b93</string>
+              <key>hash_algorithm</key>
+              <string>md5</string>
               <key>url</key>
-              <string>http://bitbucket.org/alchemyviewer/publiclibs-darwin/downloads/zlib-1.2.8-darwin-201407231142.tar.bz2</string>
+              <string>https://bitbucket.org/alchemyviewer/publiclibs-darwin/downloads/zlib-1.2.8-darwin-201504231927.tar.bz2</string>
             </map>
             <key>name</key>
             <string>darwin</string>
