@@ -62,9 +62,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>45b7bd31539ec09f9b936cc03ac47db6</string>
+              <string>9da143612d05e6be2486b6595d71534d</string>
+              <key>hash_algorithm</key>
+              <string>md5</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-vs12/downloads/icu4c-54.1-windows-20141016.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/windows/lib/icu4c-55.1-windows-201504270430.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -74,11 +76,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>217941d61b763bbed4c8db88c861c870</string>
+              <string>cd3da0c244caec0ac8067abb737498ed</string>
               <key>hash_algorithm</key>
               <string>md5</string>
               <key>url</key>
-              <string>http://depot.alchemyviewer.org/pub/windows/lib/icu4c-54.1-windows64-201501010244.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/windows64/lib/icu4c-55.1-windows64-201504270436.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -146,9 +148,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>9b4f4d1324aabd722e6a01e748d151cd</string>
+              <string>180ccbbf9c262a823fb5ad1d1917767d</string>
+              <key>hash_algorithm</key>
+              <string>md5</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-vs12/downloads/zlib-1.2.8-windows-vs12-20140705.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/windows/lib/zlib-1.2.8-windows-201504262238.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -158,11 +162,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>5b42d6cba346aa0a9fd5055b5eff2cb7</string>
+              <string>02bc24f2b25e440f02ddd46b7e9c99cc</string>
               <key>hash_algorithm</key>
               <string>md5</string>
               <key>url</key>
-              <string>http://depot.alchemyviewer.org/pub/windows/lib/zlib-1.2.8-windows64-201501010307.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/windows64/lib/zlib-1.2.8-windows64-201504262233.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
