@@ -108,6 +108,12 @@ restore_dylibs ()
 case "$AUTOBUILD_PLATFORM" in
 
     "windows")
+        mkdir -p "$stage/packages/bin"
+        mkdir -p "$stage/packages/lib"
+        cp -a $stage/packages/lib/debug/*d.lib $stage/packages/lib/
+        cp -a $stage/packages/lib/debug/*d.dll $stage/packages/bin/
+        cp -a $stage/packages/lib/release/*.lib $stage/packages/lib/
+        cp -a $stage/packages/lib/release/*.dll $stage/packages/bin/
         INCLUDE_PATH="$(cygpath -m "${stage}"/packages/include)"
         ZLIB_RELEASE_PATH="$(cygpath -m "${stage}"/packages/lib/release)"
         ZLIB_DEBUG_PATH="$(cygpath -m "${stage}"/packages/lib/debug)"
@@ -147,6 +153,7 @@ case "$AUTOBUILD_PLATFORM" in
         # Move the debug libs first then clean to avoid tainting release build
         mv "${stage_lib}"/*-gd.lib "${stage_debug}"
         "${bjam}" --clean
+        rm bin.v2/project-cache.jam
 
         RELEASE_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH -sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH -sZLIB_NAME=zlib -sZLIB_BINARY=zlib"
         "${bjam}" link=static variant=release --abbreviate-paths \
