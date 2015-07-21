@@ -117,7 +117,6 @@ case "$AUTOBUILD_PLATFORM" in
         INCLUDE_PATH="$(cygpath -m "${stage}"/packages/include)"
         ZLIB_RELEASE_PATH="$(cygpath -m "${stage}"/packages/lib/release)"
         ZLIB_DEBUG_PATH="$(cygpath -m "${stage}"/packages/lib/debug)"
-        ICU_PATH="$(cygpath -m "${stage}"/packages)"
 
         # Odd things go wrong with the .bat files:  branch targets
         # not recognized, file tests incorrect.  Inexplicable but
@@ -126,7 +125,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j8 \
             --abbreviate-paths \
-            include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
+            include=$INCLUDE_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
             address-model=32 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
@@ -184,7 +183,6 @@ case "$AUTOBUILD_PLATFORM" in
         INCLUDE_PATH="$(cygpath -m "${stage}"/packages/include)"
         ZLIB_RELEASE_PATH="$(cygpath -m "${stage}"/packages/lib/release)"
         ZLIB_DEBUG_PATH="$(cygpath -m "${stage}"/packages/lib/debug)"
-        ICU_PATH="$(cygpath -m "${stage}"/packages)"
 
         # Odd things go wrong with the .bat files:  branch targets
         # not recognized, file tests incorrect.  Inexplicable but
@@ -192,7 +190,7 @@ case "$AUTOBUILD_PLATFORM" in
         cmd.exe /C bootstrap.bat vc12
 
         WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j8 \
-            include=$INCLUDE_PATH -sICU_PATH=$ICU_PATH \
+            include=$INCLUDE_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
             address-model=64 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
