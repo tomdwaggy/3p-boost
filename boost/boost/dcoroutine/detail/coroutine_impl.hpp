@@ -85,7 +85,7 @@ namespace boost { namespace dcoroutines { namespace detail {
 
     template<typename Functor>
 	static inline	
-	pointer create(Functor, std::ptrdiff_t);
+	pointer create(Functor, std::ptrdiff_t = default_stack_size);
 
     void bind_args(arg_slot_type* arg) {
       m_arg = arg;
