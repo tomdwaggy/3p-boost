@@ -134,11 +134,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>02bc24f2b25e440f02ddd46b7e9c99cc</string>
+              <string>3f6dca673322ffde8fa39dc08754e70b</string>
               <key>hash_algorithm</key>
               <string>md5</string>
               <key>url</key>
-              <string>http://depot.alchemyviewer.org/pub/windows64/lib/zlib-1.2.8-windows64-201504262233.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/windows64/lib-vc14/zlib-1.2.8-windows64-201507210932.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
