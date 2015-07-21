@@ -123,7 +123,7 @@ case "$AUTOBUILD_PLATFORM" in
         # dropping 'echo on' into the .bat files seems to help.
         cmd.exe /C bootstrap.bat vc12
 
-        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j8 \
+        WINDOWS_BJAM_OPTIONS="--toolset=msvc-14.0 -j8 \
             --abbreviate-paths \
             include=$INCLUDE_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
@@ -189,7 +189,7 @@ case "$AUTOBUILD_PLATFORM" in
         # dropping 'echo on' into the .bat files seems to help.
         cmd.exe /C bootstrap.bat vc12
 
-        WINDOWS_BJAM_OPTIONS="--toolset=msvc-12.0 -j8 \
+        WINDOWS_BJAM_OPTIONS="--toolset=msvc-14.0 -j8 \
             include=$INCLUDE_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
             address-model=64 architecture=x86 \
