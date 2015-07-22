@@ -111,9 +111,7 @@ case "$AUTOBUILD_PLATFORM" in
         mkdir -p "$stage/packages/bin"
         mkdir -p "$stage/packages/lib"
         cp -a $stage/packages/lib/debug/*d.lib $stage/packages/lib/
-        cp -a $stage/packages/lib/debug/*d.dll $stage/packages/bin/
         cp -a $stage/packages/lib/release/*.lib $stage/packages/lib/
-        cp -a $stage/packages/lib/release/*.dll $stage/packages/bin/
         INCLUDE_PATH="$(cygpath -m "${stage}"/packages/include)"
         ZLIB_RELEASE_PATH="$(cygpath -m "${stage}"/packages/lib/release)"
         ZLIB_DEBUG_PATH="$(cygpath -m "${stage}"/packages/lib/debug)"
@@ -121,7 +119,7 @@ case "$AUTOBUILD_PLATFORM" in
         # Odd things go wrong with the .bat files:  branch targets
         # not recognized, file tests incorrect.  Inexplicable but
         # dropping 'echo on' into the .bat files seems to help.
-        cmd.exe /C bootstrap.bat vc12
+        cmd.exe /C bootstrap.bat vc14
 
         WINDOWS_BJAM_OPTIONS="--toolset=msvc-14.0 -j8 \
             --abbreviate-paths \
@@ -177,9 +175,7 @@ case "$AUTOBUILD_PLATFORM" in
         mkdir -p "$stage/packages/bin64"
         mkdir -p "$stage/packages/lib64"
         cp -a $stage/packages/lib/debug/*d.lib $stage/packages/lib64/
-        cp -a $stage/packages/lib/debug/*d.dll $stage/packages/bin64/
         cp -a $stage/packages/lib/release/*.lib $stage/packages/lib64/
-        cp -a $stage/packages/lib/release/*.dll $stage/packages/bin64/
         INCLUDE_PATH="$(cygpath -m "${stage}"/packages/include)"
         ZLIB_RELEASE_PATH="$(cygpath -m "${stage}"/packages/lib/release)"
         ZLIB_DEBUG_PATH="$(cygpath -m "${stage}"/packages/lib/debug)"
@@ -187,7 +183,7 @@ case "$AUTOBUILD_PLATFORM" in
         # Odd things go wrong with the .bat files:  branch targets
         # not recognized, file tests incorrect.  Inexplicable but
         # dropping 'echo on' into the .bat files seems to help.
-        cmd.exe /C bootstrap.bat vc12
+        cmd.exe /C bootstrap.bat vc14
 
         WINDOWS_BJAM_OPTIONS="--toolset=msvc-14.0 -j8 \
             include=$INCLUDE_PATH \
