@@ -76,11 +76,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>3f6dca673322ffde8fa39dc08754e70b</string>
+              <string>62755203023407b24e9bcf9bf50e6d4c</string>
               <key>hash_algorithm</key>
               <string>md5</string>
               <key>url</key>
-              <string>http://depot.alchemyviewer.org/pub/windows64/lib-vc14/zlib-1.2.8-windows64-201507210932.tar.bz2</string>
+              <string>http://depot.alchemyviewer.org/pub/windows64/lib-vc14/zlib-1.2.8-windows64-201507220206.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
