@@ -94,17 +94,6 @@ restore_dylibs ()
     done
 }
 
-# bjam doesn't support a -sICU_LIBPATH to point to the location
-# of the icu libraries like it does for zlib. Instead, it expects
-# the library files to be immediately in the ./lib directory
-# and the headers to be in the ./include directory and doesn't
-# provide a way to work around this. Because of this, we break
-# the standard packaging layout, with the debug library files
-# in ./lib/debug and the release in ./lib/release and instead
-# only package the release build of icu4c in the ./lib directory.
-# If a way to work around this is found, uncomment the
-# corresponding blocks in the icu4c build and fix it here.
-
 case "$AUTOBUILD_PLATFORM" in
 
     "windows")
@@ -249,8 +238,7 @@ case "$AUTOBUILD_PLATFORM" in
         done
 
         stage_lib="${stage}"/lib
-        cp -a "${stage}"/packages/lib/debug/libicu* "${stage}"/packages/lib
-        ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages
+        ./bootstrap.sh --prefix=$(pwd) --without-icu
 
         DEBUG_BJAM_OPTIONS="include=\"${stage}\"/packages/include include=\"${stage}\"/packages/include/zlib/ \
             -sZLIB_LIBPATH=\"${stage}\"/packages/lib/debug \
@@ -272,7 +260,6 @@ case "$AUTOBUILD_PLATFORM" in
 
         mv "${stage_lib}"/*.a "${stage_debug}"
 
-        cp -a "${stage}"/packages/lib/release/libicu* "${stage}"/packages/lib
         RELEASE_BJAM_OPTIONS="include=\"${stage}\"/packages/include include=\"${stage}\"/packages/include/zlib/ \
             -sZLIB_LIBPATH=\"${stage}\"/packages/lib/release \
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
@@ -302,7 +289,7 @@ case "$AUTOBUILD_PLATFORM" in
             fi
         done
             
-        ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages/
+        ./bootstrap.sh --prefix=$(pwd) --without-icu
 
         DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-std=c++11 \
              include=$stage/packages/include/zlib/ \
@@ -365,8 +352,7 @@ case "$AUTOBUILD_PLATFORM" in
             fi
         done
 
-        cp -a ${stage}/packages/lib/debug/*icu* ${stage}/packages/lib
-        ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages/
+        ./bootstrap.sh --prefix=$(pwd) --without-icu
 
         DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-fPIC cxxflags=-std=c++11 \
              include=$stage/packages/include/zlib/ \
@@ -391,9 +377,6 @@ case "$AUTOBUILD_PLATFORM" in
         fi
 
         mv "${stage_lib}"/libboost* "${stage_debug}"
-
-        rm -f ${stage}/packages/lib/*.a
-        cp -a ${stage}/packages/lib/release/*icu* ${stage}/packages/lib
 
         "${bjam}" --clean
 
