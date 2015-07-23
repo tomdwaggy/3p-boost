@@ -246,7 +246,7 @@ case "$AUTOBUILD_PLATFORM" in
             address-model=32_64 architecture=x86 \
             ${BOOST_BJAM_OPTIONS}"
 
-        "${bjam}" toolset=darwin variant=debug $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS" linkflags="$BOOST_LDFLAGS" stage
+        "${bjam}" toolset=darwin variant=debug --disable-icu $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS" linkflags="$BOOST_LDFLAGS" stage
 
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
@@ -266,7 +266,7 @@ case "$AUTOBUILD_PLATFORM" in
             address-model=32_64 architecture=x86 \
             ${BOOST_BJAM_OPTIONS}"
 
-        "${bjam}" toolset=darwin variant=release $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS" linkflags="$BOOST_LDFLAGS" stage
+        "${bjam}" toolset=darwin variant=release --disable-icu $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM cxxflags="$BOOST_CXXFLAGS" linkflags="$BOOST_LDFLAGS" stage
         
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
@@ -291,7 +291,7 @@ case "$AUTOBUILD_PLATFORM" in
             
         ./bootstrap.sh --prefix=$(pwd) --without-icu
 
-        DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-std=c++11 \
+        DEBUG_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cxxflags=-std=c++11 \
              include=$stage/packages/include/zlib/ \
             -sZLIB_LIBPATH=$stage/packages/lib/debug \
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
@@ -354,7 +354,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         ./bootstrap.sh --prefix=$(pwd) --without-icu
 
-        DEBUG_BOOST_BJAM_OPTIONS="toolset=gcc cxxflags=-fPIC cxxflags=-std=c++11 \
+        DEBUG_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cxxflags=-fPIC cxxflags=-std=c++11 \
              include=$stage/packages/include/zlib/ \
             -sZLIB_LIBPATH=$stage/packages/lib/debug \
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
