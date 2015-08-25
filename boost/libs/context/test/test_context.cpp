@@ -192,7 +192,7 @@ void test_exception()
 
     const char * what = "hello world";
     void * sp = alloc.allocate( stack_allocator::default_stacksize() );
-    fc = ctx::make_fcontext( sp, stack_allocator::minimum_stacksize(), f7);
+    fc = ctx::make_fcontext( sp, stack_allocator::default_stacksize(), f7);
     BOOST_CHECK( fc);
 
     ctx::jump_fcontext( & fcm, fc, ( intptr_t) what);

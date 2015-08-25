@@ -110,7 +110,7 @@ actions armasm
 
 actions masm
 {
-    ml /c /Fo"$(<)" "$(>)"
+    ml /safeseh /c /Fo"$(<)" "$(>)"
 }
 
 actions masm64

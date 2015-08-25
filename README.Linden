@@ -1,0 +1,527 @@
+
+0.  Pre-Checkin Checklist
+
+    Performed from top of repo, default branch, head:
+
+    [ ]  Is tag 'current' at or near head of 'vendor'?
+
+         hg heads
+         hg tags
+
+    [ ]  Expected differences between vendor and default?  Very
+         little of the original source should be modified.
+
+         hg diff -rcurrent boost
+
+    [ ]  Are the 'vendor' and 'default' branch source directories
+         'boost' and not 'boost-<version>'?
+
+    [ ]  Did the iostreams library pick up the correct version of zlib?
+         You can run 'strings' over them
+         (e.g. boost/stage/lib/release/libboost_iostreams-mt.so) and
+         egrep for zlib version string patterns such as '1\\.2\\.'.
+
+         Mac (bad):
+
+         $ strings libboost_iostreams-mt-d.dylib | grep 1\\.2\\.
+         1.2.5  <<<<< wrong version
+          deflate 1.2.8 Copyright 1995-2013 Jean-loup Gailly and Mark Adler 
+         1.2.8
+          inflate 1.2.8 Copyright 1995-2013 Mark Adler 
+         1.2.8
+
+         Mac (good):
+
+         $ strings libboost_iostreams-mt-d.dylib | grep 1\\.2\\.
+         1.2.8
+          deflate 1.2.8 Copyright 1995-2013 Jean-loup Gailly and Mark Adler 
+         1.2.8
+          inflate 1.2.8 Copyright 1995-2013 Mark Adler 
+
+         Linux (bad):
+
+         $ strings lib/debug/libboost_* | grep 1\\.2\\.
+         1.2.3.4
+         1.2.3.4
+          deflate 1.2.8 Copyright 1995-2013 Jean-loup Gailly and Mark Adler 
+         1.2.8
+          inflate 1.2.8 Copyright 1995-2013 Mark Adler 
+         1.2.8
+         1.2.3.4
+          deflate 1.2.8 Copyright 1995-2013 Jean-loup Gailly and Mark Adler 
+         1.2.8
+          inflate 1.2.8 Copyright 1995-2013 Mark Adler 
+         1.2.8
+
+         Linux (good):
+
+         $ strings lib/debug/libboost_* | grep 1\\.2\\.
+         1.2.8
+         1.2.8
+          deflate 1.2.8 Copyright 1995-2013 Jean-loup Gailly and Mark Adler 
+         1.2.8
+          inflate 1.2.8 Copyright 1995-2013 Mark Adler 
+         1.2.8
+         1.2.8
+          deflate 1.2.8 Copyright 1995-2013 Jean-loup Gailly and Mark Adler 
+         1.2.8
+          inflate 1.2.8 Copyright 1995-2013 Mark Adler 
+         1.2.8
+
+
+    [ ]  All DLLs/dylibs/sos built without unwanted references to other
+         libraries such as libz.
+
+    [ ]  Confirm compilation with -fPIC on Mac/Linux.
+
+    [ ]  Can the filesystem unit test be re-enabled on Linux or Mac?
+         Can the regex unit test be re-enabled post-1.55.0?  Does
+         boost::future work on all platforms and can be used now?
+
+
+1.  Introduction
+
+    Build of boost library from boost.org.
+
+    Repo structure now mostly follows standard conventions (see
+    section at end).
+
+
+2.  Modifications
+
+    Essential modifications to boost distribution.
+
+  2.1  Build Configuration
+
+    * icu4c - pick up the autobuild package in bootstrap.  This is
+      then used in the Regex module to provide Unicode string
+      matching.  Viewer doesn't use these functions so you don't see
+      the icu4c dependency in the viewer.
+
+    * zlib - use autobuild package but use bjam options to locate the
+      package.  This doesn't seem to work correctly across the
+      platforms so verifying the built libraries on every platform is
+      indicated.
+
+    * windows - /Zc:wchar_t- option during build via bjam.
+
+  2.2  Unit Tests - Filesystem Disabled
+
+    2.2.1  Linux
+
+    The Filesystem unit tests fail on some Linux distributions in the
+    wide-char filename operations.  This is due to a severely limited
+    implementation of the std::codecvt class that fails to convert
+    wchar_t to utf-8.  The implication is that filesystem operations
+    that use wide character strings types to name files will be
+    unreliable on some Linux distributions.  This shouldn't be a
+    problem in the viewer where the utf-8 conversion will have
+    happened before getting to Boost but be aware of the limitation.
+    One result:  Filesystem unit test disabled for Linux.
+
+    2.2.2  Mac
+
+    Boost Bug 9560 details a crash in unit tests which may be another
+    problem in the wchar_t-to-utf-8 conversion methods used in the
+    filesystem code.  Scope may be greater than unit tests and we
+    should take care in letting Boost manage our wide-character
+    conversion.
+
+  2.3  Unit Tests - Regex Disabled
+
+    1.55.0 did some damange to the regex unit tests in the no-excep-
+    tion-handling case and were disabled.  Should be able to enable
+    these in later releases.
+
+  2.4  Unit Tests - Signals fix
+
+    The file 'swap_test.cpp' needed to include '<iostream>'.  Expect
+    an equivalent change from upstream in the future (Bug #9555).
+
+  2.5  Thread Library - boost::future damaged on Mac
+
+    I've found evidence that boost::future does not work correctly on
+    32-bit Mac (Bug #9558).  For the unit tests, I disable the feature
+    with an assortment of -D flags.  For production, don't use the
+    boost::future class until its shown to be safe.
+
+  2.6  Unit Tests - Windows
+
+    Many problems building the unit tests on Windows and I eventually
+    just gave up with time exhausted.  Revisit when we update the
+    library and/or change linkage and/or fix icu4c.
+
+  2.7  Windows Bjam Build
+
+    Had problems running the 'boost/tools/build/v2/engine/build.bat'
+    script on my system.  Various branch target labels weren't
+    functional.  Putting an 'echo on' command in the ':Test_Empty'
+    block after 'setlocal' magically made everything work (mostly).
+
+  2.8  General Build Issues
+
+    Getting a consistent build against dependent libraries is a
+    challenge.  Be certain to do the consistency checks above.  I
+    don't think all platforms consistently use the ZLIB_* variables
+    available so there is some ineffective configuration in the build
+    script.  Similarly with bootstrapping, icu4c specification might
+    better be handled later, I think.
+
+
+3.  Source Origin
+
+    1.55.0:
+      http://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz/download
+
+
+4.  Package Contents
+
+    Common:
+    * include/boost/*
+
+    Windows (debug and release, archive only):
+    * lib/release/libboost_chrono-mt.lib
+    * lib/release/libboost_context-mt.lib
+    * lib/release/libboost_date_time-mt.lib
+    * lib/release/libboost_filesystem-mt.lib
+    * lib/release/libboost_iostreams-mt.lib
+    * lib/release/libboost_program_options-mt.lib
+    * lib/release/libboost_regex-mt.lib
+    * lib/release/libboost_signals-mt.lib
+    * lib/release/libboost_system-mt.lib
+    * lib/release/libboost_thread-mt.lib
+    * lib/debug/libboost_chrono-mt-gd.lib
+    * lib/debug/libboost_context-mt-gd.lib
+    * lib/debug/libboost_date_time-mt-gd.lib
+    * lib/debug/libboost_filesystem-mt-gd.lib
+    * lib/debug/libboost_iostreams-mt-gd.lib
+    * lib/debug/libboost_program_options-mt-gd.lib
+    * lib/debug/libboost_regex-mt-gd.lib
+    * lib/debug/libboost_signals-mt-gd.lib
+    * lib/debug/libboost_system-mt-gd.lib
+    * lib/debug/libboost_thread-mt-gd.lib
+
+
+    Mac OS X (debug and release, archive only):
+    * lib/release/libboost_context-mt.a
+    * lib/release/libboost_date_time-mt.a
+    * lib/release/libboost_filesystem-mt.a
+    * lib/release/libboost_iostreams-mt.a
+    * lib/release/libboost_program_options-mt.a
+    * lib/release/libboost_regex-mt.a
+    * lib/release/libboost_signals-mt.a
+    * lib/release/libboost_system-mt.a
+    * lib/release/libboost_thread-mt.a
+    * lib/debug/libboost_context-mt-d.a
+    * lib/debug/libboost_date_time-mt-d.a
+    * lib/debug/libboost_filesystem-mt-d.a
+    * lib/debug/libboost_iostreams-mt-d.a
+    * lib/debug/libboost_program_options-mt-d.a
+    * lib/debug/libboost_regex-mt-d.a
+    * lib/debug/libboost_signals-mt-d.a
+    * lib/debug/libboost_system-mt-d.a
+    * lib/debug/libboost_thread-mt-d.a
+
+    Linux (debug and release, archive only):
+    * lib/release/libboost_context-mt.a
+    * lib/release/libboost_date_time-mt.a
+    * lib/release/libboost_filesystem-mt.a
+    * lib/release/libboost_iostreams-mt.a
+    * lib/release/libboost_program_options-mt.a
+    * lib/release/libboost_regex-mt.a
+    * lib/release/libboost_signals-mt.a
+    * lib/release/libboost_system-mt.a
+    * lib/release/libboost_thread-mt.a
+    * lib/debug/libboost_context-mt-d.a
+    * lib/debug/libboost_date_time-mt-d.a
+    * lib/debug/libboost_filesystem-mt-d.a
+    * lib/debug/libboost_iostreams-mt-d.a
+    * lib/debug/libboost_program_options-mt-d.a
+    * lib/debug/libboost_regex-mt-d.a
+    * lib/debug/libboost_system-mt-d.a
+    * lib/debug/libboost_signals-mt-d.a
+    * lib/debug/libboost_thread-mt-d.a
+
+
+5.  Consumers/Dependents
+
+    Note: Code using Google mock may need to include its headers
+    before Boost.  Looks like google-mock changes Boost's inclusion
+    behavior.
+
+    Packages dependent on Boost which will need attention
+    (autobuild.xml) after changes.  This is not authoritative, use
+    appropriate build tools to find all dependents.
+
+    * colladadom
+    * google-mock (Not really dependent on Boost, I think.)
+
+    * viewer
+
+
+===================================================================
+
+               Third-Party Library Repo Structure
+
+
+Introduction
+
+We want to have a way to capture local modifications to a third-party
+open-source project, such as libcurl, without needing write access to
+their public repository.  We want to be able to carry forward such
+modifications to newer versions of the public project.  All this
+should be independent of the organizational decision as to whether
+it's even desirable to try to submit our local modifications upstream.
+
+Fortunately, the Subversion folks articulated a process years ago that
+addresses this very requirement.  They call it "Vendor Branches."  The
+same tactic, suitably adapted, works with Mercurial too.
+
+The essence of the idea is that we capture and tag a particular
+snapshot of the open-source project.  We develop our local
+modifications to that, and the repository tip incorporates them.  But
+when we want to update to a newer version of the public project, we
+bring it into the repository in such a way that we can discover the
+changes from the original snapshot and the new one -- and then have
+Mercurial apply those deltas to the ''combined'' source.
+
+The following material is adapted from
+http://svnbook.red-bean.com/en/1.1/ch07s05.html, the Red Bean
+Subversion book, but recast for Mercurial.  The Linden source for this
+material is an internal wiki.  There may be superceding documentation
+on the public wiki when you read this.  We recommend searching there
+for updates to conventions below.  And note that each particular
+library may implement variations of this scheme.
+
+
+General Vendor Branch Management Procedure
+
+Managing vendor branches generally works like this.  You create a
+named branch ("vendor") to store the vendor source snapshots.  Then
+you import the third party code into that branch.  Your modified
+branch (named "default") is based on "vendor".  You always make your
+local changes to the default branch.  With each new release of the
+code you are tracking you bring it into the "vendor" branch and merge
+the changes into "default", resolving whatever conflicts occur between
+your local changes and the upstream changes.
+
+Perhaps an example will help to clarify this algorithm.  We'll use a
+scenario where your development team is creating a calculator program
+that links against a third-party complex number arithmetic library,
+libcomplex.  We'll construct a repository specifically for our
+locally-modified version of that library.  To begin, we must
+initialize our repository and create at least one file in our
+"default" branch.
+
+ $ hg init ourcomplex
+ $ cd ourcomplex
+ $ touch README.txt
+ $ hg commit README.txt
+
+Now we can create the vendor branch and do the import of the first
+vendor drop.  We'll call our vendor branch "vendor", and each
+successive code drop will be tagged "current".
+
+ $ hg branch vendor
+ $ tar -xjf ../libcomplex-1.0.tar.bz2
+ $ mv libcomplex-1.0 libcomplex
+ $ hg addremove
+ $ hg commit -m "1.0 source drop"
+ $ hg tag -r tip current
+ $ hg tag -r current 1.0
+
+We now have the current version of the libcomplex source code in
+branch "vendor", tagged "current" and in a non-version-specific source
+code subdirectory ("libcomplex").  Next, we merge it into the default
+branch.  It is in the default branch that we will make our
+customizations.
+
+ $ hg update default
+ $ hg merge vendor
+ $ hg commit -m "initial: 1.0"
+
+We get to work customizing the libcomplex code.  Before we know it,
+our modified version of libcomplex is now completely integrated into
+our calculator program.
+
+A few weeks later, the developers of libcomplex release a new version
+of their library, version 1.1, which contains some features and
+functionality that we really want.  We'd like to upgrade to this new
+version, but without losing the customizations we made to the existing
+version.  What we essentially would like to do is to replace our
+current baseline version of libcomplex 1.0 with a copy of libcomplex
+1.1, and then have Mercurial re-apply the custom modifications we
+previously made to that library to the new version.  But we actually
+approach the problem from the other direction, applying the changes
+made to libcomplex between versions 1.0 and 1.1 to our modified copy
+of it.
+
+To perform this upgrade, we update our repository to our vendor
+branch, and update the "current" tag with the new libcomplex 1.1
+source code.  We quite literally replace the existing files with the
+new files, clearing out the whole tree and exploding the libcomplex
+1.1 release tarball in its place.  The goal here is to make the tip of
+our vendor branch contain only the libcomplex 1.1 code, and to ensure
+that all that code is under version control.  Oh, and we want to do
+this with as little version control history disturbance as possible.
+
+ $ hg update vendor
+ $ rm -rf *
+ $ tar -xjf ../libcomplex-1.1.tar.bz2
+ $ mv libcomplex-1.1 libcomplex
+ $ hg addremove -s 60
+ $ # Additional 'hg add' and 'hg rm' commands if needed
+ $ hg commit -m "1.1 source drop"
+
+After unpacking the 1.1 tarball, hg status will show files with local
+modifications as well as, perhaps, some unversioned or missing files.
+If we did what we were supposed to do, the unversioned files are only
+those new files introduced in the 1.1 release of libcomplex.  The
+missing files are files that were in 1.0 but not in 1.1.  The 'hg
+addremove' command deals with both, and more: the '-s 60' switch
+directs Mercurial to compare added files to deleted files, recognizing
+any file at least 60% similar as a move/rename.
+
+For simple or stable libraries, the 'hg addremove' command should be
+reliable.  For more complicated libraries subject to refactoring or
+large gaps of time between updates (e.g. libcurl), it can get a little
+lost trying to match files in the old release with files in the new
+release.  Pay attention to the output of the command or better still,
+do dry runs.  Files erroneously moved can be excluded with the '-X'
+option and then dealt with individually with 'hg add' and 'hg rm'
+commands after 'hg addremove'.  (The readme file in the curl library
+should document a particularly challenging case.)
+
+The 'addremove' process doesn't have to be perfect.  Recreating the
+evolution of the upstream source tree isn't universally practical.
+But we'd like to capture movement of files in the vendor branch that
+are modified in the default branch.  If achieving that becomes too
+tedious, then re-implementation of the default branch edit in a new
+file is fine.  Just note it here for the next developer.
+
+Finally, once our current working copy contains only the libcomplex
+1.1 code, we commit the changes we made to get it looking that way.
+
+Our current vendor branch now contains the new vendor drop.  We move
+the 'current' tag to the new version (in the same way we previously
+tagged the version 1.0 vendor drop), and then merge the differences
+between the version 1.0 and version 1.1 into our default branch.
+
+ $ hg tag -f -r tip current
+ $ Optional:  hg tag -r current 1.1
+ $ hg update default
+ $ hg merge vendor
+ # resolve all the conflicts between their changes and our changes
+ # if you will have conflicts in .hgtags, simply take *all* lines
+ ...
+ $ hg commit -m "update with 1.1"
+
+Any additional work needed to get the merged library working can
+now be done on the default branch.
+
+
+Revision Tags
+
+We don't currently make use of Mercurial tags in the build and release
+process for 3rd-party libraries.  But we would like to establish a
+convention to document update and release points.  The tags we would
+like to establish are:
+
+ * 'current' Points to a succession of vendor releases checked into
+   the 'vendor' branch.  Will almost always be at or close to branch
+   head.
+
+ * '<version>' Ttag on the 'vendor' branch pointing to a verbatim
+   checkin of a 3rd-party's <version> release.  Example:  '7.21.1' for
+   a particular version of libcurl we have used.
+
+ * Release-type tags on the default branch aren't as useful given how
+   Mercurial handles tags and how autobuild works.
+
+
+Schematic of a Third-Party Repository
+
+Below is the output of the 'hg glog' command showing a library project
+going through an initial 1.0 release and an update from the vendor to
+1.1.  Significant revisions in the repository lifecycle are as
+follows:
+
+ 0  Creation of the repo with an initial file.
+ 1  1.0 code drop on branch 'vendor'
+ 4  Merge of 1.0 code onto branch 'default'
+ 5  Modifications to library we wish to keep over time.  Released.
+ 6  1.1 code drop on branch 'vendor'
+ 9  Merge of 1.1 code onto branch 'default'
+10  Fixes to merge yielding production 1.1 library.  Released.
+ 
+
+@  changeset:   10:888229641f6e
+|  tag:         tip
+|  user:        Monty Brandenberg <monty@lindenlab.com>
+|  date:        Wed Oct 30 13:35:51 2013 -0400
+|  summary:     Work to get 1.1 merge working.  Release.
+|
+o    changeset:   9:925ccdf09f50
+|\   parent:      5:83c5775c23dc
+| |  parent:      8:977001a08e48
+| |  user:        Monty Brandenberg <monty@lindenlab.com>
+| |  date:        Wed Oct 30 13:35:20 2013 -0400
+| |  summary:     update with 1.1
+| |
+| o  changeset:   8:977001a08e48
+| |  branch:      vendor
+| |  user:        Monty Brandenberg <monty@lindenlab.com>
+| |  date:        Wed Oct 30 13:33:49 2013 -0400
+| |  summary:     Added tag 1.1 for changeset 5f6cb89add91
+| |
+| o  changeset:   7:59bce0f6d12f
+| |  branch:      vendor
+| |  user:        Monty Brandenberg <monty@lindenlab.com>
+| |  date:        Wed Oct 30 13:33:41 2013 -0400
+| |  summary:     Added tag current for changeset 5f6cb89add91
+| |
+| o  changeset:   6:5f6cb89add91
+| |  branch:      vendor
+| |  tag:         current
+| |  tag:         1.1
+| |  parent:      3:8525ad934ecd
+| |  user:        Monty Brandenberg <monty@lindenlab.com>
+| |  date:        Wed Oct 30 13:33:29 2013 -0400
+| |  summary:     1.1 source drop
+| |
+o |  changeset:   5:83c5775c23dc
+| |  tag:         1.0
+| |  user:        Monty Brandenberg <monty@lindenlab.com>
+| |  date:        Wed Oct 30 13:32:31 2013 -0400
+| |  summary:     Linden-specific changes to the library.  Release
+| |
+o |  changeset:   4:bccb736585f4
+|\|  parent:      0:400e4516c406
+| |  parent:      3:8525ad934ecd
+| |  user:        Monty Brandenberg <monty@lindenlab.com>
+| |  date:        Wed Oct 30 13:31:40 2013 -0400
+| |  summary:     initial:  1.0
+| |
+| o  changeset:   3:8525ad934ecd
+| |  branch:      vendor
+| |  user:        Monty Brandenberg <monty@lindenlab.com>
+| |  date:        Wed Oct 30 13:30:21 2013 -0400
+| |  summary:     Added tag 1.0 for changeset 8ac3828d03bb
+| |
+| o  changeset:   2:7aa1a1cb62d9
+| |  branch:      vendor
+| |  user:        Monty Brandenberg <monty@lindenlab.com>
+| |  date:        Wed Oct 30 13:30:14 2013 -0400
+| |  summary:     Added tag current for changeset 8ac3828d03bb
+| |
+| o  changeset:   1:8ac3828d03bb
+|/   branch:      vendor
+|    tag:         1.0
+|    user:        Monty Brandenberg <monty@lindenlab.com>
+|    date:        Wed Oct 30 13:30:09 2013 -0400
+|    summary:     1.0 source drop
+|
+o  changeset:   0:400e4516c406
+   user:        Monty Brandenberg <monty@lindenlab.com>
+   date:        Wed Oct 30 13:29:16 2013 -0400
+   summary:     Created repo with initial readme file
