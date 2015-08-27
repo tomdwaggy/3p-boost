@@ -18,6 +18,7 @@
 #include <boost/context/all.hpp>
 #include <boost/context/detail/config.hpp>
 
+#if !defined(BOOST_CONTEXT_NO_EXECUTION_CONTEXT)
 namespace ctx = boost::context;
 
 int value1 = 0;
@@ -103,17 +104,26 @@ void test_prealloc() {
     ectx();
     BOOST_CHECK_EQUAL( 7, value1);
 }
+#else
+void dummy_test() {
+}
+#endif
 
 boost::unit_test::test_suite * init_unit_test_suite( int, char* [])
 {
     boost::unit_test::test_suite * test =
         BOOST_TEST_SUITE("Boost.Context: execution_context test suite");
 
+#if !defined(BOOST_CONTEXT_NO_EXECUTION_CONTEXT)
     test->add( BOOST_TEST_CASE( & test_ectx) );
     test->add( BOOST_TEST_CASE( & test_return) );
     test->add( BOOST_TEST_CASE( & test_variadric) );
     test->add( BOOST_TEST_CASE( & test_memfn) );
     test->add( BOOST_TEST_CASE( & test_prealloc) );
+#else
+    test->add( BOOST_TEST_CASE( & dummy_test) );
+#endif
 
     return test;
 }
+
