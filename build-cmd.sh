@@ -17,7 +17,7 @@ fi
 
 # Libraries on which we depend - please keep alphabetized for maintenance
 BOOST_LIBS=(atomic context coroutine date_time filesystem iostreams program_options \
-            regex signals system thread wave)
+            regex signals system thread)
 
 BOOST_BJAM_OPTIONS="--layout=tagged -sNO_BZIP2=1 ${BOOST_LIBS[*]/#/--with-}"
 
@@ -122,7 +122,7 @@ case "$AUTOBUILD_PLATFORM" in
             --prefix="${stage}" --libdir="${stage_debug}" $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
 
-        suppress_tests thread wave
+        suppress_tests thread 
 
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
@@ -184,7 +184,7 @@ case "$AUTOBUILD_PLATFORM" in
         "${bjam}" link=static variant=debug --abbreviate-paths \
             --prefix="${stage}" --libdir="${stage_debug}" $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
-        suppress_tests thread wave
+        suppress_tests thread 
 
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
@@ -301,7 +301,6 @@ case "$AUTOBUILD_PLATFORM" in
             --prefix="${stage}" --libdir="${stage}"/lib/debug \
             $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
-        suppress_tests wave
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in "${BOOST_LIBS[@]}"; do
@@ -364,7 +363,6 @@ case "$AUTOBUILD_PLATFORM" in
             --prefix="${stage}" --libdir="${stage}"/lib/debug \
             $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
-        suppress_tests wave
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in "${BOOST_LIBS[@]}"; do
