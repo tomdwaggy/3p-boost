@@ -248,7 +248,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         "${bjam}" toolset=darwin variant=debug --disable-icu $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM \
             cxxflags="$BOOST_CXXFLAGS" linkflags="$BOOST_LDFLAGS" \
-            maxosx-version=10.11 macosx-version-min=10.8 stage
+            --maxosx-version=10.11 --macosx-version-min=10.8 stage
 
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
@@ -270,7 +270,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         "${bjam}" toolset=darwin variant=release --disable-icu $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM \
             cxxflags="$BOOST_CXXFLAGS" linkflags="$BOOST_LDFLAGS" \
-            maxosx-version=10.11 macosx-version-min=10.8 stage
+            --maxosx-version=10.11 --macosx-version-min=10.8 stage
         
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
