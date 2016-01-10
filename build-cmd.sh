@@ -17,7 +17,7 @@ fi
 
 # Libraries on which we depend - please keep alphabetized for maintenance
 BOOST_LIBS=(atomic context coroutine date_time filesystem iostreams program_options \
-            regex signals system thread)
+            regex signals system test thread)
 
 BOOST_BJAM_OPTIONS="--layout=tagged -sNO_BZIP2=1 ${BOOST_LIBS[*]/#/--with-}"
 
@@ -226,7 +226,7 @@ case "$AUTOBUILD_PLATFORM" in
         # boost::future appears broken on 32-bit Mac (see boost bug 9558).
         # Disable the class in the unit test runs and *don't use it* in 
         # production until it's known to be good.
-        BOOST_CXXFLAGS="-gdwarf-2 -std=c++0x -stdlib=libc++"
+        BOOST_CXXFLAGS="-gdwarf-2 -std=c++11 -stdlib=libc++"
         BOOST_LDFLAGS="-stdlib=libc++"
 
         # Force zlib static linkage by moving .dylibs out of the way
