@@ -111,25 +111,24 @@ case "$AUTOBUILD_PLATFORM" in
         cmd.exe /C bootstrap.bat vc14
 
         WINDOWS_BJAM_OPTIONS="--toolset=msvc-14.0 -j8 \
-            --abbreviate-paths \
+            --hash \
             include=$INCLUDE_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
             address-model=32 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
 
-        DEBUG_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sZLIB_LIBRARY_PATH=$ZLIB_DEBUG_PATH -sZLIB_NAME=zlibd -sZLIB_BINARY=zlib"
-        "${bjam}" link=static variant=debug --abbreviate-paths \
+        DEBUG_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sZLIB_LIBRARY_PATH=$ZLIB_DEBUG_PATH -sZLIB_NAME=zlibd -sZLIB_BINARY=zlibd"
+        "${bjam}" link=static variant=debug \
             --prefix="${stage}" --libdir="${stage_debug}" $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
-
-        suppress_tests thread 
+        suppress_tests thread test
 
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in "${BOOST_LIBS[@]}"; do
                 pushd libs/"$blib"/test
                     # link=static
-                    "${bjam}" variant=debug --hash \
+                    "${bjam}" variant=debug \
                         --prefix="${stage}" --libdir="${stage_debug}" \
                         $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
                 popd
@@ -138,11 +137,11 @@ case "$AUTOBUILD_PLATFORM" in
 
         # Move the debug libs first then clean to avoid tainting release build
         mv "${stage_lib}"/*-gd.lib "${stage_debug}"
-        "${bjam}" --clean
+        "${bjam}" --clean-all
         rm bin.v2/project-cache.jam
 
         RELEASE_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH -sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH -sZLIB_NAME=zlib -sZLIB_BINARY=zlib"
-        "${bjam}" link=static variant=release --abbreviate-paths \
+        "${bjam}" link=static variant=release \
             --prefix="${stage}" --libdir="${stage_release}" $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
         # conditionally run unit tests
@@ -150,7 +149,7 @@ case "$AUTOBUILD_PLATFORM" in
             for blib in "${BOOST_LIBS[@]}"; do
                 pushd libs/"$blib"/test
                     # link=static
-                    "${bjam}" variant=release --hash \
+                    "${bjam}" variant=release \
                         --prefix="${stage}" --libdir="${stage_release}" \
                         $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
                 popd
@@ -175,23 +174,24 @@ case "$AUTOBUILD_PLATFORM" in
         cmd.exe /C bootstrap.bat vc14
 
         WINDOWS_BJAM_OPTIONS="--toolset=msvc-14.0 -j8 \
+            --hash \
             include=$INCLUDE_PATH \
             -sZLIB_INCLUDE=$INCLUDE_PATH/zlib \
             address-model=64 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
 
         DEBUG_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_DEBUG_PATH -sZLIB_LIBRARY_PATH=$ZLIB_DEBUG_PATH -sZLIB_NAME=zlibd -sZLIB_BINARY=zlibd"
-        "${bjam}" link=static variant=debug --abbreviate-paths \
+        "${bjam}" link=static variant=debug \
             --prefix="${stage}" --libdir="${stage_debug}" $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
-        suppress_tests thread 
+        suppress_tests thread test
 
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in "${BOOST_LIBS[@]}"; do
                 pushd libs/"$blib"/test
                     # link=static 
-                    "${bjam}" variant=debug --hash \
+                    "${bjam}" variant=debug \
                         --prefix="${stage}" --libdir="${stage_debug}" \
                         $DEBUG_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
                 popd
@@ -202,17 +202,17 @@ case "$AUTOBUILD_PLATFORM" in
         mv "${stage_lib}"/*-gd.lib "${stage_debug}"
         "${bjam}" --clean-all
         rm bin.v2/project-cache.jam
-        
+
         RELEASE_BJAM_OPTIONS="$WINDOWS_BJAM_OPTIONS -sZLIB_LIBPATH=$ZLIB_RELEASE_PATH -sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH -sZLIB_NAME=zlib -sZLIB_BINARY=zlib"
-        "${bjam}" link=static variant=release --abbreviate-paths \
+        "${bjam}" link=static variant=release \
             --prefix="${stage}" --libdir="${stage_release}" $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in "${BOOST_LIBS[@]}"; do
                 pushd libs/"$blib"/test
-                    # link=static 
-                    "${bjam}" variant=release --hash \
+                    # link=static
+                    "${bjam}" variant=release \
                         --prefix="${stage}" --libdir="${stage_release}" \
                         $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
                 popd
