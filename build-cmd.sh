@@ -292,7 +292,7 @@ case "$AUTOBUILD_PLATFORM" in
                 mv -f "$solib" "$solib".disable
             fi
         done
-            
+
         ./bootstrap.sh --prefix=$(pwd) --without-icu
 
         DEBUG_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cxxflags=-std=c++11 \
@@ -301,7 +301,7 @@ case "$AUTOBUILD_PLATFORM" in
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
             address-model=32 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
-        "${bjam}" variant=debug --reconfigure \
+        "${bjam}" link=static variant=debug --reconfigure \
             --prefix="${stage}" --libdir="${stage}"/lib/debug \
             $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
@@ -318,7 +318,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         mv "${stage_lib}"/libboost* "${stage_debug}"
 
-        "${bjam}" --clean
+        "${bjam}" --clean-all
 
         RELEASE_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cflags=-fstack-protector-strong \
             cflags=-D_FORTIFY_SOURCE=2 cxxflags=-std=c++11 \
@@ -327,7 +327,7 @@ case "$AUTOBUILD_PLATFORM" in
             -sZLIB_INCLUDE=\"${stage}\"/packages/include/zlib/ \
             address-model=32 architecture=x86 \
             $BOOST_BJAM_OPTIONS"
-        "${bjam}" variant=release --reconfigure \
+        "${bjam}" link=static variant=release --reconfigure \
             --prefix="${stage}" --libdir="${stage}"/lib/release \
             $RELEASE_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
@@ -344,7 +344,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         mv "${stage_lib}"/libboost* "${stage_release}"
 
-        "${bjam}" --clean
+        "${bjam}" --clean-all
     ;;
     "linux64")
         # Force static linkage to libz by moving .sos out of the way
@@ -380,7 +380,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         mv "${stage_lib}"/libboost* "${stage_debug}"
 
-        "${bjam}" --clean
+        "${bjam}" --clean-all
 
         RELEASE_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cflags=-fstack-protector-strong \
             cflags=-D_FORTIFY_SOURCE=2 cxxflags=-fPIC cxxflags=-std=c++11 \
@@ -406,7 +406,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         mv "${stage_lib}"/libboost* "${stage_release}"
 
-        "${bjam}" --clean
+        "${bjam}" --clean-all
         ;;
 esac
     
