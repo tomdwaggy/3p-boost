@@ -320,7 +320,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         "${bjam}" --clean-all
 
-        RELEASE_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cflags=-fstack-protector-strong \
+        RELEASE_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cflags=-fstack-protector \
             cflags=-D_FORTIFY_SOURCE=2 cxxflags=-std=c++11 \
             include=$stage/packages/include/zlib/ \
             -sZLIB_LIBPATH=$stage/packages/lib/release \
@@ -382,7 +382,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         "${bjam}" --clean-all
 
-        RELEASE_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cflags=-fstack-protector-strong \
+        RELEASE_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cflags=-fstack-protector \
             cflags=-D_FORTIFY_SOURCE=2 cxxflags=-fPIC cxxflags=-std=c++11 \
             include=$stage/packages/include/zlib/ \
             -sZLIB_LIBPATH=$stage/packages/lib/release \
