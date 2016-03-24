@@ -367,6 +367,8 @@ case "$AUTOBUILD_PLATFORM" in
             --prefix="${stage}" --libdir="${stage}"/lib/debug \
             $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
+        suppress_tests test
+
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in "${BOOST_LIBS[@]}"; do
