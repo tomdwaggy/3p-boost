@@ -135,27 +135,6 @@ namespace boost { namespace dcoroutines { namespace detail {
         {}
     };
 
-    // Helper for BOOST_CONTEXT_PRESERVE_FPU(). If the user doesn't use the
-    // macro, this provides the default value. We use a compile-time
-    // mechanism because Boost.Context requires that every call to
-    // jump_fcontext() in a given process must use the same value.
-    template <typename T>
-    struct boost_context_preserve_fpu
-    {
-        inline
-        bool value() const { return true; }
-    };
-
-    // Use BOOST_CONTEXT_PRESERVE_FPU(true) or (false) to set the desired
-    // behavior for fcontext_holder::jump_from() throughout this program.
-#define BOOST_CONTEXT_PRESERVE_FPU(BOOL)        \
-    template <>                               \
-    struct boost_context_preserve_fpu<void>   \
-    {                                         \
-        inline                                \
-        bool value() const { return BOOL; }   \
-    };
-
     /**
      * fcontext_holder<StackAllocator> allocates a stack of specified size
      * AND prepares it using make_fcontext(). For this you must pass not
@@ -183,8 +162,7 @@ namespace boost { namespace dcoroutines { namespace detail {
         inline
         intptr_t jump_from(boost::context::fcontext_t* ofc, intptr_t p=NULL)
         {
-            return boost::context::jump_fcontext(ofc, mContext, p,
-                                                 boost_context_preserve_fpu<void>::value());
+            return boost::context::jump_fcontext(ofc, mContext, p, true);
         }
 
     private:
@@ -219,9 +197,8 @@ namespace boost { namespace dcoroutines { namespace detail {
         swap_context(context_context_impl_base& from, 
                      const context_context_impl_base& to,
                      default_hint) {
-            // Not knowing the caller's intent, we leave the default
-            // preserve_fpu=true parameter.
-            boost::context::jump_fcontext(&from.m_ctx, to.m_ctx, to.get_arg()); 
+            // Not knowing the caller's intent, we set to true
+            boost::context::jump_fcontext(&from.m_ctx, to.m_ctx, to.get_arg(), true); 
         }
 
         // delegate to subclass the problem of supplying an appropriate
