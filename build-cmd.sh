@@ -320,7 +320,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         "${bjam}" --clean-all
 
-        RELEASE_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cflags=-fstack-protector-strong \
+        RELEASE_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cflags=-fstack-protector \
             cflags=-D_FORTIFY_SOURCE=2 cxxflags=-std=c++11 \
             include=$stage/packages/include/zlib/ \
             -sZLIB_LIBPATH=$stage/packages/lib/release \
@@ -367,6 +367,8 @@ case "$AUTOBUILD_PLATFORM" in
             --prefix="${stage}" --libdir="${stage}"/lib/debug \
             $DEBUG_BOOST_BJAM_OPTIONS $BOOST_BUILD_SPAM stage
 
+        suppress_tests test
+
         # conditionally run unit tests
         if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
             for blib in "${BOOST_LIBS[@]}"; do
@@ -382,7 +384,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         "${bjam}" --clean-all
 
-        RELEASE_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cflags=-fstack-protector-strong \
+        RELEASE_BOOST_BJAM_OPTIONS="--disable-icu toolset=gcc cflags=-fstack-protector \
             cflags=-D_FORTIFY_SOURCE=2 cxxflags=-fPIC cxxflags=-std=c++11 \
             include=$stage/packages/include/zlib/ \
             -sZLIB_LIBPATH=$stage/packages/lib/release \
